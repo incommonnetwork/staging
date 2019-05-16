@@ -9,6 +9,10 @@ const isStaging = (process.env.NODE_ENV) === 'staging'
 const assetPrefix = isStaging ? '/staging' : ''
 
 module.exports = withSass(withTM({
+    exportPathMap: {
+        '/': {page : '/'},
+        '/signup': {page : '/signup'}
+    },
     transpileModules: ['react-bulma-components'],
     sassLoaderOptions: {
         includePaths: ["./client"]
