@@ -31,7 +31,8 @@
     "server:jest": "NODE_ENV=test jest --detectOpenHandles",
     "client:dev": "next ./client",
     "client:build": "next build ./client/",
-    "client:start": "next start ./client/"
+    "client:start": "next start ./client/",
+    "deploy": "next export ./client/ -o docs"
   },
   "dependencies": {
     "@feathersjs/configuration": "^2.0.6",
