@@ -14,13 +14,7 @@ module.exports = withSass(withTM({
         includePaths: ["./client"]
     },
     assetPrefix,
-    webpack: config => {
-        config.plugins.push(
-            new webpack.DefinePlugin({
-                'process.env.ASSET_PREFIX': JSON.stringify(assetPrefix),
-            }),
-        )
-
-        return config
-    },
+    env : {
+        ASSET_PREFIX : assetPrefix
+    }
 }))
