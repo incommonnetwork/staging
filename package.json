@@ -1,8 +1,8 @@
 {
-  "name": "new-feathers-next",
+  "name": "InCommon",
   "description": "",
   "version": "0.0.0",
-  "homepage": "",
+  "homepage": "https://incommon.dev",
   "main": "server",
   "keywords": [
     "feathers"
@@ -25,6 +25,11 @@
   "scripts": {
     "test": "npm run eslint && npm run client:build && npm run server:jest",
     "eslint": "eslint server/. test/. --config .eslintrc.json --fix",
+    "dev": "npm run dev:start; npm run dev:log",
+    "dev:start": "pm2 start npm -- run server:dev",
+    "dev:log": "pm2 log npm",
+    "dev:test": "export TEST_ENV=dev; jest --watch",
+    "dev:stop": "pm2 stop npm",
     "server:dev": "nodemon server/",
     "server:start:prod": "NODE_ENV=production node server/",
     "server:start": "node server/",
@@ -35,6 +40,14 @@
     "client:start": "next start ./client/",
     "client:export:staging": "npm run client:build:staging && NODE_ENV=staging next export ./client -o ./staging",
     "client:deploy:staging": "npm run client:export:staging && cp -rT staging/ ."
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "client/.next/*",
+      "client/*"
+    ],
+    "delay": "1000"
   },
   "dependencies": {
     "@feathersjs/configuration": "^2.0.6",
@@ -61,8 +74,10 @@
     "jest": "^23.6.0",
     "next-plugin-transpile-modules": "^2.0.0",
     "nodemon": "^1.18.9",
+    "pm2": "^3.5.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "request-promise-native": "^1.0.7"
   },
   "prettier": {
     "trailingComma": "all",
