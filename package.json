@@ -32,7 +32,7 @@
     "client:dev": "next ./client",
     "client:build": "next build ./client/",
     "client:start": "next start ./client/",
-    "ci:deploy": "NODE_ENV=staging next export ./client/ -o ./docs && cp -rT docs/ ."
+    "ci:deploy": "NODE_ENV=staging next export ./client/ -o ./docs && cp -rT docs/ . && git add . && git commit . -m 'CI'"
   },
   "dependencies": {
     "@feathersjs/configuration": "^2.0.6",
