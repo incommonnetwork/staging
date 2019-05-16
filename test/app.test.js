@@ -1,6 +1,9 @@
 const rp = require('request-promise');
 const url = require('url');
+/* eslint-disable no-console */
+const logger = require('../server/logger');
 const app = require('../server/app');
+const nextApp = require('../server/nextApp').nextApp;
 
 const port = app.get('port') || 3030;
 const getUrl = pathname => url.format({
@@ -12,8 +15,23 @@ const getUrl = pathname => url.format({
 
 describe('Feathers application tests (with jest)', () => {
   beforeAll(done => {
-    this.server = app.listen(port);
-    this.server.once('listening', () => done());
+
+    nextApp.prepare().then(() => {
+      this.server = app.listen(port);
+
+      process.on('unhandledRejection', (reason, p) =>
+        logger.error('Unhandled Rejection at: Promise ', p, reason),
+      );
+
+      this.server.once('listening', () => {
+        logger.info(
+          'Feathers application started on http://%s:%d',
+          app.get('host'),
+          port,
+        );
+        done();
+      });
+    });
   });
 
   afterAll(done => {

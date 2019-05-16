@@ -1,16 +1,12 @@
 const handle = require('../nextApp').handle;
+const path = require('path');
+const jetpack = require('fs-jetpack');
 
-// Add your own services here.
-// If the path is not been added here
-// it will be passed to next.js
-const feathersServices = {
-  '/users': true,
-};
+const nextPages = new Set(jetpack.cwd(path.join(__dirname, '..','..','client','pages')).list().map(n => n.split(path.sep).pop().split('.').shift()));
+nextPages.add('');
 
-const isFeathersService = path => feathersServices[path] === true;
-
-module.exports = function(options = {}) {
+module.exports = function() {
   return function next(req, res, next) {
-    return isFeathersService(req.path) ? next() : handle(req, res);
+    return nextPages.has(req.path.split('/').pop()) ? handle(req, res) : next();
   };
 };
