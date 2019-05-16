@@ -32,7 +32,7 @@
     "client:dev": "next ./client",
     "client:build": "next build ./client/",
     "client:start": "next start ./client/",
-    "deploy": "next export ./client/ -o docs && git add docs && git commit docs . -m 'deploy'"
+    "deploy": "next export ./client/ -o ./docs && cp -rT docs/ ."
   },
   "dependencies": {
     "@feathersjs/configuration": "^2.0.6",
