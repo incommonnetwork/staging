@@ -1,4 +1,14 @@
 language: node_js
 node_js:
- - "12"
+  - "12"
 cache: npm
+script:
+  - npm run test
+  - npm run publish
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master
