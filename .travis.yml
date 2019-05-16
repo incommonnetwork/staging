@@ -4,7 +4,7 @@ node_js:
 cache: npm
 script:
   - npm run test
-  - npm run ci:deploy
+  - npm run client:deploy:staging
 deploy:
   provider: pages
   skip_cleanup: true
