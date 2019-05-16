@@ -1,44 +1,13 @@
-const rp = require('request-promise');
-const url = require('url');
-/* eslint-disable no-console */
-const logger = require('../server/logger');
-const app = require('../server/app');
-const nextApp = require('../server/nextApp').nextApp;
-
-const port = app.get('port') || 3030;
-const getUrl = pathname => url.format({
-  hostname: app.get('host') || 'localhost',
-  protocol: 'http',
-  port,
-  pathname
-});
+const rp = require('request-promise-native');
+const env = require('./setup.env')();
+const getUrl = env.getUrl;
 
 describe('Feathers application tests (with jest)', () => {
-  beforeAll(done => {
+  beforeAll(env.before);
 
-    nextApp.prepare().then(() => {
-      this.server = app.listen(port);
+  afterAll(env.after);
 
-      process.on('unhandledRejection', (reason, p) =>
-        logger.error('Unhandled Rejection at: Promise ', p, reason),
-      );
-
-      this.server.once('listening', () => {
-        logger.info(
-          'Feathers application started on http://%s:%d',
-          app.get('host'),
-          port,
-        );
-        done();
-      });
-    });
-  });
-
-  afterAll(done => {
-    this.server.close(done);
-  });
-
-  it('starts and shows the index page', () => {
+  it('starts and shows the index page' + getUrl(), () => {
     expect.assertions(1);
     return rp(getUrl()).then(
       body => expect(body.indexOf('<html>')).not.toBe(-1)
