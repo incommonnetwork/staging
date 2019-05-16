@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Navbar from 'react-bulma-components/src/components/navbar';
 import Button from 'react-bulma-components/src/components/button';
 
-import Link from 'next/link';
+import Link from './link';
 
 class Header extends Component {
     render() {
