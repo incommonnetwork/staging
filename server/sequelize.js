@@ -1,18 +1,19 @@
 const Sequelize = require('sequelize');
 
 const useSSL = (() => {
-    let _ssl = false
+    let _ssl = true;
     switch (process.env.NODE_ENV) {
-        case 'production':
-            _ssl = true;
-            break;
-        case 'test':
-            _ssl = (process.env.TEST_ENV === 'ci') ? true : false
-            break;
-        default:
+    case undefined:
+        _ssl = false;
+        return;
+    case 'test':
+        _ssl = (process.env.TEST_ENV === 'ci') ? true : false;
+        break;
+    case 'production':
+    default:
     }
     return _ssl;
-})()
+})();
 
 module.exports = function (app) {
     const connectionString = app.get('postgres');
