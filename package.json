@@ -1,104 +1,105 @@
 {
-  "name": "InCommon",
-  "description": "",
-  "version": "0.0.0",
-  "homepage": "https://incommon.dev",
-  "main": "server",
-  "keywords": [
-    "feathers"
-  ],
-  "author": {
-    "name": "Ryan Bennett",
-    "email": "ryan@incommon.dev"
-  },
-  "contributors": [],
-  "bugs": {},
-  "directories": {
-    "lib": "server",
-    "test": "test/",
-    "config": "config/"
-  },
-  "engines": {
-    "node": "^10.0.0",
-    "npm": ">= 3.0.0"
-  },
-  "scripts": {
-    "eslint": "eslint server/. test/. --config .eslintrc.json --fix",
-    "dev": "npm run dev:prepare; npm run dev:log",
-    "dev:prepare": "npm run dev:cleanup; npm run dev:server:start; npm run dev:postgres:start",
-    "dev:postgres:start": "docker run --name incommon -p 5432:5432 -e POSTGRES_PASSWORD=incommon -e POSTGRES_USER=incommon -d postgres",
-    "dev:postgres:stop": "docker stop incommon; docker rm incommon",
-    "dev:server:start": "export NODE_ENV=test; export TEST_ENV=ci; pm2 start nodemon -- server/",
-    "dev:server:stop": "pm2 stop nodemon",
-    "dev:log": "pm2 log all",
-    "dev:test": "export TEST_ENV=dev; jest --watch test/",
-    "dev:cleanup": "npm run dev:server:stop; npm run dev:postgres:stop",
-    "ci:test": "npm run ci:test:prepare && npm run ci:test:jest",
-    "ci:test:prepare": "npm run eslint; npm run client:build",
-    "ci:test:jest": "export TEST_ENV=ci; jest test/",
-    "server:start:prod": "NODE_ENV=production node server/",
-    "server:start": "node server/",
-    "server:jest": "jest",
-    "client:dev": "next ./client",
-    "client:build": "next build ./client/",
-    "client:build:staging": "NODE_ENV=staging next build ./client",
-    "client:start": "next start ./client/",
-    "client:export:staging": "npm run client:build:staging && NODE_ENV=staging next export ./client -o ./staging",
-    "client:deploy:staging": "npm run client:export:staging && cp -rT staging/ ."
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "test/*",
-      "client/.next/*",
-      "client/*"
+    "name": "InCommon",
+    "description": "",
+    "version": "0.0.0",
+    "homepage": "https://incommon.dev",
+    "main": "server",
+    "keywords": [
+        "feathers"
     ],
-    "delay": "1000"
-  },
-  "dependencies": {
-    "@feathersjs/authentication": "^2.1.16",
-    "@feathersjs/authentication-jwt": "^2.0.10",
-    "@feathersjs/authentication-local": "^1.2.9",
-    "@feathersjs/authentication-oauth2": "^1.3.1",
-    "@feathersjs/configuration": "^2.0.6",
-    "@feathersjs/errors": "^3.3.6",
-    "@feathersjs/express": "^1.3.1",
-    "@feathersjs/feathers": "^3.3.1",
-    "@zeit/next-sass": "^1.0.1",
-    "compression": "^1.7.3",
-    "cors": "^2.8.5",
-    "feathers-sequelize": "^4.1.1",
-    "fs-jetpack": "^2.2.2",
-    "helmet": "^3.15.0",
-    "next": "^8.1.1-canary.29",
-    "next-transpile-modules": "^2.3.1",
-    "node-sass": "^4.12.0",
-    "passport-facebook": "^3.0.0",
-    "passport-github": "^1.1.0",
-    "passport-google-oauth20": "^2.0.0",
-    "pg": "^7.11.0",
-    "react": "^16.7.0",
-    "react-bulma-components": "^3.0.1-6",
-    "react-dom": "^16.7.0",
-    "sequelize": "^5.3.5",
-    "serve-favicon": "^2.5.0",
-    "tar": "^4.4.2",
-    "winston": "^3.1.0"
-  },
-  "devDependencies": {
-    "@feathersjs/cli": "^3.9.0",
-    "eslint": "^5.12.0",
-    "jest": "^23.6.0",
-    "next-plugin-transpile-modules": "^2.0.0",
-    "node-fetch": "^2.6.0",
-    "nodemon": "^1.18.9",
-    "pm2": "^3.5.0",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.2",
-    "request-promise-native": "^1.0.7"
-  },
-  "prettier": {
-    "trailingComma": "all",
-    "singleQuote": true,
-    "printWidth": 70
-  }
+    "author": {
+        "name": "Ryan Bennett",
+        "email": "ryan@incommon.dev"
+    },
+    "contributors": [],
+    "bugs": {},
+    "directories": {
+        "lib": "server",
+        "test": "test/",
+        "config": "config/"
+    },
+    "engines": {
+        "node": "^10.0.0",
+        "npm": ">= 3.0.0"
+    },
+    "scripts": {
+        "eslint": "eslint server/. test/. --config .eslintrc.json --fix",
+        "dev": "npm run dev:prepare; npm run dev:log",
+        "dev:prepare": "npm run dev:cleanup; npm run dev:server:start; npm run dev:postgres:start",
+        "dev:postgres:start": "docker run --name incommon -p 5432:5432 -e POSTGRES_PASSWORD=incommon -e POSTGRES_USER=incommon -d postgres",
+        "dev:postgres:stop": "docker stop incommon; docker rm incommon",
+        "dev:server:start": "export NODE_ENV=test; export TEST_ENV=ci; pm2 start nodemon -- server/",
+        "dev:server:stop": "pm2 stop nodemon",
+        "dev:log": "pm2 log all",
+        "dev:test": "export TEST_ENV=dev; jest --watch test/",
+        "dev:cleanup": "npm run dev:server:stop; npm run dev:postgres:stop",
+        "ci:test": "npm run ci:test:prepare && npm run ci:test:jest",
+        "ci:test:prepare": "npm run eslint; npm run client:build",
+        "ci:test:jest": "export TEST_ENV=ci; jest test/",
+        "server:start:prod": "NODE_ENV=production node server/",
+        "server:start": "node server/",
+        "server:jest": "jest",
+        "client:dev": "next ./client",
+        "client:build": "next build ./client/",
+        "client:build:staging": "NODE_ENV=staging next build ./client",
+        "client:start": "next start ./client/",
+        "client:export:staging": "npm run client:build:staging && NODE_ENV=staging next export ./client -o ./staging",
+        "client:deploy:staging": "npm run client:export:staging && cp -rT staging/ ."
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "test/*",
+            "client/.next/*",
+            "client/*"
+        ],
+        "delay": "1000"
+    },
+    "dependencies": {
+        "@feathersjs/authentication": "^2.1.16",
+        "@feathersjs/authentication-jwt": "^2.0.10",
+        "@feathersjs/authentication-local": "^1.2.9",
+        "@feathersjs/authentication-oauth2": "^1.3.1",
+        "@feathersjs/configuration": "^2.0.6",
+        "@feathersjs/errors": "^3.3.6",
+        "@feathersjs/express": "^1.3.1",
+        "@feathersjs/feathers": "^3.3.1",
+        "@zeit/next-sass": "^1.0.1",
+        "compression": "^1.7.3",
+        "cors": "^2.8.5",
+        "feathers-sequelize": "^4.1.1",
+        "fs-jetpack": "^2.2.2",
+        "helmet": "^3.15.0",
+        "next": "^8.1.1-canary.29",
+        "next-transpile-modules": "^2.3.1",
+        "node-sass": "^4.12.0",
+        "passport-facebook": "^3.0.0",
+        "passport-github": "^1.1.0",
+        "passport-google-oauth20": "^2.0.0",
+        "pg": "^7.11.0",
+        "react": "^16.7.0",
+        "react-bulma-components": "^3.0.1-6",
+        "react-dom": "^16.7.0",
+        "sequelize": "^5.3.5",
+        "serve-favicon": "^2.5.0",
+        "tar": "^4.4.2",
+        "winston": "^3.1.0"
+    },
+    "devDependencies": {
+        "puppeteer": "^1.16.0",
+        "@feathersjs/cli": "^3.9.0",
+        "eslint": "^5.12.0",
+        "jest": "^23.6.0",
+        "next-plugin-transpile-modules": "^2.0.0",
+        "node-fetch": "^2.6.0",
+        "nodemon": "^1.18.9",
+        "pm2": "^3.5.0",
+        "request": "^2.88.0",
+        "request-promise": "^4.2.2",
+        "request-promise-native": "^1.0.7"
+    },
+    "prettier": {
+        "trailingComma": "all",
+        "singleQuote": true,
+        "printWidth": 70
+    }
 }
