@@ -13,28 +13,28 @@ const testDev = () => {
         pathname
     });
 
-    const getPage = getApi
+    const getPage = getApi;
     return { getPage, getApi, before, after };
 };
 
 const testStaging = () => {
-    const before = () => { }
-    const after = () => { }
+    const before = () => { };
+    const after = () => { };
 
     const getPage = pathname => url.format({
         hostname: 'incommon.dev',
         protocol: 'https',
         pathname: `/staging${pathname}`
-    })
+    });
 
     const getApi = pathname => url.format({
         hostname: 'staging.incommon.dev',
         protocol: 'https',
         pathname,
-    })
+    });
 
     return { getPage, getApi, before, after };
-}
+};
 
 const testCI = (port) => {
     /* eslint-disable no-console */
@@ -49,7 +49,7 @@ const testCI = (port) => {
         pathname
     });
 
-    const getPage = getApi
+    const getPage = getApi;
 
     let server = null;
 
@@ -86,17 +86,17 @@ const testCI = (port) => {
 module.exports = (port) => {
     let env = null;
     switch (process.env.TEST_ENV) {
-        case 'dev':
-            env = testDev(port);
-            break;
-        case 'ci':
-            env = testCI(port);
-            break;
-        case 'staging':
-            env = testStaging(port);
-            break;
-        default:
-            env = testCI(port);
+    case 'dev':
+        env = testDev(port);
+        break;
+    case 'ci':
+        env = testCI(port);
+        break;
+    case 'staging':
+        env = testStaging(port);
+        break;
+    default:
+        env = testCI(port);
     }
     return env;
 };
