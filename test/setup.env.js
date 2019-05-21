@@ -22,7 +22,7 @@ const testStaging = () => {
     const after = () => { };
 
     const getPage = pathname => url.format({
-        hostname: 'incommong.dev',
+        hostname: 'incommon.dev',
         protocol: 'https',
         pathname: `/staging${pathname}`
     });

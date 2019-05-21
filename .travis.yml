@@ -9,6 +9,7 @@ before_install:
   - sudo /etc/init.d/postgresql stop
 script:
   - npm run ci:test
+  - npm run ci:deploy
 deploy:
   provider: pages
   skip_cleanup: true
