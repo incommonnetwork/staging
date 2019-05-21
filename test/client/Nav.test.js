@@ -110,7 +110,7 @@ describe('Navigation', () => {
     beforeAll(async () => {
         await env.before();
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-        this.browser = await puppeteer.launch({ headless: false });
+        this.browser = await puppeteer.launch();
     });
 
     afterAll(async () => {
