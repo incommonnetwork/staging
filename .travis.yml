@@ -3,6 +3,7 @@ node_js:
   - "12"
 cache: npm
 script:
+  - service mysql stop
   - npm run test
   - npm run client:deploy:staging
 deploy:
