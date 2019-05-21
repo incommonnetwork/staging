@@ -8,7 +8,7 @@ before_install:
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
 script:
-  - npm run test
+  - npm run ci:test
 deploy:
   provider: pages
   skip_cleanup: true
