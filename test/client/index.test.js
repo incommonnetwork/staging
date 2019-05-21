@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
 const env = require('../setup.env')(3032)
-const getUrl = env.getUrl
+const getPage = env.getPage
 
 describe('/', () => {
     beforeAll(async () => {
@@ -16,7 +16,7 @@ describe('/', () => {
 
     beforeEach(async () => {
         this.page = await this.browser.newPage()
-        await this.page.goto(getUrl('/'))
+        await this.page.goto(getPage('/'))
     })
 
     afterEach(async () => {

@@ -36,6 +36,7 @@
         "ci:test": "npm run ci:test:prepare && npm run ci:test:jest",
         "ci:test:prepare": "npm run eslint; npm run client:build",
         "ci:test:jest": "export TEST_ENV=ci; jest test/",
+        "staging:test": "export TEST_ENV=staging; jest test/",
         "server:start:prod": "NODE_ENV=production node server/",
         "server:start": "node server/",
         "server:jest": "jest",

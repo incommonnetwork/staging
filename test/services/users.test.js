@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 const fetch = require('node-fetch');
 const env = require('../setup.env.js')(3031);
-const getUrl = env.getUrl;
-const URL = getUrl('users');
+const getApi = env.getApi;
+const URL = getApi('users');
 let rand = Math.random();
 
 describe('\'users\' service', () => {

@@ -6,14 +6,35 @@ const testDev = () => {
         setTimeout(done, 5000);
     };// (done) => { setTimeout(done, 1000); };
     const after = () => { };//(done) => { setTimeout(done, 1000); };
-    const getUrl = pathname => url.format({
+    const getApi = pathname => url.format({
         hostname: 'localhost',
         protocol: 'http',
         port: 3030,
         pathname
     });
-    return { getUrl, before, after };
+
+    const getPage = getApi
+    return { getPage, getApi, before, after };
 };
+
+const testStaging = () => {
+    const before = () => { }
+    const after = () => { }
+
+    const getPage = pathname => url.format({
+        hostname: 'incommong.dev',
+        protocol: 'https',
+        pathname: `/staging${pathname}`
+    })
+
+    const getApi = pathname => url.format({
+        hostname: 'staging.incommon.dev',
+        protocol: 'https',
+        pathname,
+    })
+
+    return { getPage, getApi, before, after };
+}
 
 const testCI = (port) => {
     /* eslint-disable no-console */
@@ -21,12 +42,14 @@ const testCI = (port) => {
     const app = require('../server/app');
     const nextApp = require('../server/nextApp').nextApp;
 
-    const getUrl = pathname => url.format({
+    const getApi = pathname => url.format({
         hostname: app.get('host') || 'localhost',
         protocol: 'http',
         port,
         pathname
     });
+
+    const getPage = getApi
 
     let server = null;
 
@@ -55,7 +78,7 @@ const testCI = (port) => {
         });
     };
 
-    return { getUrl, before, after };
+    return { getPage, getApi, before, after };
 };
 
 
@@ -65,6 +88,12 @@ module.exports = (port) => {
     switch (process.env.TEST_ENV) {
         case 'dev':
             env = testDev(port);
+            break;
+        case 'ci':
+            env = testCI(port);
+            break;
+        case 'staging':
+            env = testStaging(port);
             break;
         default:
             env = testCI(port);
