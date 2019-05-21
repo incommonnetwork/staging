@@ -9,9 +9,9 @@ before_script:
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
 script:
-  - npm run dev:postgres:start
+  # - npm run dev:postgres:start
   - npm run test
-  - npm run dev:postgres:stop
+  # - npm run dev:postgres:stop
   - npm run client:deploy:staging
 deploy:
   provider: pages
