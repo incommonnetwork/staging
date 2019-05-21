@@ -35,7 +35,7 @@
     "server:dev": "nodemon server/",
     "server:start:prod": "NODE_ENV=production node server/",
     "server:start": "node server/",
-    "server:jest": "NODE_ENV=test jest --detectOpenHandles",
+    "server:jest": "jest test/app.test.js --detectOpenHandles",
     "client:dev": "next ./client",
     "client:build": "next build ./client/",
     "client:build:staging": "NODE_ENV=staging next build ./client",
