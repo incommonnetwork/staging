@@ -69,5 +69,6 @@ module.exports = {
       "httpOnly": false,
       "secure": false
     }
-  }
+  },
+  "postgres": "postgres://incommon:incommon@localhost:5432/incommon"
 }
