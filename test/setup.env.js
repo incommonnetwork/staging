@@ -30,7 +30,7 @@ const testCI = (port) => {
 
     let server = null;
 
-    const before = (done) => {
+    const before = async () => new Promise(resolve => {
         nextApp.prepare().then(() => {
             server = app.listen(port);
 
@@ -44,10 +44,10 @@ const testCI = (port) => {
                     app.get('host'),
                     port,
                 );
-                setTimeout(done, 1000);
+                setTimeout(resolve, 1000);
             });
         });
-    };
+    });
 
     const after = (done) => {
         server.close(() => {
