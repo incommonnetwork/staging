@@ -47,7 +47,9 @@ const testCI = (port) => {
     };
 
     const after = (done) => {
-        server.close(() => setTimeout(done, 1000));
+        server.close(() => {
+            app.get('sequelizeClient').close().then(done);
+        });
     };
 
     return { getUrl, before, after };
