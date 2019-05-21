@@ -1,7 +1,10 @@
 const url = require('url');
 
 const testDev = () => {
-    const before = () => { };// (done) => { setTimeout(done, 1000); };
+    const before = (done) => {
+        // fighting race condition with hot-reload builds
+        setTimeout(done, 5000);
+    };// (done) => { setTimeout(done, 1000); };
     const after = () => { };//(done) => { setTimeout(done, 1000); };
     const getUrl = pathname => url.format({
         hostname: 'localhost',
