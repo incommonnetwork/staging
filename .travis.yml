@@ -2,8 +2,13 @@ language: node_js
 node_js:
   - "12"
 cache: npm
+before_script:
+  # https://stackoverflow.com/a/27410479
+  # Disable services enabled by default
+  # http://docs.travis-ci.com/user/database-setup/#MySQL
+  - sudo /etc/init.d/mysql stop
+  - sudo /etc/init.d/postgresql stop
 script:
-  - service mysql stop
   - npm run test
   - npm run client:deploy:staging
 deploy:
