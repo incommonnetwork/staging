@@ -1,3 +1,4 @@
+/* global jasmine */
 const puppeteer = require('puppeteer');
 const env = require('../setup.env')(3032);
 const getPage = env.getPage;
