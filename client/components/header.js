@@ -12,7 +12,7 @@ class Header extends Component {
 
                 <Navbar.Brand>
                     <Link href='/'>
-                        <Navbar.Item>
+                        <Navbar.Item id='nav_'>
                             InCommon
                         </Navbar.Item>
                     </Link>
@@ -20,7 +20,7 @@ class Header extends Component {
 
                 <Navbar.Container position="end">
                     <Link href='/signup'>
-                        <Navbar.Item>
+                        <Navbar.Item id='nav_signup'>
                             <Button>
                                 Sign Up
                             </Button>
