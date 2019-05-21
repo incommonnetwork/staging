@@ -47,7 +47,9 @@ const testCI = (port) => {
     };
 
     const after = (done) => {
-        server.close(() => setTimeout(done, 1000));
+        server.close(() => {
+            app.get('sequelizeClient').close().then(done)
+        });
     };
 
     return { getUrl, before, after };
@@ -58,11 +60,11 @@ const testCI = (port) => {
 module.exports = (port) => {
     let env = null;
     switch (process.env.TEST_ENV) {
-    case 'dev':
-        env = testDev(port);
-        break;
-    default:
-        env = testCI(port);
+        case 'dev':
+            env = testDev(port);
+            break;
+        default:
+            env = testCI(port);
     }
     return env;
 };

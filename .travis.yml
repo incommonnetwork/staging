@@ -1,23 +1,14 @@
 language: node_js
 node_js:
   - "12"
-cache: npm
-services:
-  - docker
 before_install:
   # https://stackoverflow.com/a/27410479
   # Disable services enabled by default
   # http://docs.travis-ci.com/user/database-setup/#MySQL
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
-install:
-  - docker run --name incommon -p 5432:5432 -e POSTGRES_PASSWORD=incommon -e POSTGRES_USER=incommon -d postgres
-  - npm install
 script:
-  # - npm run dev:postgres:start
   - npm run test
-  # - npm run dev:postgres:stop
-  - npm run client:deploy:staging
 deploy:
   provider: pages
   skip_cleanup: true
