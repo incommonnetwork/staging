@@ -1,8 +1,8 @@
 const url = require('url');
 
 const testDev = () => {
-    const before = () => { }// (done) => { setTimeout(done, 1000); };
-    const after = () => { }//(done) => { setTimeout(done, 1000); };
+    const before = () => { };// (done) => { setTimeout(done, 1000); };
+    const after = () => { };//(done) => { setTimeout(done, 1000); };
     const getUrl = pathname => url.format({
         hostname: 'localhost',
         protocol: 'http',
@@ -12,13 +12,12 @@ const testDev = () => {
     return { getUrl, before, after };
 };
 
-const testCI = () => {
+const testCI = (port) => {
     /* eslint-disable no-console */
     const logger = require('../server/logger');
     const app = require('../server/app');
     const nextApp = require('../server/nextApp').nextApp;
 
-    const port = app.get('port') || 3030;
     const getUrl = pathname => url.format({
         hostname: app.get('host') || 'localhost',
         protocol: 'http',
@@ -42,7 +41,7 @@ const testCI = () => {
                     app.get('host'),
                     port,
                 );
-                done();
+                setTimeout(done, 1000);
             });
         });
     };
@@ -56,14 +55,14 @@ const testCI = () => {
 
 
 
-module.exports = () => {
+module.exports = (port) => {
     let env = null;
     switch (process.env.TEST_ENV) {
-        case 'dev':
-            env = testDev();
-            break;
-        default:
-            env = testCI();
+    case 'dev':
+        env = testDev(port);
+        break;
+    default:
+        env = testCI(port);
     }
     return env;
 };
