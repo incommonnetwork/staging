@@ -1,4 +1,4 @@
-{
+module.exports = {
   "host": "localhost",
   "port": 3030,
   "public": "../public/",
@@ -69,6 +69,5 @@
       "httpOnly": false,
       "secure": false
     }
-  },
-  "postgres": "postgres://incommon:incommon@localhost:5432/incommon"
+  }
 }
