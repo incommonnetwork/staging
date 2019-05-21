@@ -12,6 +12,7 @@ before_install:
   - sudo /etc/init.d/postgresql stop
 install:
   - docker run --name incommon -p 2345:5432 -e POSTGRES_PASSWORD=incommon -e POSTGRES_USER=incommon -d postgres
+  - npm install
 script:
   # - npm run dev:postgres:start
   - npm run test
