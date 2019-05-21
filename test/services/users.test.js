@@ -34,7 +34,6 @@ describe('\'users\' service', () => {
                 body: JSON.stringify(signup)
             }).catch(e => e);
 
-            console.log(err);
 
             expect(err.status).toBe(400);
             expect(err.statusText).toBe('Bad Request');
@@ -62,8 +61,6 @@ describe('\'users\' service', () => {
                 },
                 body: JSON.stringify(signup)
             }).catch(e => e);
-
-            console.log(err);
 
             expect(err.status).toBe(400);
             expect(err.statusText).toBe('Bad Request');

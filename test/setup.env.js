@@ -47,7 +47,7 @@ const testCI = (port) => {
     };
 
     const after = (done) => {
-        server.close(done);
+        server.close(() => setTimeout(done, 1000));
     };
 
     return { getUrl, before, after };
