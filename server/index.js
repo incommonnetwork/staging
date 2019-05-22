@@ -1,10 +1,15 @@
 /* eslint-disable no-console */
 const logger = require('./logger');
 const app = require('./app');
-const nextApp = require('./nextApp').nextApp;
 const port = app.get('port');
 
-nextApp.prepare().then(() => {
+async function main() {
+    // production uses another server for exported frontend pages
+    if (process.env.NODE_ENV !== 'production') {
+        const nextApp = require('./nextApp').nextApp;
+        await nextApp.prepare();
+    }
+
     const server = app.listen(port);
 
     process.on('unhandledRejection', (reason, p) =>
@@ -18,4 +23,9 @@ nextApp.prepare().then(() => {
             port,
         ),
     );
+}
+
+main().catch(e => {
+    console.error(e);
+    process.exit(1);
 });

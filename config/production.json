@@ -1,4 +1,4 @@
 {
-  "host": "featest-app.feathersjs.com",
-  "port": "PORT"
+    "host": "api.incommon.dev",
+    "port": "4040"
 }
