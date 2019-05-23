@@ -71,6 +71,8 @@ fi
 
 # Add exception for SSH and then enable UFW firewall
 ufw allow OpenSSH
+ufw allow http
+ufw allow https
 ufw --force enable
 
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
