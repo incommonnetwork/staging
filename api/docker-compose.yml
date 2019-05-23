@@ -9,3 +9,6 @@ services:
       - ./Caddyfile:/etc/Caddyfile
   feathers:
     build: ../
+    environment:
+      - NODE_ENV
+      - POSTGRES_CONNECTION

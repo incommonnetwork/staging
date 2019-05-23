@@ -1,0 +1,5 @@
+api.incommon.dev {
+    proxy / feathers:4040 {
+        transparent
+    }
+}
