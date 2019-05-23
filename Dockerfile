@@ -1,4 +1,4 @@
-from node:12-alpine
+FROM keymetrics/pm2:latest-alpine
 
 ADD client client
 ADD server server
@@ -9,5 +9,4 @@ ADD package-lock.json package-lock.json
 
 RUN npm install --production
 
-ENV NODE_ENV production
-CMD ["node","server/index.js"]
+CMD ["pm2-runtime","start","server/index.js"]
