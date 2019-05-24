@@ -89,17 +89,17 @@ const testCI = (port) => {
 module.exports = (port) => {
     let env = null;
     switch (process.env.TEST_ENV) {
-        case 'dev':
-            env = testDev(port);
-            break;
-        case 'ci':
-            env = testCI(port);
-            break;
-        case 'staging':
-            env = testStaging(port);
-            break;
-        default:
-            env = testCI(port);
+    case 'dev':
+        env = testDev(port);
+        break;
+    case 'ci':
+        env = testCI(port);
+        break;
+    case 'staging':
+        env = testStaging(port);
+        break;
+    default:
+        env = testCI(port);
     }
     return env;
 };
