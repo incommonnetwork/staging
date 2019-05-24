@@ -8,7 +8,9 @@ before_install:
   # http://docs.travis-ci.com/user/database-setup/#MySQL
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
-  - echo $STAGING_PRIVATE_KEY > ~/.ssh/id_travis
+  - echo $STAGING_PRIVATE_KEY > tmp.base64
+  - base64 -d tmp.base64 > ~/.ssh/id_travis
+  - rm tmp.base64
   - echo $STAGING_PUBLIC_KEY > ~/.ssh/id_travis.pub
   - sudo chmod 600 ~/.ssh/id_travis
   - sudo chmod 640 ~/.ssh/id_travis.pub
@@ -34,3 +36,4 @@ deploy:
   on:
     branch: master
 
+    -----BEGIN\ OPENSSH\ PRIVATE\ KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACDjY746sRtPAipIp4AgrGpvZj1wGRMW81AOHjyCxLk9xAAAAJDxKSdK8Skn\nSgAAAAtzc2gtZWQyNTUxOQAAACDjY746sRtPAipIp4AgrGpvZj1wGRMW81AOHjyCxLk9xA\nAAAEDtet4B5UDT0kHlW21X+DUT5xgr/+KkS3coHgTPempCF+NjvjqxG08CKkingCCsam9m\nPXAZExbzUA4ePILEuT3EAAAADXJ5YW5ARGFlZGVsdXM=\n-----END\ OPENSSH\ PRIVATE\ KEY-----
