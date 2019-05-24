@@ -39,7 +39,7 @@
         "ci:client:build": "NODE_ENV=ci next build ./client",
         "staging:deploy": "npm run staging:deploy:client; npm run staging:deploy:api",
         "staging:deploy:client": "export NODE_ENV=staging; next build ./client; next export ./client -o ./staging; cp -rT staging/ .",
-        "staging:deploy:api": "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./api/inventory ./api/playbook.yml --key-file ~/.ssh/id_travis --extra-vars \"incommon_host=staging.incommon.dev incommon_NODE_ENV=staging incommon_POSTGRES_CONNECTION=$INCOMMON_STAGING_DB\" -vvvv",
+        "staging:deploy:api": "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./api/inventory ./api/playbook.yml --key-file ~/.ssh/id_travis --extra-vars \"incommon_host=staging.incommon.dev incommon_NODE_ENV=staging incommon_POSTGRES_CONNECTION=$INCOMMON_STAGING_DB\"",
         "staging:test": "export TEST_ENV=staging; jest test/",
         "production:deploy": "npm run production:deploy:client; npm run production:deploy:api",
         "production:deploy:client": "export NODE_ENV=production; next build ./client; next export ./client -o ./production; cp -rT production/ .",
