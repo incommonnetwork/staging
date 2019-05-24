@@ -1,5 +1,5 @@
 
-stagetest.incommon.dev {
+staging.incommon.dev {
     proxy / feathers:4040 {
         transparent
     }
