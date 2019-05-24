@@ -14,6 +14,7 @@
         repo: "{{ incommon_repo }}"
         dest: "{{ incommon_dir }}"
         force: yes
+        version: master
     - name: Caddyfile copied
       copy:
         remote_src: yes
