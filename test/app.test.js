@@ -7,13 +7,6 @@ describe('Feathers application tests (with jest)', () => {
 
     afterAll(env.after);
 
-    it('starts and shows the index page' + getApi(), () => {
-        expect.assertions(1);
-        return rp(getApi()).then(
-            body => expect(body.indexOf('<html>')).not.toBe(-1)
-        );
-    });
-
     describe('404', () => {
         it('shows a 404 HTML page', () => {
             expect.assertions(2);
