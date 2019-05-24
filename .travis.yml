@@ -8,7 +8,6 @@ before_install:
   # http://docs.travis-ci.com/user/database-setup/#MySQL
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
-  - mkdir ~/.ssh
   - echo $STAGING_PRIVATE_KEY > ~/.ssh/id_travis
   - echo $STAGING_PUBLIC_KEY > ~/.ssh/id_travis.pub
   - sudo chmod 600 ~/.ssh/id_travis
