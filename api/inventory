@@ -1,0 +1,6 @@
+stagetest.incommon.dev
+staging.incommon.dev
+api.incommon.dev
+134.209.213.67
+
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
