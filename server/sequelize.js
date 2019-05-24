@@ -3,14 +3,14 @@ const Sequelize = require('sequelize');
 const useSSL = (() => {
     let _ssl = true;
     switch (process.env.NODE_ENV) {
-                    case undefined:
-                        _ssl = false;
-                        return;
-                    case 'test':
-                        _ssl = (process.env.TEST_ENV === 'ci') ? true : false;
-                        break;
-                    case 'production':
-                    default:
+        case undefined:
+            _ssl = false;
+            return;
+        case 'test':
+            _ssl = (process.env.TEST_ENV === 'ci') ? true : false;
+            break;
+        case 'production':
+        default:
     }
     return _ssl;
 })();
