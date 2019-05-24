@@ -1,3 +1,4 @@
+/* global jasmine*/
 const url = require('url');
 
 const testDev = () => {
@@ -18,13 +19,15 @@ const testDev = () => {
 };
 
 const testStaging = () => {
-    const before = () => { };
+    const before = () => {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+    };
     const after = () => { };
 
     const getPage = pathname => url.format({
         hostname: 'incommon.dev',
         protocol: 'https',
-        pathname: `/staging${pathname}`
+        pathname: `/staging${pathname === '/' ? pathname : `${pathname}/`}`
     });
 
     const getApi = pathname => url.format({
