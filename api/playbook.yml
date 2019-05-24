@@ -1,9 +1,8 @@
 ---
 
 - name: InCommon
-  hosts: "{{ host }}"
-  become: yes
-  become_user: incommon
+  hosts: "{{ incommon_host }}"
+  remote_user: incommon
   vars: 
     incommon_repo: "https://github.com/incommonnetwork/staging"
     incommon_dir: "{{ ansible_env.HOME }}/incommon"
@@ -21,24 +20,29 @@
         src: "{{ incommon_dir }}/api/Caddyfile.{{ incommon_NODE_ENV }}"
         dest: "{{ incommon_dir }}/api/Caddyfile"
     - name: service file
+      become: yes
       copy:
         remote_src: yes
         src: "{{ incommon_dir }}/api/incommon.service"
         dest: "{{ incommon_service_file }}"
     - name: service NODE_ENV
+      become: yes
       lineinfile:
         state: present
-        insertafter: "[Service]"
+        insertafter: \[Service\]
         line: Environment="NODE_ENV={{ incommon_NODE_ENV }}"
         path: "{{ incommon_service_file }}"
     - name: service POSTGRES_CONNECTION
+      become: yes
       lineinfile:
         state: present
-        insertafter: "[Service]"
+        insertafter: \[Service\]
         line: Environment="POSTGRES_CONNECTION={{ incommon_POSTGRES_CONNECTION }}"
         path: "{{ incommon_service_file }}"
     - name: service loaded, enabled, started
+      become: yes
       systemd:
         daemon_reload: yes
         enabled: yes
         state: restarted
+        name: incommon
