@@ -14,6 +14,7 @@ before_install:
 install:
   - sudo apt install ansible -y
   - echo "remote_tmp     = /tmp/.ansible-\${USER}/tmp" | sudo tee -a /etc/ansible/ansible.cfg
+  - npm install
 script:
   - npm run ci:test
   - npm run staging:deploy
