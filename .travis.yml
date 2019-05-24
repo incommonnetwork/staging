@@ -23,10 +23,10 @@ install:
   - sudo apt install ansible -y
   - ansible --version
   - echo "remote_tmp     = /tmp/.ansible-\${USER}/tmp" | sudo tee -a /etc/ansible/ansible.cfg
-  # - npm install
+  - npm install
 script:
-  # - ansible --version
-  # - npm run ci:test
+  - ansible --version
+  - npm run ci:test
   - npm run staging:deploy
 deploy:
   provider: pages
