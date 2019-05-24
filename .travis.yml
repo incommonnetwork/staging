@@ -7,7 +7,10 @@ before_install:
   # http://docs.travis-ci.com/user/database-setup/#MySQL
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
+  - echo $STAGING_PRIVATE_KEY > ~/id_travis
+  - echo $STAGING_PUBLIC_KEY > ~/id_travis.pub
 script:
+  - cat ~/id_travis
   - npm run ci:test
   - npm run ci:deploy
 deploy:
