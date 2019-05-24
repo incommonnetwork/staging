@@ -1,4 +1,5 @@
 language: node_js
+dist: xenial
 node_js:
   - "12"
 before_install:
@@ -7,12 +8,26 @@ before_install:
   # http://docs.travis-ci.com/user/database-setup/#MySQL
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
-  - echo $STAGING_PRIVATE_KEY > ~/id_travis
-  - echo $STAGING_PUBLIC_KEY > ~/id_travis.pub
+  - echo $STAGING_PRIVATE_KEY > tmp.base64
+  - base64 -d tmp.base64 > ~/.ssh/id_travis
+  - rm tmp.base64
+  - echo $STAGING_PUBLIC_KEY > ~/.ssh/id_travis.pub
+  - sudo chmod 600 ~/.ssh/id_travis
+  - sudo chmod 640 ~/.ssh/id_travis.pub
+  - sudo chmod 755 ~/.ssh
+  - cat ~/.ssh/id_travis
+  - echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list
+  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+  - sudo apt update
+install:
+  - sudo apt install ansible -y
+  - ansible --version
+  - echo "remote_tmp     = /tmp/.ansible-\${USER}/tmp" | sudo tee -a /etc/ansible/ansible.cfg
+  # - npm install
 script:
-  - cat ~/id_travis
-  - npm run ci:test
-  - npm run ci:deploy
+  - ansible --version
+  # - npm run ci:test
+  - npm run staging:deploy
 deploy:
   provider: pages
   skip_cleanup: true

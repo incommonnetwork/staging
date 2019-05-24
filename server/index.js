@@ -5,7 +5,7 @@ const port = app.get('port');
 
 async function main() {
     // production uses another server for exported frontend pages
-    if (process.env.NODE_ENV !== 'production') {
+    if (!(new Set(['staging', 'production']).has(process.env.NODE_ENV))) {
         const nextApp = require('./nextApp').nextApp;
         await nextApp.prepare();
     }

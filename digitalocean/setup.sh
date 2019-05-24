@@ -75,6 +75,8 @@ ufw allow http
 ufw allow https
 ufw --force enable
 
+echo 'incommon ALL=(ALL) NOPASSWD:ALL' | sudo EDITOR='tee -a' visudo
+
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
