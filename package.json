@@ -28,7 +28,7 @@
         "dev:prepare": "npm run dev:cleanup; npm run dev:server:start; npm run dev:postgres:start",
         "dev:postgres:start": "docker run --name incommon -p 5432:5432 -e POSTGRES_PASSWORD=incommon -e POSTGRES_USER=incommon -d postgres",
         "dev:postgres:stop": "docker stop incommon; docker rm incommon",
-        "dev:server:start": "export NODE_ENV=test; pm2 start nodemon -- server/",
+        "dev:server:start": "export NODE_ENV=dev; pm2 start nodemon -- server/",
         "dev:server:stop": "pm2 stop nodemon",
         "dev:log": "pm2 log all",
         "dev:test": "export TEST_ENV=dev; jest --watch test/",
