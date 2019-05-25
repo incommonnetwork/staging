@@ -192,19 +192,13 @@ describe('\'users\' service', () => {
             this.creds = { strategy, email, password };
 
 
-            await this.service.create(this.creds);
+            const { id } = await this.service.create(this.creds);
+            this.id = id
+
             await this.api.authenticate(this.creds);
         });
 
         describe('should forbid', () => {
-            it('reading the users list', async () => {
-                expect.assertions(2);
-
-                await this.service.find().catch(e => {
-                    expect(e.code).toBe(403);
-                    expect(e.message).toBe('Not Authorized');
-                });
-            });
 
             it('getting another user', async () => {
                 expect.assertions(2);
@@ -250,6 +244,15 @@ describe('\'users\' service', () => {
 
         describe('should allow', async () => {
 
+            it('finding self', async () => {
+                expect.assertions(3);
+
+                const res = await this.service.find({})
+
+                expect(res.total).toBe(1)
+                expect(res.data[0].id).toBe(this.id)
+                expect(res.data[0].email).toBe(this.creds.email)
+            });
 
         });
     });

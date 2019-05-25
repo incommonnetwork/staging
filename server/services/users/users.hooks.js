@@ -11,7 +11,9 @@ const authorize = (context) => {
     /* eslint-disable no-fallthrough */
     switch (context.method) {
         case 'find':
-            if (user) throw new Forbidden('Not Authorized');
+            // only allow a user to find themselves
+            if (user) context.params.query = user
+            break;
         case 'get':
         case 'update':
         case 'patch':
