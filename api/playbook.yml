@@ -20,6 +20,10 @@
         remote_src: yes
         src: "{{ incommon_dir }}/api/Caddyfile.{{ incommon_NODE_ENV }}"
         dest: "{{ incommon_dir }}/api/Caddyfile"
+    - name: .caddy dir exists
+      file: 
+        path: "{{ ansible_env.HOME }}/.caddy"
+        state: directory
     - name: service file
       become: yes
       copy:
