@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
-const fetch = require('node-fetch');
 const env = require('../setup.env.js')(3031);
-const getApi = env.getApi;
-const URL = getApi('users');
+const initApi = env.initApi;
 let rand = Math.random();
 
 describe('\'users\' service', () => {
@@ -10,127 +8,197 @@ describe('\'users\' service', () => {
 
     afterAll(env.after);
 
-
-    it('GET returns 401 unauthorized', async () => {
-        expect.assertions(2);
-
-        const res = await fetch(URL);
-
-        expect(res.status).toBe(401);
-        expect(res.statusText).toBe('Unauthorized');
+    beforeEach(async () => {
+        this.api = initApi();
+        this.service = this.api.service('users');
     });
+
+    describe('logged out', () => {
+        it('GET returns 401 unauthorized', async () => {
+            expect.assertions(3);
+
+            await this.service.find().catch(e => {
+                expect(e.type).toBe('FeathersError');
+                expect(e.code).toBe(401);
+                expect(e.name).toBe('NotAuthenticated');
+            });
+        });
+    });
+
 
     describe('signup', () => {
 
         it('handles no email', async () => {
             expect.assertions(9);
-            const signup = {};
 
-            const err = await fetch(URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(signup)
-            }).catch(e => e);
+            await this.service.create({}).catch(e => {
+                expect(e.code).toBe(400);
+                expect(e.name).toBe('BadRequest');
 
+                expect(e.errors).toHaveLength(2);
+                expect(e.errors[0]).toBeInstanceOf(Object);
+                expect(e.errors[0].type).toBe('notNull Violation');
+                expect(e.errors[0].path).toBe('email');
+                expect(e.errors[1]).toBeInstanceOf(Object);
+                expect(e.errors[1].type).toBe('notNull Violation');
+                expect(e.errors[1].path).toBe('password');
+            });
 
-            expect(err.status).toBe(400);
-            expect(err.statusText).toBe('Bad Request');
-            const json = await err.json();
-
-            expect(json.errors).toHaveLength(2);
-            expect(json.errors[0]).toBeInstanceOf(Object);
-            expect(json.errors[0].type).toBe('notNull Violation');
-            expect(json.errors[0].path).toBe('email');
-            expect(json.errors[1]).toBeInstanceOf(Object);
-            expect(json.errors[1].type).toBe('notNull Violation');
-            expect(json.errors[1].path).toBe('password');
         });
 
         it('handles no password', async () => {
             expect.assertions(6);
-            const signup = {
+
+            await this.service.create({
                 email: `${rand}@example.com`
-            };
+            }).catch(e => {
+                expect(e.code).toBe(400);
+                expect(e.name).toBe('BadRequest');
 
-            const err = await fetch(URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(signup)
-            }).catch(e => e);
-
-            expect(err.status).toBe(400);
-            expect(err.statusText).toBe('Bad Request');
-            const json = await err.json();
-
-            expect(json.errors).toHaveLength(1);
-            expect(json.errors[0]).toBeInstanceOf(Object);
-            expect(json.errors[0].type).toBe('notNull Violation');
-            expect(json.errors[0].path).toBe('password');
+                expect(e.errors).toHaveLength(1);
+                expect(e.errors[0]).toBeInstanceOf(Object);
+                expect(e.errors[0].type).toBe('notNull Violation');
+                expect(e.errors[0].path).toBe('password');
+            });
         });
 
         it('handles invalid password type', async () => {
-            expect.assertions(1);
-            const signup = {
+            expect.assertions(3);
+
+            await this.service.create({
                 email: `${rand}@example.com`,
                 password: rand
-            };
-
-            const err = await fetch(URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(signup)
-            }).catch(e => e);
-
-            expect(err.status).toBe(500);
+            }).catch(e => {
+                expect(e.code).toBe(500);
+                expect(e.name).toBe('GeneralError');
+                expect(e.message).toBe('Illegal arguments: number, string');
+            });
         });
 
         it('handles create', async () => {
-            expect.assertions(1);
-            const signup = {
-                email: `${rand}@example.com`,
+            expect.assertions(3);
+            const email = `${rand}@example.com`;
+
+            const res = await this.service.create({
+                email,
                 password: `${rand}`
-            };
+            });
 
-            const err = await fetch(URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(signup)
-            }).catch(e => e);
-
-            expect(err.status).toBe(201);
+            expect(res.id).toBeTruthy();
+            expect(res.email).toBe(email);
+            expect(res.password).toBeFalsy();
 
         });
 
         it('handles duplicate create', async () => {
             expect.assertions(5);
-            const signup = {
-                email: `${rand}@example.com`,
+
+            const email = `${rand}@example.com`;
+
+            await this.service.create({
+                email,
                 password: `${rand}`
+            }).catch(e => {
+                expect(e.code).toBe(400);
+                expect(e.errors).toHaveLength(1);
+                expect(e.errors[0]).toBeInstanceOf(Object);
+                expect(e.errors[0].type).toBe('unique violation');
+                expect(e.errors[0].path).toBe('email');
+            });
+        });
+    });
+
+    describe('authentication', () => {
+        beforeEach(async () => {
+            this.run = `${Math.random()}`;
+            const strategy = 'local';
+            const email = `${this.run}@example.com`;
+            const password = `${this.run}`;
+            this.creds = { strategy, email, password };
+
+
+            await this.service.create(this.creds);
+        });
+
+        it('should alllow ', async () => {
+            expect.assertions(1);
+
+            const res = await this.api.authenticate(this.creds);
+            console.log(res);
+            expect(res.accessToken).toBeTruthy();
+        });
+
+        it('should fail on no strategy', async () => {
+            expect.assertions(2);
+
+            const creds = {
+                ...this.creds,
+                strategy: undefined
             };
 
-            const err = await fetch(URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(signup)
-            }).catch(e => e);
+            await this.api.authenticate(creds).catch(e => {
+                console.error(e);
+                expect(e.code).toBe(401);
+                expect(e.message).toBe('Could not find stored JWT and no authentication strategy was given');
+            });
+        });
 
-            expect(err.status).toBe(400);
+        it('should fail on bad email', async () => {
+            expect.assertions(2);
 
-            const json = await err.json();
-            expect(json.errors).toHaveLength(1);
-            expect(json.errors[0]).toBeInstanceOf(Object);
-            expect(json.errors[0].type).toBe('unique violation');
-            expect(json.errors[0].path).toBe('email');
+            const creds = {
+                ...this.creds,
+                email: `${Math.random()}@example.com`
+            };
+
+            await this.api.authenticate(creds).catch(e => {
+                expect(e.code).toBe(401);
+                expect(e.message).toBe('Invalid login');
+            });
+        });
+
+        it('should fail on no password', async () => {
+            expect.assertions(2);
+
+            const creds = {
+                ...this.creds,
+                password: undefined
+            };
+
+            await this.api.authenticate(creds).catch(e => {
+                console.error(e);
+                expect(e.code).toBe(400);
+                expect(e.message).toBe('Missing Credentials');
+            });
+        });
+
+        it('should fail on wrong password', async () => {
+            expect.assertions(2);
+
+            const creds = {
+                ...this.creds,
+                password: `${Math.random()}`
+            };
+
+            await this.api.authenticate(creds).catch(e => {
+                console.error(e);
+                expect(e.code).toBe(401);
+                expect(e.message).toBe('Invalid login');
+            });
+        });
+    });
+
+    describe('logged in', () => {
+        beforeEach(async () => {
+            this.run = `${Math.random()}`;
+            const strategy = 'local';
+            const email = `${this.run}@example.com`;
+            const password = `${this.run}`;
+            this.creds = { strategy, email, password };
+
+
+            await this.service.create(this.creds);
+            await this.api.authenticate(this.creds);
         });
     });
 });

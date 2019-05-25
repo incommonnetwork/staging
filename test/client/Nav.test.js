@@ -31,7 +31,7 @@ const LinkSuite = (path, selector) => {
         it('link navigates', async () => {
             expect.assertions(1);
             await this.link.click();
-            await wait(200);
+            await wait(300);
 
             expect(await this.page.$eval('body', () => location.href)).toBe(getPage(path));
         });
@@ -44,7 +44,7 @@ const LinkSuite = (path, selector) => {
             const predivs = await this.page.$eval('div', (divs) => divs.length);
 
             await this.page.reload();
-            await wait(200);
+            await wait(300);
 
             const postdivs = await this.page.$eval('div', (divs) => divs.length);
             expect(predivs).toBe(postdivs);
@@ -57,7 +57,7 @@ const LinkSuite = (path, selector) => {
             const predivs = await this.page.$eval('div', (divs) => divs.length);
 
             await this.link.click();
-            await wait(200);
+            await wait(300);
 
             await this.page.goBack();
 

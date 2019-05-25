@@ -6,7 +6,7 @@ const auth = require('@feathersjs/authentication-client');
 const rest = require('@feathersjs/rest-client');
 
 
-const initApi = async (url) => {
+const initApi = (url) => {
     const app = feathers();
     const restClient = rest(url);
     app.configure(restClient.fetch(fetch));
@@ -17,7 +17,6 @@ const initApi = async (url) => {
 
 const testDev = () => {
     const api_url = 'http://localhost:3030';
-    const api = initApi(api_url);
 
     const before = (done) => {
         // fighting race condition with hot-reload builds
@@ -32,12 +31,11 @@ const testDev = () => {
     });
 
     const getPage = getApi;
-    return { getPage, getApi, before, after, api };
+    return { getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
 
 const testStaging = () => {
     const api_url = 'https://staging.incommon.dev';
-    const api = initApi(api_url);
 
     const before = () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
@@ -56,12 +54,11 @@ const testStaging = () => {
         pathname,
     });
 
-    return { getPage, getApi, before, after, api };
+    return { getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
 
 const testCI = (port) => {
     const api_url = `http://localhost:${port}`;
-    const api = initApi(api_url);
 
     const logger = require('../server/logger');
     const app = require('../server/app');
@@ -103,7 +100,7 @@ const testCI = (port) => {
         });
     };
 
-    return { getPage, getApi, before, after, api };
+    return { getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
 
 
