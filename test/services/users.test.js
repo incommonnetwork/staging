@@ -193,7 +193,7 @@ describe('\'users\' service', () => {
 
 
             const { id } = await this.service.create(this.creds);
-            this.id = id
+            this.id = id;
 
             await this.api.authenticate(this.creds);
         });
@@ -247,11 +247,11 @@ describe('\'users\' service', () => {
             it('finding self', async () => {
                 expect.assertions(3);
 
-                const res = await this.service.find({})
+                const res = await this.service.find({});
 
-                expect(res.total).toBe(1)
-                expect(res.data[0].id).toBe(this.id)
-                expect(res.data[0].email).toBe(this.creds.email)
+                expect(res.total).toBe(1);
+                expect(res.data[0].id).toBe(this.id);
+                expect(res.data[0].email).toBe(this.creds.email);
             });
 
         });

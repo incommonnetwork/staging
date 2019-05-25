@@ -12,7 +12,7 @@ const authorize = (context) => {
     switch (context.method) {
         case 'find':
             // only allow a user to find themselves
-            if (user) context.params.query = user
+            if (user) context.params.query = user;
             break;
         case 'get':
         case 'update':
