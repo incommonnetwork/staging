@@ -120,11 +120,10 @@ describe('\'users\' service', () => {
             await this.service.create(this.creds);
         });
 
-        it('should alllow ', async () => {
+        it('should succeed on correct credentials', async () => {
             expect.assertions(1);
 
             const res = await this.api.authenticate(this.creds);
-            console.log(res);
             expect(res.accessToken).toBeTruthy();
         });
 
@@ -168,7 +167,7 @@ describe('\'users\' service', () => {
             await this.api.authenticate(creds).catch(e => {
                 console.error(e);
                 expect(e.code).toBe(400);
-                expect(e.message).toBe('Missing Credentials');
+                expect(e.message).toBe('Missing credentials');
             });
         });
 
@@ -181,7 +180,6 @@ describe('\'users\' service', () => {
             };
 
             await this.api.authenticate(creds).catch(e => {
-                console.error(e);
                 expect(e.code).toBe(401);
                 expect(e.message).toBe('Invalid login');
             });
@@ -199,6 +197,66 @@ describe('\'users\' service', () => {
 
             await this.service.create(this.creds);
             await this.api.authenticate(this.creds);
+        });
+
+        describe('should forbid', () => {
+            it('reading the users list', async () => {
+                expect.assertions(2);
+
+                await this.service.find().catch(e => {
+                    expect(e.code).toBe(403);
+                    expect(e.message).toBe('Not Authorized');
+                });
+            });
+
+            it('getting another user', async () => {
+                expect.assertions(2);
+
+                await this.service.get(1).catch(e => {
+                    expect(e.code).toBe(403);
+                    expect(e.message).toBe('Not Authorized');
+                });
+            });
+
+            it('updating another user', async () => {
+                expect.assertions(2);
+
+                await this.service.update(1, {
+                    email: 'update@attacker.com',
+                    password: 'attack'
+                }).catch(e => {
+                    console.error(e);
+                    expect(e.code).toBe(403);
+                    expect(e.message).toBe('Not Authorized');
+                });
+            });
+
+            it('patching another user', async () => {
+                expect.assertions(2);
+
+                await this.service.patch(1, {
+                    password: 'attacker'
+                }).catch(e => {
+                    console.error(e);
+                    expect(e.code).toBe(403);
+                    expect(e.message).toBe('Not Authorized');
+                });
+            });
+
+            it('removing another user', async () => {
+                expect.assertions(2);
+
+                await this.service.remove(1).catch(e => {
+                    console.error(e);
+                    expect(e.code).toBe(403);
+                    expect(e.message).toBe('Not Authorized');
+                });
+            });
+        });
+
+        describe('should allow', async () => {
+
+
         });
     });
 });
