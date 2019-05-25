@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const env = require('../setup.env.js')(3031);
 const initApi = env.initApi;
 let rand = Math.random();
@@ -136,7 +135,6 @@ describe('\'users\' service', () => {
             };
 
             await this.api.authenticate(creds).catch(e => {
-                console.error(e);
                 expect(e.code).toBe(401);
                 expect(e.message).toBe('Could not find stored JWT and no authentication strategy was given');
             });
@@ -165,7 +163,6 @@ describe('\'users\' service', () => {
             };
 
             await this.api.authenticate(creds).catch(e => {
-                console.error(e);
                 expect(e.code).toBe(400);
                 expect(e.message).toBe('Missing credentials');
             });
@@ -225,7 +222,6 @@ describe('\'users\' service', () => {
                     email: 'update@attacker.com',
                     password: 'attack'
                 }).catch(e => {
-                    console.error(e);
                     expect(e.code).toBe(403);
                     expect(e.message).toBe('Not Authorized');
                 });
@@ -237,7 +233,6 @@ describe('\'users\' service', () => {
                 await this.service.patch(1, {
                     password: 'attacker'
                 }).catch(e => {
-                    console.error(e);
                     expect(e.code).toBe(403);
                     expect(e.message).toBe('Not Authorized');
                 });
@@ -247,7 +242,6 @@ describe('\'users\' service', () => {
                 expect.assertions(2);
 
                 await this.service.remove(1).catch(e => {
-                    console.error(e);
                     expect(e.code).toBe(403);
                     expect(e.message).toBe('Not Authorized');
                 });
