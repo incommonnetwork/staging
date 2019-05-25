@@ -1,7 +1,24 @@
 /* global jasmine*/
 const url = require('url');
+const fetch = require('node-fetch');
+const feathers = require('@feathersjs/feathers');
+const auth = require('@feathersjs/authentication-client');
+const rest = require('@feathersjs/rest-client');
+
+
+const initApi = async (url) => {
+    const app = feathers();
+    const restClient = rest(url);
+    app.configure(restClient.fetch(fetch));
+    app.configure(auth({}));
+
+    return app;
+};
 
 const testDev = () => {
+    const api_url = 'http://localhost:3030';
+    const api = initApi(api_url);
+
     const before = (done) => {
         // fighting race condition with hot-reload builds
         setTimeout(done, 5000);
@@ -15,17 +32,20 @@ const testDev = () => {
     });
 
     const getPage = getApi;
-    return { getPage, getApi, before, after };
+    return { getPage, getApi, before, after, api };
 };
 
 const testStaging = () => {
+    const api_url = 'https://staging.incommon.dev';
+    const api = initApi(api_url);
+
     const before = () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     };
     const after = () => { };
 
     const getPage = pathname => url.format({
-        hostname: 'incommon.dev',
+        hostname: 'www.incommon.dev',
         protocol: 'https',
         pathname: `/staging${pathname === '/' ? pathname : `${pathname}/`}`
     });
@@ -36,11 +56,13 @@ const testStaging = () => {
         pathname,
     });
 
-    return { getPage, getApi, before, after };
+    return { getPage, getApi, before, after, api };
 };
 
 const testCI = (port) => {
-    /* eslint-disable no-console */
+    const api_url = `http://localhost:${port}`;
+    const api = initApi(api_url);
+
     const logger = require('../server/logger');
     const app = require('../server/app');
     const nextApp = require('../server/nextApp').nextApp;
@@ -81,7 +103,7 @@ const testCI = (port) => {
         });
     };
 
-    return { getPage, getApi, before, after };
+    return { getPage, getApi, before, after, api };
 };
 
 
