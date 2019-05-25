@@ -16,7 +16,7 @@ const initApi = async (url) => {
 };
 
 const testDev = () => {
-    const api_url = `http://localhost:3030`;
+    const api_url = 'http://localhost:3030';
     const api = initApi(api_url);
 
     const before = (done) => {
@@ -45,7 +45,7 @@ const testStaging = () => {
     const after = () => { };
 
     const getPage = pathname => url.format({
-        hostname: 'incommon.dev',
+        hostname: 'www.incommon.dev',
         protocol: 'https',
         pathname: `/staging${pathname === '/' ? pathname : `${pathname}/`}`
     });
