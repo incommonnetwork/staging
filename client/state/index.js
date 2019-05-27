@@ -1,13 +1,13 @@
-import { Machine, interpret } from 'xstate'
-import getApp from './feathers'
+import { Machine, interpret } from 'xstate';
+import getApp from './feathers';
 
 
 const authenticate = async (auth, opts) => {
-    const app = await getApp()
-    console.log('authenticate', auth, opts)
-    const res = await app.authenticate(auth)
-    console.log('authenticated?', res)
-}
+    const app = await getApp();
+    console.log('authenticate', auth, opts);
+    const res = await app.authenticate(auth);
+    console.log('authenticated?', res);
+};
 
 const incommon = Machine({
     id: 'incommon',
@@ -46,6 +46,6 @@ const incommon = Machine({
             }
         }
     }
-})
+});
 
-export default incommon
+export default incommon;

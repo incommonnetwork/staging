@@ -101,6 +101,7 @@
     "devDependencies": {
         "@feathersjs/cli": "^3.9.0",
         "eslint": "^5.12.0",
+        "eslint-plugin-react": "^7.13.0",
         "jest": "^23.6.0",
         "next-plugin-transpile-modules": "^2.0.0",
         "node-fetch": "^2.6.0",

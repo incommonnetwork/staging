@@ -1,11 +1,11 @@
-import { Machine, sendParent, send } from 'xstate'
-import getApp from './feathers'
+import { Machine, sendParent, send } from 'xstate';
+import getApp from './feathers';
 
 
 const authenticate = async (auth, opts) => {
-    const app = await getApp()
-    const res = await app.authenticate(auth)
-}
+    const app = await getApp();
+    const res = await app.authenticate(auth);
+};
 
 export default Machine({
     id: 'auth',
@@ -105,4 +105,4 @@ export default Machine({
             }
         }
     }
-})
+});

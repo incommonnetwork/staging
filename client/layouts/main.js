@@ -7,5 +7,5 @@ export default ({ children }) => (
         <Header />
         {children}
     </div>
-)
+);
 
