@@ -4,15 +4,12 @@ import getApp from './feathers'
 
 const authenticate = async (auth, opts) => {
     const app = await getApp()
-    console.SIGN('authenticate', auth, opts)
     const res = await app.authenticate(auth)
-    console.SIGN('authenticated?', res)
 }
 
 export default Machine({
     id: 'auth',
     initial: 'init',
-    strict: true,
     states: {
         init: {
             invoke: {
@@ -34,11 +31,43 @@ export default Machine({
             states: {
                 wait: {
                     on: {
-                        SIGN_IN: 'signing_in'
+                        SIGN_IN: 'signing_in',
+                        SIGN_UP: 'signing_up'
                     }
                 },
 
                 signing_in: {
+                    initial: 'form_input',
+                    states: {
+                        form_input: {
+                            on: {
+                                SUBMIT: 'form_submit'
+                            },
+                        },
+                        form_submit: {
+                            invoke: {
+                                id: 'signIn',
+                                src: authenticate,
+                                onDone: {
+                                    actions: send('SIGNED_IN')
+                                },
+                                onError: {
+                                    target: 'error'
+                                }
+                            }
+                        },
+                        error: {
+                            on: {
+                                CONTINUE: 'form_input'
+                            }
+                        }
+                    },
+                    on: {
+                        CANCEL: 'wait'
+                    }
+                },
+
+                signing_up: {
                     initial: 'form_input',
                     states: {
                         form_input: {

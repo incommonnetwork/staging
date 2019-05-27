@@ -1,84 +1,18 @@
-import { StateChart } from '@statecharts/xstate-vis/src'
 import Main from '../layouts/main'
+import dynamic from 'next/dynamic'
+import authMachine from '../state/auth.js'
 
-const lightMachineSrc = `
-// Available variables:
-// Machine (machine factory function)
-// assign (action)
-// XState (all XState exports)
-const fetchMachine = Machine({
-  id: 'fetch',
-  context: { attempts: 0 },
-  initial: 'idle',
-  states: {
-    idle: {
-      on: { FETCH: 'pending'}
-    },
-    pending: {
-      onEntry: assign({
-        attempts: ctx => ctx.attempts + 1
-      }),
-      after: {
-        TIMEOUT: 'rejected'
-      },
-      on: {
-        RESOLVE: 'fulfilled',
-        REJECT: 'rejected'
-      }
-    },
-    fulfilled: {
-      initial: 'first',
-      states: {
-        first: {
-          on: {
-            NEXT: 'second'
-          }
-        },
-        second: {
-          on: {
-            NEXT: 'third'
-          }
-        },
-        third: {
-          type: 'final'
-        }
-      }
-    },
-    rejected: {
-      initial: 'can retry',
-      states: {
-        'can retry': {
-          on: {
-            '': {
-              target: 'failure',
-              cond: 'maxAttempts'
-            }
-          }
-        },
-        failure: {
-          on: {
-            RETRY: undefined,
-          },
-          type: 'final'
-        }
-      },
-      on: {
-        RETRY: 'pending'
-      }
+const StateChart = dynamic(
+    () => import('@statecharts/xstate-viz').then(mod => mod.StateChart),
+    {
+        ssr: false
     }
-  }
-}, {
-  guards: {
-    maxAttempts: ctx =>  ctx.attempts >= 5
-  },
-  delays: {
-    TIMEOUT: 2000
-  }
-});
-`;
+)
+
+
 
 export default () => (
     <Main>
-        <StateChart machine={lightMachineSrc} />
+        <StateChart machine={`Machine(${JSON.stringify(authMachine.config)})`} withEditor={false} />
     </Main>
 )

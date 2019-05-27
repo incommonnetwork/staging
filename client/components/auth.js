@@ -43,11 +43,10 @@ const modal_fragments = { signing_in, signing_out }
 export default () => {
     const [current, send] = useMachine(authMachine)
     const _button_fragment = button_fragments[current.value]
-    const _modal_fragment = modal_fragments[current.value]
+
     return (
         <Navbar.Item id='nav_signup'>
             <_button_fragment current={current} send={send} />
-            <_modal_fragment current={current} send={send} />
         </Navbar.Item>
     )
 }

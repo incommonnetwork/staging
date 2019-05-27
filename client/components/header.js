@@ -19,9 +19,8 @@ class Header extends Component {
                 </Navbar.Brand>
 
                 <Navbar.Container position="end">
-                    <Auth />
+
                 </Navbar.Container>
-                <Link href='/states'>states</Link>
 
             </Navbar>
         )
