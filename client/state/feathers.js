@@ -14,13 +14,6 @@ async function init(req) {
         storage: req ? undefined : localStorage
     }))
 
-    if (req) {
-        console.log(req)
-    }
-
-    await app.authenticate().catch(e => {
-        console.warn(e)
-    })
     return app
 }
 

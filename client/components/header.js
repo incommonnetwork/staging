@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 import Navbar from 'react-bulma-components/src/components/navbar';
-import Button from 'react-bulma-components/src/components/button';
 
 import Link from './link';
+import Auth from './auth';
 
 class Header extends Component {
     render() {
@@ -19,14 +19,9 @@ class Header extends Component {
                 </Navbar.Brand>
 
                 <Navbar.Container position="end">
-                    <Link href='/signup'>
-                        <Navbar.Item id='nav_signup'>
-                            <Button>
-                                Sign Up
-                            </Button>
-                        </Navbar.Item>
-                    </Link>
+                    <Auth />
                 </Navbar.Container>
+                <Link href='/states'>states</Link>
 
             </Navbar>
         )
