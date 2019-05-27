@@ -1,0 +1,4 @@
+[submodule "xstate-viz"]
+	path = xstate-viz
+	url = https://github.com/farskid/xstate-viz
+    branch = farskid/enhancements
