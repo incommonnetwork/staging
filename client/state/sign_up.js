@@ -1,17 +1,17 @@
-import { Machine, send } from 'xstate';
-import getApp from './feathers';
+import { Machine, assign } from 'xstate';
+import Router from '../utils/router';
+import getApp from '../utils/feathers';
 
-const signUp = async (context, event) => {
-    const app = await getApp();
-    return app.service('users').create(event.data, context);
-};
 
 export default Machine({
     id: 'SignUp',
     initial: 'form_input',
+    context: {
+        user: {}
+    },
     meta: {
         schema: {
-            title: 'Todo',
+            title: 'Sign Up',
             type: 'object',
             required: ['email', 'password', 'confirm_password'],
             properties: {
@@ -33,7 +33,11 @@ export default Machine({
                 errors.confirm_password.addError('Passwords don\'t match');
             }
             return errors;
-        }
+        },
+        onSubmit: (send) => ({ formData }) => send({
+            type: 'SUBMIT',
+            formData
+        })
     },
     states: {
         form_input: {
@@ -43,13 +47,24 @@ export default Machine({
         },
         form_submit: {
             invoke: {
-                id: 'signIn',
-                src: signUp,
+                id: 'signUp',
+                src: async (context, { formData }) => {
+                    const app = await getApp();
+                    const created = await app.service('users').create(formData, context);
+                    await app.authenticate({
+                        strategy: 'local',
+                        ...formData
+                    });
+                    return created;
+                },
                 onDone: {
-                    actions: send('SIGNED_IN')
+                    actions: (context, { data: { id } }) => Router.push(`/home?user=${id}`)
                 },
                 onError: {
-                    target: 'error'
+                    target: 'error',
+                    actions: assign({
+                        error: (context, event) => event.data
+                    })
                 }
             }
         },

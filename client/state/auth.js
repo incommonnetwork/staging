@@ -1,5 +1,5 @@
 import { Machine } from 'xstate';
-import getApp from './feathers';
+import getApp from '../utils/feathers';
 
 
 export default Machine({
