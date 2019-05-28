@@ -94,17 +94,17 @@ const NavBar = (route, navmap) => {
 };
 
 const loggedOut = {
-    '/': 'a#nav_',
-    '/signup': 'a#nav_signup'
+    '/': 'a#nav_'//,
+    //  '/signup': 'a#nav_signup'
 };
 
 const routes = {
     '/': {
         navbar: loggedOut
-    },
-    '/signup': {
-        navbar: loggedOut
-    }
+    }//,
+    // '/signup': {
+    //     navbar: loggedOut
+    // }
 };
 
 describe('Navigation', () => {
