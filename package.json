@@ -23,7 +23,7 @@
         "npm": ">= 3.0.0"
     },
     "scripts": {
-        "eslint": "eslint server/. test/. --config .eslintrc.json --fix",
+        "eslint": "eslint client/. server/. test/. --config .eslintrc.json --fix",
         "dev": "npm run dev:prepare; npm run dev:log",
         "dev:prepare": "npm run dev:cleanup; npm run dev:server:start; npm run dev:postgres:start",
         "dev:postgres:start": "docker run --name incommon -p 5432:5432 -e POSTGRES_PASSWORD=incommon -e POSTGRES_USER=incommon -d postgres",
@@ -74,6 +74,8 @@
         "@feathersjs/express": "^1.3.1",
         "@feathersjs/feathers": "^3.3.1",
         "@feathersjs/rest-client": "^1.4.7",
+        "@statecharts/xstate-viz": "file:xstate-viz",
+        "@xstate/react": "^0.6.1",
         "@zeit/next-sass": "^1.0.1",
         "compression": "^1.7.3",
         "cors": "^2.8.5",
@@ -87,17 +89,20 @@
         "passport-github": "^1.1.0",
         "passport-google-oauth20": "^2.0.0",
         "pg": "^7.11.0",
+        "prop-types": "^15.7.2",
         "react": "^16.7.0",
         "react-bulma-components": "^3.0.1-6",
         "react-dom": "^16.7.0",
         "sequelize": "^5.3.5",
         "serve-favicon": "^2.5.0",
         "tar": "^4.4.2",
-        "winston": "^3.1.0"
+        "winston": "^3.1.0",
+        "xstate": "^4.6.0"
     },
     "devDependencies": {
         "@feathersjs/cli": "^3.9.0",
         "eslint": "^5.12.0",
+        "eslint-plugin-react": "^7.13.0",
         "jest": "^23.6.0",
         "next-plugin-transpile-modules": "^2.0.0",
         "node-fetch": "^2.6.0",

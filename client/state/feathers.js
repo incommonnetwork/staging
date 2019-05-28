@@ -1,32 +1,26 @@
 import feathers from '@feathersjs/feathers';
-import auth from '@feathersjs/authentication-client'
+import auth from '@feathersjs/authentication-client';
 import rest from '@feathersjs/rest-client';
 
 let app = null;
 
 async function init(req) {
-    const app = feathers()
-    const fetch = req ? require('node-fetch') : window.fetch
-    const api = req ? `http://localhost${process.env.NODE_ENV === 'production' ? '' : ':3030'}` : undefined
-    const restClient = rest(api)
+    const app = feathers();
+    // eslint-disable-line no-undef
+    const fetch = req ? require('node-fetch') : fetch;
+    const api = req ? `http://localhost${process.env.NODE_ENV === 'production' ? '' : ':3030'}` : undefined;
+    const restClient = rest(api);
     app.configure(restClient.fetch(fetch));
-    app.configure(auth({
-        storage: req ? undefined : localStorage
-    }))
+    const authConfig = { storage: req ? undefined : localStorage }; // eslint-disable-line no-undef
+    app.configure(auth(authConfig));
 
-    if (req) {
-        console.log(req)
-    }
 
-    await app.authenticate().catch(e => {
-        console.warn(e)
-    })
-    return app
+    return app;
 }
 
 export default async (req) => {
     if (!app) {
-        app = await init(req)
+        app = await init(req);
     }
-    return app
-}
+    return app;
+};

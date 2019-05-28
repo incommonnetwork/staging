@@ -1,12 +1,21 @@
 //https://itnext.io/next-js-app-on-github-pages-768020f2b65e
 
-import React from 'react'
-import NextJsLink from 'next/link'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const assetPrefix = process.env.ASSET_PREFIX
+import NextJsLink from 'next/link';
 
-const Link = ({ href, ...rest }) => (
-  <NextJsLink href={href} as={`${assetPrefix}${href}`} {...rest} />
-)
+const assetPrefix = process.env.ASSET_PREFIX;
 
-export default Link
+const Link = ({ href, children }) => (
+    <NextJsLink href={href} as={`${assetPrefix}${href}`}>
+        {children}
+    </NextJsLink>
+);
+
+Link.propTypes = {
+    href: PropTypes.string.isRequired,
+    children: PropTypes.node
+};
+
+export default Link;

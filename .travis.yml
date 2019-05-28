@@ -22,6 +22,7 @@ install:
   - sudo apt install ansible -y
   - ansible --version
   - echo "remote_tmp     = /tmp/.ansible-\${USER}/tmp" | sudo tee -a /etc/ansible/ansible.cfg
+  - pushd xstate-viz && npm install && popd
   - npm install
 script:
   - ansible --version
