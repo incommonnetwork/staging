@@ -31,7 +31,7 @@ const LinkSuite = (path, selector) => {
         it('link navigates', async () => {
             expect.assertions(1);
             await this.link.click();
-            await wait(1000);
+            await wait(2000);
 
             expect(await this.page.$eval('body', () => location.href)).toBe(getPage(path));
         });
@@ -39,12 +39,12 @@ const LinkSuite = (path, selector) => {
         it('link navigates to reloadable page', async () => {
             expect.assertions(1);
             await this.link.click();
-            await wait(100);
+            await wait(2000);
 
             const predivs = await this.page.$eval('div', (divs) => divs.length);
 
             await this.page.reload();
-            await wait(1000);
+            await wait(2000);
 
             const postdivs = await this.page.$eval('div', (divs) => divs.length);
             expect(predivs).toBe(postdivs);
@@ -57,10 +57,10 @@ const LinkSuite = (path, selector) => {
             const predivs = await this.page.$eval('div', (divs) => divs.length);
 
             await this.link.click();
-            await wait(1000);
+            await wait(2000);
 
             await this.page.goBack();
-            await wait(1000);
+            await wait(2000);
 
             const postdivs = await this.page.$eval('div', (divs) => divs.length);
 
@@ -94,23 +94,23 @@ const NavBar = (route, navmap) => {
 };
 
 const loggedOut = {
-    '/': 'a#nav_'//,
-    //  '/signup': 'a#nav_signup'
+    '/': '#nav_',
+    '/sign_up': '#nav_signup'
 };
 
 const routes = {
     '/': {
         navbar: loggedOut
-    }//,
-    // '/signup': {
-    //     navbar: loggedOut
-    // }
+    },
+    '/sign_up': {
+        navbar: loggedOut
+    }
 };
 
 describe('Navigation', () => {
     beforeAll(async () => {
         await env.before();
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
         this.browser = await puppeteer.launch();
     });
 

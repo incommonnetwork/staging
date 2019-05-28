@@ -9,8 +9,8 @@ const Header = () => (
     <Navbar color='primary'>
 
         <Navbar.Brand>
-            <Link href='/'>
-                <Navbar.Item id='nav_'>
+            <Link href='/' id='nav_'>
+                <Navbar.Item >
                     InCommon
                 </Navbar.Item>
             </Link>
