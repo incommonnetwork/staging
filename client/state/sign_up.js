@@ -33,6 +33,9 @@ export default Machine({
             if (!rfc822(formData.email)) {
                 errors.email.addError('Email address is not valid');
             }
+            if (!(8 <= formData.password.length && formData.password.length <= 32)) {
+                errors.password.addError('Password must be between 8 and 32 characters')
+            }
             if (formData.password !== formData.confirm_password) {
                 errors.confirm_password.addError('Passwords don\'t match');
             }
