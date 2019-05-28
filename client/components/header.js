@@ -3,7 +3,7 @@ import React from 'react';
 import Navbar from 'react-bulma-components/src/components/navbar';
 
 import Link from './link';
-//import Auth from './auth';
+import Auth from './auth';
 
 const Header = () => (
     <Navbar color='primary'>
@@ -18,7 +18,7 @@ const Header = () => (
 
         <Navbar.Container
             position="end">
-            {/* < Auth / > */}
+            < Auth />
         </Navbar.Container>
 
     </Navbar>
