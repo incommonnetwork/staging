@@ -1,11 +1,18 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 
 import Header from '../components/header';
 
-export default ({ children }) => (
-    <div>
+const Main = ({ children }) => (
+    <Fragment>
         <Header />
         {children}
-    </div>
+    </Fragment>
 );
+
+Main.propTypes = {
+    children: PropTypes.array.isRequired
+};
+
+export default Main;
 

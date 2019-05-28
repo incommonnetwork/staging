@@ -1,4 +1,5 @@
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 
 import Navbar from 'react-bulma-components/src/components/navbar';
 import Button from 'react-bulma-components/src/components/button';
@@ -17,6 +18,10 @@ const signed_out = ({ send }) => (
     </Fragment>
 );
 
+signed_out.propTypes = {
+    send: PropTypes.func.isRequired
+};
+
 const signed_in = ({ send }) => (
     <Fragment>
         <Button onClick={() => send('SIGN_OUT')}>
@@ -25,28 +30,34 @@ const signed_in = ({ send }) => (
     </Fragment>
 );
 
-const button_fragments = { signed_in, signed_out, init: signed_out };
-
-const signing_in = ({ send }) => (
-    <Fragment>
-    </Fragment>
-);
-
-const signing_out = ({ send }) => {
-    <Fragment>
-    </Fragment>;
+signed_in.propTypes = {
+    send: PropTypes.func.isRequired
 };
 
-const modal_fragments = { signing_in, signing_out };
+const button_fragments = { signed_in, signed_out, init: signed_out };
+
+// const signing_in = ({ send }) => (
+//     <Fragment>
+//     </Fragment>
+// );
+
+// const signing_out = ({ send }) => {
+//     <Fragment>
+//     </Fragment>;
+// };
+
+// const modal_fragments = { signing_in, signing_out };
 
 
-export default () => {
-    const [send] = useMachine(authMachine);
+const Auth = () => {
+    const [current, send] = useMachine(authMachine);
     const _button_fragment = button_fragments[current.value];
 
     return (
         <Navbar.Item id='nav_signup'>
-            <_button_fragment current={current} send={send} />
+            <_button_fragment send={send} />
         </Navbar.Item>
     );
 };
+
+export default Auth;

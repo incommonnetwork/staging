@@ -6,13 +6,14 @@ let app = null;
 
 async function init(req) {
     const app = feathers();
-    const fetch = req ? require('node-fetch') : window.fetch;
+    // eslint-disable-line no-undef
+    const fetch = req ? require('node-fetch') : fetch;
     const api = req ? `http://localhost${process.env.NODE_ENV === 'production' ? '' : ':3030'}` : undefined;
     const restClient = rest(api);
     app.configure(restClient.fetch(fetch));
-    app.configure(auth({
-        storage: req ? undefined : localStorage
-    }));
+    const authConfig = { storage: req ? undefined : localStorage }; // eslint-disable-line no-undef
+    app.configure(auth(authConfig));
+
 
     return app;
 }

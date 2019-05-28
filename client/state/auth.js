@@ -1,10 +1,11 @@
-import { Machine, sendParent, send } from 'xstate';
+import { Machine, send } from 'xstate';
 import getApp from './feathers';
 
 
-const authenticate = async (auth, opts) => {
-    const app = await getApp();
-    const res = await app.authenticate(auth);
+const authenticate = async (context, event) => {
+    const app = await getApp(context.api);
+    const res = await app.authenticate(event.credentials);
+    return res;
 };
 
 export default Machine({

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import Navbar from 'react-bulma-components/src/components/navbar';
 
 import Link from './link';
-import Auth from './auth';
+//import Auth from './auth';
 
-export default () => (
+const Header = () => (
     <Navbar color='primary'>
 
         <Navbar.Brand>
@@ -16,9 +16,12 @@ export default () => (
             </Link>
         </Navbar.Brand>
 
-        <Navbar.Container position="end">
-
+        <Navbar.Container
+            position="end">
+            {/* < Auth / > */}
         </Navbar.Container>
 
     </Navbar>
 );
+
+export default Header;

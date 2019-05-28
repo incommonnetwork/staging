@@ -1,0 +1,13 @@
+{
+    "extends": [
+        "../.eslintrc.json",
+        "plugin:react/recommended"
+    ],
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true,
+            "modules": true
+        }
+    }
+}

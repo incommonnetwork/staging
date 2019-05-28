@@ -1,18 +1,13 @@
-import Main from '../layouts/main'
-import dynamic from 'next/dynamic'
-import authMachine from '../state/auth.js'
+import React from 'react';
 
-const StateChart = dynamic(
-    () => import('@statecharts/xstate-viz').then(mod => mod.StateChart),
-    {
-        ssr: false
-    }
-)
+import Main from '../layouts/main';
+import authMachine from '../state/auth.js';
+import StateChart from '../utils/state-charts';
 
-
-
-export default () => (
+const States = () => (
     <Main>
-        <StateChart machine={`Machine(${JSON.stringify(authMachine.config)})`} withEditor={false} />
+        <StateChart machine={authMachine} withEditor={false} />
     </Main>
-)
+);
+
+export default States;
