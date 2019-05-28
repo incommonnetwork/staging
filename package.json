@@ -96,6 +96,7 @@
         "react-bulma-components": "^3.0.1-6",
         "react-dom": "^16.7.0",
         "react-jsonschema-form": "^1.5.0",
+        "rfc822-validate": "^1.0.0",
         "sequelize": "^5.3.5",
         "serve-favicon": "^2.5.0",
         "tar": "^4.4.2",

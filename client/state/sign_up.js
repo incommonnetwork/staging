@@ -1,6 +1,7 @@
 import { Machine, assign } from 'xstate';
 import Router from '../utils/router';
 import getApp from '../utils/feathers';
+import rfc822 from '../utils/rfc822';
 
 
 export default Machine({
@@ -29,6 +30,9 @@ export default Machine({
             }
         },
         validate: (formData, errors) => {
+            if (!rfc822(formData.email)) {
+                errors.email.addError('Email address is not valid');
+            }
             if (formData.password !== formData.confirm_password) {
                 errors.confirm_password.addError('Passwords don\'t match');
             }
