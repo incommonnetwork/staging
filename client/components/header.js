@@ -2,7 +2,7 @@ import React from 'react';
 
 import Navbar from 'react-bulma-components/src/components/navbar';
 
-import Link from './link';
+import Link from 'next/link';
 import Auth from './auth';
 
 const Header = () => (
@@ -10,7 +10,7 @@ const Header = () => (
 
         <Navbar.Brand>
             <Link href='/' id='nav_'>
-                <Navbar.Item >
+                <Navbar.Item>
                     InCommon
                 </Navbar.Item>
             </Link>
@@ -18,7 +18,7 @@ const Header = () => (
 
         <Navbar.Container
             position="end">
-            < Auth />
+            <Auth />
         </Navbar.Container>
 
     </Navbar>
