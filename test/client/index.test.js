@@ -5,9 +5,9 @@ const getPage = env.getPage;
 
 describe('/', () => {
     beforeAll(async () => {
+        this.browser = await puppeteer.launch();
         await env.before();
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-        this.browser = await puppeteer.launch();
     });
 
     afterAll(async () => {

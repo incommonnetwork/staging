@@ -2,7 +2,7 @@ import React from 'react';
 
 import Navbar from 'react-bulma-components/src/components/navbar';
 
-import Link from 'next/link';
+import Link from './link';
 import Auth from './auth';
 
 const Header = () => (

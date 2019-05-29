@@ -4,19 +4,22 @@ const puppeteer = require('puppeteer');
 const env = require('../setup.env')(3033);
 const getPage = env.getPage;
 
+//jest.setTimeout(1000000);
 // Next.js does frontend routing; so we have to wait manually rather than listening to pageload events
 const wait = (ms) => new Promise(res => setTimeout(res, ms));
 
-const attempt = async (fn, expected) => {
+const attempt = async (fn) => {
     const start = Date.now();
     let res = null;
-    while ((Date.now() - start) < 10000) {
+    while ((Date.now() - start) < 3000) {
         await wait(100);
-        res = await fn();
-        if (res === expected) break;
+        res = await fn().catch(() => 'ERROR');
+        if (res !== 'ERROR') break;
     }
 
-    expect(res).toBe(expected);
+    if (res === 'ERROR') return fn();
+
+    return res;
 };
 
 const LinkSuite = (path, selector) => {
@@ -42,20 +45,22 @@ const LinkSuite = (path, selector) => {
 
         it('link navigates', async () => {
             expect.assertions(1);
+
             await this.link.click();
 
-            await attempt(() => this.page.$eval('body', () => location.href), getPage(path));
+            const href = await attempt(() => this.page.$eval('body', () => location.href));
+            expect(href).toBe(getPage(path));
         });
 
         it('link navigates to reloadable page', async () => {
             expect.assertions(1);
             await this.link.click();
-            await wait(2000);
 
-            const predivs = await this.page.$eval('div', (divs) => divs.length);
+            const predivs = await attempt(() => this.page.$eval('div', (divs) => divs.length));
 
             await this.page.reload();
-            await attempt(() => this.page.$eval('div', (divs) => divs.length), predivs);
+            const postdivs = await attempt(() => this.page.$eval('div', (divs) => divs.length));
+            expect(predivs).toBe(postdivs);
         });
 
         it('link navigates to page with history', async () => {
@@ -65,11 +70,12 @@ const LinkSuite = (path, selector) => {
             const predivs = await this.page.$eval('div', (divs) => divs.length);
 
             await this.link.click();
-            await wait(2000);
+            await wait(200);
 
             await this.page.goBack();
 
-            await attempt(() => this.page.$eval('div', (divs) => divs.length), predivs);
+            const postdivs = await attempt(() => this.page.$eval('div', (divs) => divs.length));
+            expect(predivs).toBe(postdivs);
         });
     });
 };
@@ -115,7 +121,7 @@ const routes = {
 describe('Navigation', () => {
     beforeAll(async () => {
         await env.before();
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
         this.browser = await puppeteer.launch();
     });
 
