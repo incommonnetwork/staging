@@ -8,16 +8,16 @@ const getPage = env.getPage;
 const wait = (ms) => new Promise(res => setTimeout(res, ms));
 
 const attempt = async (fn, expected) => {
-    const start = Date.now()
-    let res = null
-    while ((Date.now() - start) < 5000) {
-        res = await fn()
+    const start = Date.now();
+    let res = null;
+    while ((Date.now() - start) < 10000) {
+        await wait(100);
+        res = await fn();
         if (res === expected) break;
-        await wait(100)
     }
 
-    expect(res).toBe(expected)
-}
+    expect(res).toBe(expected);
+};
 
 const LinkSuite = (path, selector) => {
     describe(path, () => {
@@ -44,7 +44,7 @@ const LinkSuite = (path, selector) => {
             expect.assertions(1);
             await this.link.click();
 
-            await attempt(() => this.page.$eval('body', () => location.href), getPage(path))
+            await attempt(() => this.page.$eval('body', () => location.href), getPage(path));
         });
 
         it('link navigates to reloadable page', async () => {
@@ -55,7 +55,7 @@ const LinkSuite = (path, selector) => {
             const predivs = await this.page.$eval('div', (divs) => divs.length);
 
             await this.page.reload();
-            await attempt(() => this.page.$eval('div', (divs) => divs.length), predivs)
+            await attempt(() => this.page.$eval('div', (divs) => divs.length), predivs);
         });
 
         it('link navigates to page with history', async () => {
@@ -69,7 +69,7 @@ const LinkSuite = (path, selector) => {
 
             await this.page.goBack();
 
-            await attempt(() => this.page.$eval('div', (divs) => divs.length), predivs)
+            await attempt(() => this.page.$eval('div', (divs) => divs.length), predivs);
         });
     });
 };
