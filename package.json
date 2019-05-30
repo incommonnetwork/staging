@@ -37,7 +37,7 @@
         "ci:test": "npm run ci:test:prepare && npm run sequelize:seed npm run ci:test:jest",
         "ci:test:prepare": "npm run eslint; npm run ci:client:build",
         "ci:test:jest": "export TEST_ENV=ci; jest test/",
-        "ci:client:build": "NODE_ENV=ci next build ./client",
+        "ci:client:build": "NODE_ENV=travis next build ./client",
         "staging:deploy": "npm run staging:deploy:client; npm run staging:deploy:api",
         "staging:deploy:client": "export NODE_ENV=staging; next build ./client; next export ./client -o ./staging; cp -rT staging/ .",
         "staging:deploy:api": "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./api/inventory ./api/playbook.yml --key-file ~/.ssh/id_travis --extra-vars \"incommon_host=staging.incommon.dev incommon_NODE_ENV=staging incommon_POSTGRES_CONNECTION=$INCOMMON_STAGING_DB\"",
