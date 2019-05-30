@@ -10,28 +10,29 @@ import Link from './link';
 
 const signed_out = () => (
     <Fragment>
-        <Link href='/sign_in'>
-            <Button>
+        <Link href='/sign_in' id='nav_signin'>
+            <Navbar.Item>
                 Sign In
-            </Button>
+            </Navbar.Item >
         </Link>
-        <Link href='/sign_up'>
-            <Button>
+        <Link href='/sign_up' id='nav_signup'>
+
+            <Navbar.Item >
                 Sign up
-            </Button>
+            </Navbar.Item >
         </Link>
-    </Fragment >
+    </Fragment>
 );
 
 
 const signed_in = () => (
-    <Fragment>
-        <Link href='/'>
-            <Button>
+    <Navbar.Item>
+        <Link href='/' id='nav_signout'>
+            <Button >
                 Sign Out
             </Button>
         </Link>
-    </Fragment>
+    </Navbar.Item>
 );
 
 
@@ -42,9 +43,7 @@ const Auth = () => {
     const _button_fragment = button_fragments[current.value];
 
     return (
-        <Navbar.Item id='nav_signup'>
-            <_button_fragment />
-        </Navbar.Item>
+        <_button_fragment />
     );
 };
 

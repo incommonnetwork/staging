@@ -7,6 +7,7 @@ services:
       - "443:443"
     volumes:
       - ./Caddyfile:/etc/Caddyfile
+      - ../../.caddy:/root/.caddy
   feathers:
     build: ../
     environment:

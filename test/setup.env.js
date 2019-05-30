@@ -58,6 +58,7 @@ const testStaging = () => {
 };
 
 const testCI = (port) => {
+    //port = 3030;
     const api_url = `http://localhost:${port}`;
 
     const logger = require('../server/logger');
@@ -76,6 +77,7 @@ const testCI = (port) => {
     let server = null;
 
     const before = async () => new Promise(resolve => {
+
         nextApp.prepare().then(() => {
             server = app.listen(port);
 
@@ -94,11 +96,14 @@ const testCI = (port) => {
         });
     });
 
-    const after = (done) => {
+    const after = async () => new Promise((resolve) => {
+
         server.close(() => {
-            app.get('sequelizeClient').close().then(done);
+            app.get('sequelizeClient').close().then(resolve).catch(resolve);
         });
-    };
+    });
+
+
 
     return { getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
@@ -122,3 +127,10 @@ module.exports = (port) => {
     }
     return env;
 };
+
+if (require.main === module) {
+    (async function () {
+        const env = testCI(3030);
+        await env.before();
+    })();//.catch(e => {console.error(e);});
+}
