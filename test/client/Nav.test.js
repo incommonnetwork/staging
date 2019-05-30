@@ -8,13 +8,13 @@ const getPage = env.getPage;
 // Next.js does frontend routing; so we have to wait manually rather than listening to pageload events
 const wait = (ms) => new Promise(res => setTimeout(res, ms));
 
-const attempt = async (fn) => {
+const attempt = async (fn, expected) => {
     const start = Date.now();
     let res = null;
-    while ((Date.now() - start) < 3000) {
+    while ((Date.now() - start) < 5000) {
         await wait(100);
         res = await fn().catch(() => 'ERROR');
-        if (res !== 'ERROR') break;
+        if (res !== 'ERROR' && (!expected || (expected === res))) break;
     }
 
     if (res === 'ERROR') return fn();
@@ -48,7 +48,7 @@ const LinkSuite = (path, selector) => {
 
             await this.link.click();
 
-            const href = await attempt(() => this.page.$eval('body', () => location.href));
+            const href = await attempt(() => this.page.$eval('body', () => location.href), path);
             expect(href).toBe(getPage(path));
         });
 
@@ -70,7 +70,8 @@ const LinkSuite = (path, selector) => {
             const predivs = await this.page.$eval('div', (divs) => divs.length);
 
             await this.link.click();
-            await wait(200);
+
+            await attempt(() => this.page.$eval('body', () => location.href), path);
 
             await this.page.goBack();
 
@@ -121,7 +122,7 @@ const routes = {
 describe('Navigation', () => {
     beforeAll(async () => {
         await env.before();
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
         this.browser = await puppeteer.launch();
     });
 
