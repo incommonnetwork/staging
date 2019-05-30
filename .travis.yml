@@ -36,5 +36,5 @@ deploy:
       branch: master
   - provider: script
     script: npm run staging:deploy
-    on
+    on:
       branch: master
