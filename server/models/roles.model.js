@@ -6,18 +6,21 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
     const sequelizeClient = app.get('sequelizeClient');
     const roles = sequelizeClient.define('roles', {
-
-        text: {
+        type: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        SEEDFILE: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     }, {
-            hooks: {
-                beforeCount(options) {
-                    options.raw = true;
-                }
+        hooks: {
+            beforeCount(options) {
+                options.raw = true;
             }
-        });
+        }
+    });
 
     // eslint-disable-next-line no-unused-vars
     roles.associate = function (models) {

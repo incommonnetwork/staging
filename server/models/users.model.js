@@ -6,7 +6,7 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
     const sequelizeClient = app.get('sequelizeClient');
     const users = sequelizeClient.define('users', {
-  
+
         email: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -16,14 +16,14 @@ module.exports = function (app) {
             type: DataTypes.STRING,
             allowNull: false
         },
-  
-  
+
+
         googleId: { type: Sequelize.STRING },
-  
+
         facebookId: { type: Sequelize.STRING },
-  
+
         githubId: { type: Sequelize.STRING },
-  
+
     }, {
         hooks: {
             beforeCount(options) {
@@ -33,9 +33,10 @@ module.exports = function (app) {
     });
 
     // eslint-disable-next-line no-unused-vars
-    users.associate = function (models) {
-    // Define associations here
-    // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    users.associate = function ({ users, roles }) {
+        users.hasMany(roles, { sequelize: sequelizeClient });
+        // Define associations here
+        // See http://docs.sequelizejs.com/en/latest/docs/associations/
     };
 
     return users;
