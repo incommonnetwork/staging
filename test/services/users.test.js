@@ -27,6 +27,14 @@ describe('\'users\' service', () => {
 
     describe('signup', () => {
 
+        beforeEach(async () => {
+            this.run = `${Math.random()}`;
+            const strategy = 'local';
+            const email = `${this.run}@example.com`;
+            const password = `${this.run}`;
+            this.creds = { strategy, email, password };
+        });
+
         it('handles no email', async () => {
             expect.assertions(9);
 
@@ -103,6 +111,18 @@ describe('\'users\' service', () => {
                 expect(e.errors[0]).toBeInstanceOf(Object);
                 expect(e.errors[0].type).toBe('unique violation');
                 expect(e.errors[0].path).toBe('email');
+            });
+        });
+
+        it('rejects creating admin', async () => {
+            expect.assertions(1);
+
+            await this.service.create(this.creds, {
+                query: {
+                    roles: 'admin'
+                }
+            }).catch(e => {
+                expect(e.code).toBe(403);
             });
         });
     });
@@ -201,6 +221,19 @@ describe('\'users\' service', () => {
             });
 
             describe('should forbid', () => {
+                it('creating a second user', async () => {
+                    expect.assertions(1);
+                    const bad = `${Math.random()}`;
+                    await this.api.authenticate(this.creds);
+
+                    await this.service.create({
+                        strategy: 'local',
+                        email: `${bad}@example.com`,
+                        password: `${bad}`
+                    }).catch(e => {
+                        expect(e.code).toBe(403);
+                    });
+                });
 
                 it('getting another user', async () => {
                     expect.assertions(2);

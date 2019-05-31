@@ -30,8 +30,20 @@ const authorize = async (context) => {
 
     /* eslint-disable no-fallthrough */
     switch (context.method) {
+        case 'create':
+            if (context.params.headers.authorization) {
+                const strategy = context.data.strategy;
+                delete context.data.strategy;
+                context = await authenticate('jwt')(context);
+                context.data.strategy = strategy;
+                const is_admin = await isAdmin(context);
+                if (!is_admin) throw new Forbidden();
+            } else if (query.roles && query.roles.split(',').indexOf('admin')) {
+                throw new Forbidden();
+            }
+            break;
         case 'find':
-            // only allow a user to find themselves
+            // only allow a non admin user to find themselves
             if (user && !(await isAdmin(context))) {
                 context.params.query = user;
             }
@@ -57,7 +69,7 @@ module.exports = {
         all: [],
         find: [authenticate('jwt'), authorize],
         get: [authenticate('jwt'), authorize],
-        create: [hashPassword()],
+        create: [hashPassword(), authorize],
         update: [hashPassword(), authenticate('jwt'), authorize],
         patch: [hashPassword(), authenticate('jwt'), authorize],
         remove: [authenticate('jwt'), authorize]
