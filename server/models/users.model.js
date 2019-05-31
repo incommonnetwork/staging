@@ -24,12 +24,21 @@ module.exports = function (app) {
 
         githubId: { type: Sequelize.STRING },
 
+        SEEDFILE: {
+            type: Sequelize.STRING,
+            allowNull: true
+        }
+
     }, {
         hooks: {
             beforeCount(options) {
                 options.raw = true;
             }
         }
+    });
+
+    sequelizeClient.define('UserRole', {
+        SEEDFILE: Sequelize.STRING
     });
 
     // eslint-disable-next-line no-unused-vars
