@@ -12,8 +12,8 @@ const migrator = module.exports = {
           Example:
           return queryInterface.createTable('users', { id: Sequelize.INTEGER });
         */
-        const attributes = await queryInterface.describeTable(migrator.TABLE)
-        if (!attributes[migrator.COLUMN]) {
+        const attributes = await queryInterface.describeTable(migrator.TABLE).catch(() => null)
+        if (attributes && !attributes[migrator.COLUMN]) {
             await queryInterface.addColumn(migrator.TABLE, migrator.COLUMN, {
                 type: Sequelize.STRING,
                 allowNull: true
@@ -29,8 +29,8 @@ const migrator = module.exports = {
           Example:
           return queryInterface.dropTable('users');
         */
-        const attributes = await queryInterface.describeTable(migrator.TABLE)
-        if (attributes[migrator.COLUMN]) {
+        const attributes = await queryInterface.describeTable(migrator.TABLE).catch(() => null)
+        if (attributes && attributes[migrator.COLUMN]) {
             await queryInterface.removeColumn(migrator.TABLE, migrator.COLUMN, {
                 type: Sequelize.STRING,
                 allowNull: true

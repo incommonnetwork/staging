@@ -12,11 +12,15 @@ const migrator = module.exports = {
           Example:
           return queryInterface.createTable('users', { id: Sequelize.INTEGER });
         */
-        await queryInterface.changeColumn(migrator.TABLE, migrator.COLUMN, {
-            type: Sequelize.DataTypes.STRING,
-            allowNull: false,
-            unique: true
-        })
+        const attributes = await queryInterface.describeTable(migrator.TABLE).catch(() => null)
+        if (attributes) {
+            await queryInterface.changeColumn(migrator.TABLE, migrator.COLUMN, {
+                type: Sequelize.DataTypes.STRING,
+                allowNull: false,
+                unique: true
+            })
+        }
+
     },
 
     down: async (queryInterface, Sequelize) => {
@@ -27,9 +31,12 @@ const migrator = module.exports = {
           Example:
           return queryInterface.dropTable('users');
         */
-        await queryInterface.changeColumn(migrator.TABLE, migrator.COLUMN, {
-            type: Sequelize.DataTypes.STRING,
-            allowNull: false
-        })
+        const attributes = await queryInterface.describeTable(migrator.TABLE).catch(() => null)
+        if (attributes) {
+            await queryInterface.changeColumn(migrator.TABLE, migrator.COLUMN, {
+                type: Sequelize.DataTypes.STRING,
+                allowNull: false
+            })
+        }
     }
 };
