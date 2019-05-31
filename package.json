@@ -24,6 +24,8 @@
     },
     "scripts": {
         "eslint": "eslint client/. server/. test/. --config .eslintrc.json --fix",
+        "sequelize:sync": "npm run sequelize:migrate && npm run sequelize:seed",
+        "sequelize:migrate": "sequelize db:migrate",
         "sequelize:seed": "sequelize db:seed:all",
         "dev": "npm run dev:prepare; npm run dev:log",
         "dev:prepare": "npm run dev:cleanup; npm run dev:postgres:start; npm run sequelize:seed; npm run dev:server:start; ",

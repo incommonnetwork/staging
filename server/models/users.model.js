@@ -33,10 +33,8 @@ module.exports = function (app) {
     });
 
     // eslint-disable-next-line no-unused-vars
-    users.associate = function ({ users, roles }) {
-        users.hasMany(roles, { sequelize: sequelizeClient });
-        // Define associations here
-        // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    users.associate = function (models) {
+        models.users.belongsToMany(models.roles, { through: 'UserRole' });
     };
 
     return users;

@@ -5,14 +5,36 @@ const {
     hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks;
 
-const authorize = (context) => {
+const isAdmin = async (context) => {
+    const { app, params: { user } } = context;
+    const sequelizeClient = app.get('sequelizeClient');
+
+    const [adminRole] = await sequelizeClient.model('roles').findAll({
+        where: {
+            type: 'admin'
+        }
+    });
+
+    const [UserRole] = await sequelizeClient.model('UserRole').findAll({
+        where: {
+            userId: user.id,
+            roleId: adminRole.dataValues.id
+        }
+    });
+
+    return !!UserRole;
+};
+
+const authorize = async (context) => {
     const { user, query } = context.params;
 
     /* eslint-disable no-fallthrough */
     switch (context.method) {
         case 'find':
             // only allow a user to find themselves
-            if (user) context.params.query = user;
+            if (user && !(await isAdmin(context))) {
+                context.params.query = user;
+            }
             break;
         case 'get':
         case 'update':

@@ -8,7 +8,8 @@ module.exports = function (app) {
     const roles = sequelizeClient.define('roles', {
         type: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         SEEDFILE: {
             type: DataTypes.STRING,
