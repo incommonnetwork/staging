@@ -1,6 +1,6 @@
 
 const env = require('../setup.env.js')(3031);
-const ADMIN = require('../../server/services/seeders/20190530195258-admin-role.js').ITEMS;
+const ADMIN = require('../../migrations/seeders/20190530195258-admin-role.js').ITEMS;
 
 const EXPECTED_ROLES = [ADMIN].flat();
 
