@@ -29,7 +29,10 @@ const seeder = module.exports = {
           }], {});
         */
 
-        return queryInterface.bulkInsert(seeder.TABLE, seeder.ITEMS.map(i => ({ ...i, SEEDFILE })));
+        const attributes = await queryInterface.describeTable(seeder.TABLE).catch(() => null)
+        if (attributes) {
+            return queryInterface.bulkInsert(seeder.TABLE, seeder.ITEMS.map(i => ({ ...i, SEEDFILE })));
+        }
     },
 
     down: (queryInterface) => {

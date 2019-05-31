@@ -30,6 +30,8 @@ const seeder = module.exports = {
             isBetaMember: false
           }], {});
         */
+        const attributes = await queryInterface.describeTable(seeder.TABLE).catch(() => null)
+        if (!attributes) return
 
         for (const i in seeder.ITEMS) {
             seeder.ITEMS[i].password = await bcrypt.hash(seeder.ITEMS[i].password, 10);
