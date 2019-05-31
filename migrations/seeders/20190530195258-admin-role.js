@@ -35,7 +35,7 @@ const seeder = module.exports = {
                 .catch(e => {
                     console.error('ADMIN_ROLE ERROR')
                     console.error(e)
-                    throw e
+                    if (e) throw e
                 });
         }
     },

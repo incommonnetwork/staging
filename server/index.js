@@ -4,10 +4,16 @@ const app = require('./app');
 const port = app.get('port');
 
 async function main() {
+
     // production uses another server for exported frontend pages
     if (!(new Set(['staging', 'production']).has(process.env.NODE_ENV))) {
         const nextApp = require('./nextApp').nextApp;
         await nextApp.prepare();
+    }
+
+    if (process.env.DRY_RUN) {
+        await app.setup();
+        process.exit(0);
     }
 
     const server = app.listen(port);
@@ -22,9 +28,7 @@ async function main() {
             app.get('host'),
             port,
         );
-        if (process.env.DRY_RUN) {
-            process.exit(0);
-        }
+
     });
 }
 
