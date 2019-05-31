@@ -38,7 +38,7 @@ const authorize = async (context) => {
                 context.data.strategy = strategy;
                 const is_admin = await isAdmin(context);
                 if (!is_admin) throw new Forbidden();
-            } else if (query.roles && query.roles.split(',').indexOf('admin')) {
+            } else if (query.roles && query.roles.split(',').indexOf('admin') >= 0) {
                 throw new Forbidden();
             }
             break;
