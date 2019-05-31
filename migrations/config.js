@@ -5,7 +5,7 @@ const dialect = 'postgres';
 const useSSL = (() => {
     let _ssl = false;
     switch (process.env.NODE_ENV) {
-        case 'ci':
+        case 'travis':
             _ssl = true;
             break;
         case 'production':
