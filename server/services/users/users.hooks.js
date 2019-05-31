@@ -15,6 +15,8 @@ const isAdmin = async (context) => {
         }
     });
 
+    if (!adminRole) return false;
+
     const [UserRole] = await sequelizeClient.model('UserRole').findAll({
         where: {
             userId: user.id,

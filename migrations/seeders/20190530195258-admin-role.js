@@ -31,7 +31,12 @@ const seeder = module.exports = {
 
         const attributes = await queryInterface.describeTable(seeder.TABLE).catch(() => null)
         if (attributes) {
-            return queryInterface.bulkInsert(seeder.TABLE, seeder.ITEMS.map(i => ({ ...i, SEEDFILE })));
+            return queryInterface.bulkInsert(seeder.TABLE, seeder.ITEMS.map(i => ({ ...i, SEEDFILE })))
+                .catch(e => {
+                    console.error('ADMIN_ROLE ERROR')
+                    console.error(e)
+                    throw e
+                });
         }
     },
 

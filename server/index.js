@@ -16,13 +16,16 @@ async function main() {
         logger.error('Unhandled Rejection at: Promise ', p, reason),
     );
 
-    server.on('listening', () =>
+    server.on('listening', () => {
         logger.info(
             'Feathers application started on http://%s:%d',
             app.get('host'),
             port,
-        ),
-    );
+        );
+        if (process.env.DRY_RUN) {
+            process.exit(0);
+        }
+    });
 }
 
 main().catch(e => {
