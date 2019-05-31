@@ -1,10 +1,15 @@
 import React from 'react';
-import Main from '../layouts/main';
+import Protected from '../layouts/protected';
 
-const Home = () => (
-    <Main>
-        <iframe id="spark" width="100%" height="100%" frameBorder="0" src="https://spark.adobe.com/page/oFoZUUzRZITY1/" />
-    </Main>
-);
 
-export default Home;
+const Admin = () => {
+
+
+    return (
+        <Protected>
+            Home
+        </Protected>
+    );
+};
+
+export default Admin;
