@@ -74,7 +74,7 @@ describe('/', () => {
             await this.page.type('#root_confirm_password', this.good_input.confirm_password);
         });
 
-        it('submits good input', async () => {
+        it('registers succesfully', async () => {
             expect.assertions(1);
 
             await this.page.type('#root_email', this.good_input.email);
@@ -86,6 +86,27 @@ describe('/', () => {
 
             const pathname = await attempt(() => this.page.$eval('body', () => location.pathname), '/home');
             expect(pathname).toBe('/home');
+        });
+
+        it('prevents non-matching passwords', async () => {
+            expect.assertions(3);
+
+            await this.page.type('#root_email', this.good_input.email);
+            await this.page.type('#root_password', this.good_input.password);
+            await this.page.type('#root_confirm_password', 'haha');
+
+            const submit_button = await this.form.$('button.is-primary');
+            await submit_button.click();
+
+            const error = await this.form.$('.errors')
+
+            expect(error).toBeTruthy()
+
+            const error_message = await this.form.$eval('.list-group-item', (el) => el.innerText)
+            expect(error_message).toBe(`confirm_password: Passwords don't match`)
+
+            const pathname = await this.page.$eval('body', () => location.pathname);
+            expect(pathname).toBe('/sign_up');
         });
     });
 
