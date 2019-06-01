@@ -1,6 +1,6 @@
 /* global location */
 const puppeteer = require('puppeteer');
-const env = require('../setup.env')(3032);
+const env = require('../setup.env')(4032);
 const { getPage, getPathname } = env;
 
 const wait = (ms) => new Promise(res => setTimeout(res, ms));

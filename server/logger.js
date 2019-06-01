@@ -9,7 +9,9 @@ const logger = createLogger({
         format.simple()
     ),
     transports: [
-        new transports.Console()
+        new transports.Console({
+            silent: (['test', 'travis'].indexOf(process.env.NODE_ENV) >= 0)
+        })
     ],
 });
 
