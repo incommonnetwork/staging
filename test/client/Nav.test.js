@@ -1,4 +1,4 @@
-/* global jasmine, location */
+/* global location */
 
 const puppeteer = require('puppeteer');
 const env = require('../setup.env')(3033);
@@ -126,7 +126,6 @@ const routes = {
 describe('Navigation', () => {
     beforeAll(async () => {
         await env.before();
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
         this.browser = await puppeteer.launch();
     });
 
