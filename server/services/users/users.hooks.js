@@ -17,14 +17,14 @@ const isAdmin = async (context) => {
 
     if (!adminRole) return false;
 
-    const [UserRole] = await sequelizeClient.model('UserRole').findAll({
+    const [user_roles] = await sequelizeClient.model('user_roles').findAll({
         where: {
             userId: user.id,
             roleId: adminRole.dataValues.id
         }
     });
 
-    return !!UserRole;
+    return !!user_roles;
 };
 
 const authorize = async (context) => {

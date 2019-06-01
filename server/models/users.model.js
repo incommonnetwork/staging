@@ -30,20 +30,20 @@ module.exports = function (app) {
         }
 
     }, {
-        hooks: {
-            beforeCount(options) {
-                options.raw = true;
+            hooks: {
+                beforeCount(options) {
+                    options.raw = true;
+                }
             }
-        }
-    });
+        });
 
-    sequelizeClient.define('UserRole', {
+    sequelizeClient.define('user_roles', {
         SEEDFILE: Sequelize.STRING
     });
 
     // eslint-disable-next-line no-unused-vars
     users.associate = function (models) {
-        models.users.belongsToMany(models.roles, { through: 'UserRole' });
+        models.users.belongsToMany(models.roles, { through: 'user_roles' });
     };
 
     return users;
