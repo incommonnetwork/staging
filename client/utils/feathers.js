@@ -4,18 +4,19 @@ import rest from '@feathersjs/rest-client';
 
 let app = null;
 
-const getClientApi = (app) => {
-    const host = app.get('host')
-    const port = app.get('port')
-    const protocol = app.get('protocol')
-
-    return `${protocol}://${host}${protocol === 'https' ? '' : port}`
-}
+const getClientApi = () => {
+    switch (process.env.NODE_ENV) {
+        case 'staging':
+            return 'https://api.incommon.dev';
+        case 'test':
+            return 'https://staging.incommon.dev';
+    }
+};
 
 async function init(req) {
     const app = feathers();
     const _fetch = req ? require('node-fetch') : fetch; // eslint-disable-line no-undef
-    const api = req ? `http://localhost${process.env.NODE_ENV === 'production' ? '' : ':3030'}` : getClientApi(app);
+    const api = req ? `http://localhost${process.env.NODE_ENV === 'production' ? '' : ':3030'}` : getClientApi();
     const restClient = rest(api);
     app.configure(restClient.fetch(_fetch));
     const authConfig = { storage: req ? undefined : localStorage }; // eslint-disable-line no-undef

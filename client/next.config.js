@@ -13,6 +13,7 @@ module.exports = withCss(withSass(withTM({
     },
     assetPrefix,
     env: {
-        ASSET_PREFIX: assetPrefix
+        ASSET_PREFIX: assetPrefix,
+        NODE_ENV: process.env.NODE_ENV
     }
 })));
