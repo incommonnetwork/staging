@@ -18,7 +18,7 @@ const SignUp = () => {
 
     return (
         <CardLayout>
-            <Element current={current} send={send} />
+            <Element current={current} send={send} id={'sign_up'} />
         </CardLayout>
     );
 };
