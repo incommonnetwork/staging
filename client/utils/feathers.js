@@ -7,9 +7,9 @@ let app = null;
 const getClientApi = () => {
     switch (process.env.CLIENT_NODE_ENV) {
         case 'staging':
-            return 'https://api.incommon.dev';
-        case 'test':
             return 'https://staging.incommon.dev';
+        case 'production':
+            return 'https://api.incommon.dev';
     }
 };
 
