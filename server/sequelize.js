@@ -5,7 +5,7 @@ const useSSL = (() => {
     switch (process.env.NODE_ENV) {
         case 'staging':
             _ssl = true;
-            break
+            break;
         case 'travis':
             _ssl = true;
             break;
