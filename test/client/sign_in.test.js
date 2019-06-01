@@ -20,7 +20,7 @@ const attempt = async (fn, expected) => {
 };
 
 
-describe('/sign_up', () => {
+describe('/sign_in', () => {
     beforeAll(async () => {
         this.browser = await puppeteer.launch();
         await env.before();
@@ -32,11 +32,13 @@ describe('/sign_up', () => {
     });
 
     beforeEach(async () => {
+        this.app = await env.initApi();
         this.page = await this.browser.newPage();
-        await this.page.goto(getPage('/sign_up'));
+        await this.page.goto(getPage('/sign_in'));
     });
 
     afterEach(async () => {
+        this.app = null;
         await this.page.close();
     });
 
@@ -46,21 +48,23 @@ describe('/sign_up', () => {
         expect(content.indexOf('<!DOCTYPE html')).toBe(0);
     });
 
-    it('has signup form', async () => {
+    it('has signin form', async () => {
         expect.assertions(1);
-        const form = await this.page.$('#sign_up_form');
+        const form = await this.page.$('#sign_in_form');
         expect(form).toBeTruthy();
     });
 
     describe('signup form', () => {
         beforeEach(async () => {
-            this.form = await this.page.$('#sign_up_form');
+            this.form = await this.page.$('#sign_in_form');
             const rand = `${Math.random()}`;
             this.good_input = {
                 email: `${rand}@test.com`,
                 password: rand,
                 confirm_password: rand,
             };
+
+            await this.app.service('users').create(this.good_input);
         });
 
         afterEach(async () => {
@@ -70,15 +74,13 @@ describe('/sign_up', () => {
         it('accepts input', async () => {
             await this.page.type('#root_email', this.good_input.email);
             await this.page.type('#root_password', this.good_input.password);
-            await this.page.type('#root_confirm_password', this.good_input.confirm_password);
         });
 
-        it('registers succesfully', async () => {
+        it('logs in succesfully', async () => {
             expect.assertions(1);
 
             await this.page.type('#root_email', this.good_input.email);
             await this.page.type('#root_password', this.good_input.password);
-            await this.page.type('#root_confirm_password', this.good_input.confirm_password);
 
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
@@ -87,25 +89,16 @@ describe('/sign_up', () => {
             expect(pathname).toBe(getPathname('/home'));
         });
 
-        it('prevents non-matching passwords', async () => {
-            expect.assertions(3);
+        it('errors on bad password', async () => {
+            expect.assertions(0);
 
             await this.page.type('#root_email', this.good_input.email);
-            await this.page.type('#root_password', this.good_input.password);
-            await this.page.type('#root_confirm_password', 'haha');
+            await this.page.type('#root_password', 'wrong password');
 
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
 
-            const error = await this.form.$('.errors');
-
-            expect(error).toBeTruthy();
-
-            const error_message = await this.form.$eval('.list-group-item', (el) => el.innerText);
-            expect(error_message).toBe('confirm_password: Passwords don\'t match');
-
-            const pathname = await this.page.$eval('body', () => location.pathname);
-            expect(pathname).toBe(getPathname('/sign_up'));
+            await this.page.waitFor('#sign_in_error', { timeout: 5000 });
         });
     });
 
