@@ -27,6 +27,14 @@ describe('\'users\' service', () => {
 
     describe('signup', () => {
 
+        beforeEach(async () => {
+            this.run = `${Math.random()}`;
+            const strategy = 'local';
+            const email = `${this.run}@example.com`;
+            const password = `${this.run}`;
+            this.creds = { strategy, email, password };
+        });
+
         it('handles no email', async () => {
             expect.assertions(9);
 
@@ -105,6 +113,18 @@ describe('\'users\' service', () => {
                 expect(e.errors[0].path).toBe('email');
             });
         });
+
+        it('rejects creating admin', async () => {
+            expect.assertions(1);
+
+            await this.service.create(this.creds, {
+                query: {
+                    roles: 'admin'
+                }
+            }).catch(e => {
+                expect(e.code).toBe(403);
+            });
+        });
     });
 
     describe('authentication', () => {
@@ -181,79 +201,119 @@ describe('\'users\' service', () => {
                 expect(e.message).toBe('Invalid login');
             });
         });
+
     });
 
     describe('logged in', () => {
-        beforeEach(async () => {
-            this.run = `${Math.random()}`;
-            const strategy = 'local';
-            const email = `${this.run}@example.com`;
-            const password = `${this.run}`;
-            this.creds = { strategy, email, password };
+        describe('base user', () => {
+            beforeEach(async () => {
+                this.run = `${Math.random()}`;
+                const strategy = 'local';
+                const email = `${this.run}@example.com`;
+                const password = `${this.run}`;
+                this.creds = { strategy, email, password };
 
 
-            const { id } = await this.service.create(this.creds);
-            this.id = id;
+                const { id } = await this.service.create(this.creds);
+                this.id = id;
 
-            await this.api.authenticate(this.creds);
+                await this.api.authenticate(this.creds);
+            });
+
+            describe('should forbid', () => {
+                it('creating a second user', async () => {
+                    expect.assertions(1);
+                    const bad = `${Math.random()}`;
+                    await this.api.authenticate(this.creds);
+
+                    await this.service.create({
+                        strategy: 'local',
+                        email: `${bad}@example.com`,
+                        password: `${bad}`
+                    }).catch(e => {
+                        expect(e.code).toBe(403);
+                    });
+                });
+
+                it('getting another user', async () => {
+                    expect.assertions(2);
+
+                    await this.service.get(1).catch(e => {
+                        expect(e.code).toBe(403);
+                        expect(e.message).toBe('Not Authorized');
+                    });
+                });
+
+                it('updating another user', async () => {
+                    expect.assertions(2);
+
+                    await this.service.update(1, {
+                        email: 'update@attacker.com',
+                        password: 'attack'
+                    }).catch(e => {
+                        expect(e.code).toBe(403);
+                        expect(e.message).toBe('Not Authorized');
+                    });
+                });
+
+                it('patching another user', async () => {
+                    expect.assertions(2);
+
+                    await this.service.patch(1, {
+                        password: 'attacker'
+                    }).catch(e => {
+                        expect(e.code).toBe(403);
+                        expect(e.message).toBe('Not Authorized');
+                    });
+                });
+
+                it('removing another user', async () => {
+                    expect.assertions(2);
+
+                    await this.service.remove(1).catch(e => {
+                        expect(e.code).toBe(403);
+                        expect(e.message).toBe('Not Authorized');
+                    });
+                });
+            });
+
+            describe('should allow', async () => {
+
+                it('finding self', async () => {
+                    expect.assertions(3);
+
+                    const res = await this.service.find({});
+
+                    expect(res.total).toBe(1);
+                    expect(res.data[0].id).toBe(this.id);
+                    expect(res.data[0].email).toBe(this.creds.email);
+                });
+            });
         });
 
-        describe('should forbid', () => {
+        describe('admin', () => {
+            beforeEach(async () => {
+                this.run = `${Math.random()}`;
+                const strategy = 'local';
+                // see server/services/seeders/20190530221359-mock-admin-user.js
+                const email = 'admin@mock.admin';
+                const password = 'admin123';
 
-            it('getting another user', async () => {
-                expect.assertions(2);
+                this.creds = { strategy, email, password };
 
-                await this.service.get(1).catch(e => {
-                    expect(e.code).toBe(403);
-                    expect(e.message).toBe('Not Authorized');
-                });
+                await this.api.authenticate(this.creds);
             });
 
-            it('updating another user', async () => {
-                expect.assertions(2);
+            describe('should allow', () => {
+                it('finding all', async () => {
+                    expect.assertions(1);
 
-                await this.service.update(1, {
-                    email: 'update@attacker.com',
-                    password: 'attack'
-                }).catch(e => {
-                    expect(e.code).toBe(403);
-                    expect(e.message).toBe('Not Authorized');
-                });
-            });
+                    const res = await this.service.find({});
 
-            it('patching another user', async () => {
-                expect.assertions(2);
-
-                await this.service.patch(1, {
-                    password: 'attacker'
-                }).catch(e => {
-                    expect(e.code).toBe(403);
-                    expect(e.message).toBe('Not Authorized');
-                });
-            });
-
-            it('removing another user', async () => {
-                expect.assertions(2);
-
-                await this.service.remove(1).catch(e => {
-                    expect(e.code).toBe(403);
-                    expect(e.message).toBe('Not Authorized');
+                    expect(res.total).toBeGreaterThan(10);
                 });
             });
         });
 
-        describe('should allow', async () => {
-
-            it('finding self', async () => {
-                expect.assertions(3);
-
-                const res = await this.service.find({});
-
-                expect(res.total).toBe(1);
-                expect(res.data[0].id).toBe(this.id);
-                expect(res.data[0].email).toBe(this.creds.email);
-            });
-
-        });
     });
 });

@@ -59,6 +59,9 @@ const testStaging = () => {
 
 const testCI = (port) => {
     //port = 3030;
+
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+    jest.setTimeout(20000);
     const api_url = `http://localhost:${port}`;
 
     const logger = require('../server/logger');
@@ -76,9 +79,11 @@ const testCI = (port) => {
 
     let server = null;
 
-    const before = async () => new Promise(resolve => {
+    const before = async () => {
 
-        nextApp.prepare().then(() => {
+        await nextApp.prepare();
+
+        return new Promise((resolve) => {
             server = app.listen(port);
 
             process.on('unhandledRejection', (reason, p) =>
@@ -91,10 +96,10 @@ const testCI = (port) => {
                     app.get('host'),
                     port,
                 );
-                setTimeout(resolve, 1000);
+                setTimeout(resolve, 5000);
             });
         });
-    });
+    };
 
     const after = async () => new Promise((resolve) => {
 

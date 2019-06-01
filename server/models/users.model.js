@@ -24,6 +24,11 @@ module.exports = function (app) {
 
         githubId: { type: Sequelize.STRING },
 
+        SEEDFILE: {
+            type: Sequelize.STRING,
+            allowNull: true
+        }
+
     }, {
         hooks: {
             beforeCount(options) {
@@ -32,11 +37,13 @@ module.exports = function (app) {
         }
     });
 
+    sequelizeClient.define('user_roles', {
+        SEEDFILE: Sequelize.STRING
+    });
+
     // eslint-disable-next-line no-unused-vars
-    users.associate = function ({ users, roles }) {
-        users.hasMany(roles, { sequelize: sequelizeClient });
-        // Define associations here
-        // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    users.associate = function (models) {
+        models.users.belongsToMany(models.roles, { through: 'user_roles' });
     };
 
     return users;

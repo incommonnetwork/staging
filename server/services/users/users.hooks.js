@@ -5,14 +5,50 @@ const {
     hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks;
 
-const authorize = (context) => {
+const isAdmin = async (context) => {
+    const { app, params: { user } } = context;
+    const sequelizeClient = app.get('sequelizeClient');
+
+    const [adminRole] = await sequelizeClient.model('roles').findAll({
+        where: {
+            type: 'admin'
+        }
+    });
+
+    if (!adminRole) return false;
+
+    const [user_roles] = await sequelizeClient.model('user_roles').findAll({
+        where: {
+            userId: user.id,
+            roleId: adminRole.dataValues.id
+        }
+    });
+
+    return !!user_roles;
+};
+
+const authorize = async (context) => {
     const { user, query } = context.params;
 
     /* eslint-disable no-fallthrough */
     switch (context.method) {
+        case 'create':
+            if (context.params.headers.authorization) {
+                const strategy = context.data.strategy;
+                delete context.data.strategy;
+                context = await authenticate('jwt')(context);
+                context.data.strategy = strategy;
+                const is_admin = await isAdmin(context);
+                if (!is_admin) throw new Forbidden();
+            } else if (query.roles && query.roles.split(',').indexOf('admin') >= 0) {
+                throw new Forbidden();
+            }
+            break;
         case 'find':
-            // only allow a user to find themselves
-            if (user) context.params.query = user;
+            // only allow a non admin user to find themselves
+            if (user && !(await isAdmin(context))) {
+                context.params.query = user;
+            }
             break;
         case 'get':
         case 'update':
@@ -35,7 +71,7 @@ module.exports = {
         all: [],
         find: [authenticate('jwt'), authorize],
         get: [authenticate('jwt'), authorize],
-        create: [hashPassword()],
+        create: [hashPassword(), authorize],
         update: [hashPassword(), authenticate('jwt'), authorize],
         patch: [hashPassword(), authenticate('jwt'), authorize],
         remove: [authenticate('jwt'), authorize]

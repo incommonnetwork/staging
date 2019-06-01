@@ -3,6 +3,9 @@ const Sequelize = require('sequelize');
 const useSSL = (() => {
     let _ssl = false;
     switch (process.env.NODE_ENV) {
+        case 'travis':
+            _ssl = true;
+            break;
         case 'test':
             _ssl = (process.env.TEST_ENV === 'ci') ? true : false;
             break;
@@ -29,7 +32,7 @@ module.exports = function (app) {
 
     app.set('sequelizeClient', sequelize);
 
-    app.setup = function (...args) {
+    app.setup = async function (...args) {
         const result = oldSetup.apply(this, args);
 
         // Set up data relationships
@@ -41,7 +44,7 @@ module.exports = function (app) {
         });
 
         // Sync to the database
-        sequelize.sync();
+        await sequelize.sync();
 
         return result;
     };
