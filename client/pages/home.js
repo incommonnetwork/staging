@@ -3,8 +3,6 @@ import Protected from '../layouts/protected';
 
 
 const Admin = () => {
-
-
     return (
         <Protected>
             Home
