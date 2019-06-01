@@ -23,9 +23,6 @@ ColumnLayout.propTypes = {
 
 const NarrowColumn = ({ children }) => (
     <ColumnLayout sizes={{
-        mobile: {
-            size: 'three-quarters',
-        },
         tablet: {
             size: 'two-thirds',
         },
@@ -52,9 +49,6 @@ NarrowColumn.propTypes = {
 
 const WideColumn = ({ children }) => (
     <ColumnLayout sizes={{
-        mobile: {
-            size: 'three-quarters',
-        },
         tablet: {
             size: 'three-quarters',
         },

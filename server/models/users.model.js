@@ -38,7 +38,10 @@ module.exports = function (app) {
     });
 
     sequelizeClient.define('user_roles', {
-        SEEDFILE: Sequelize.STRING
+        SEEDFILE: {
+            type: Sequelize.STRING,
+            allowNull: true
+        }
     });
 
     // eslint-disable-next-line no-unused-vars

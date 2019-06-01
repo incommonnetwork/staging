@@ -1,5 +1,6 @@
 import { Machine } from 'xstate';
 import getApp from '../utils/feathers';
+import Router from '../utils/router';
 
 
 export default Machine({
@@ -29,7 +30,20 @@ export default Machine({
         },
         signed_in: {
             on: {
-                SIGN_OUT: 'signed_out'
+                SIGN_OUT: 'signing_out'
+            }
+        },
+        signing_out: {
+            invoke: {
+                id: 'signOut',
+                src: async () => {
+                    const app = await getApp();
+                    await app.logout();
+                },
+                onDone: {
+                    target: 'signed_out',
+                    actions: () => Router.push('/'),
+                }
             }
         }
     }
