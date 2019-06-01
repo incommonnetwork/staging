@@ -5,7 +5,7 @@ import rest from '@feathersjs/rest-client';
 let app = null;
 
 const getClientApi = () => {
-    switch (process.env.NODE_ENV) {
+    switch (process.env.CONFIG_NODE_ENV) {
         case 'staging':
             return 'https://api.incommon.dev';
         case 'test':
