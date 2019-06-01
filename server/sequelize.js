@@ -3,6 +3,9 @@ const Sequelize = require('sequelize');
 const useSSL = (() => {
     let _ssl = false;
     switch (process.env.NODE_ENV) {
+        case 'staging':
+            _ssl = true;
+            break
         case 'travis':
             _ssl = true;
             break;
