@@ -22,7 +22,7 @@ const attempt = async (fn, expected) => {
 
 describe('/sign_in', () => {
     beforeAll(async () => {
-        this.browser = await puppeteer.launch({ headless: false });
+        this.browser = await puppeteer.launch();
         this.context = await this.browser.createIncognitoBrowserContext();
         await env.before();
     });
@@ -126,7 +126,9 @@ describe('/sign_in', () => {
         });
 
         it('respects redirects', async () => {
-            await this.page.goto(getPage('/sign_in?redirect=/states'));
+            await this.form.dispose();
+            await this.page.goto(`${getPage('/sign_in')}?redirect=${getPathname('/states')}`);
+            this.form = await this.page.$('#sign_in_form');
 
             await this.page.type('#root_email', this.good_input.email);
             await this.page.type('#root_password', this.good_input.password);
@@ -134,7 +136,16 @@ describe('/sign_in', () => {
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
             await this.page.waitFor((expected) => location.pathname === expected, { timeout: 5000 }, getPathname('/states'));
+        });
 
+        it('redirects with user parameter', async () => {
+
+            await this.page.type('#root_email', this.good_input.email);
+            await this.page.type('#root_password', this.good_input.password);
+
+            const submit_button = await this.form.$('button.is-primary');
+            await submit_button.click();
+            await this.page.waitFor((expected) => location.href.indexOf(expected) === 0, { timeout: 5000 }, `${getPage('/home')}?user=`);
         });
     });
 
