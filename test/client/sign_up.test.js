@@ -98,12 +98,12 @@ describe('/', () => {
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
 
-            const error = await this.form.$('.errors')
+            const error = await this.form.$('.errors');
 
-            expect(error).toBeTruthy()
+            expect(error).toBeTruthy();
 
-            const error_message = await this.form.$eval('.list-group-item', (el) => el.innerText)
-            expect(error_message).toBe(`confirm_password: Passwords don't match`)
+            const error_message = await this.form.$eval('.list-group-item', (el) => el.innerText);
+            expect(error_message).toBe('confirm_password: Passwords don\'t match');
 
             const pathname = await this.page.$eval('body', () => location.pathname);
             expect(pathname).toBe('/sign_up');
