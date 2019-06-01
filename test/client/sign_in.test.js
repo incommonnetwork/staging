@@ -23,17 +23,19 @@ const attempt = async (fn, expected) => {
 describe('/sign_in', () => {
     beforeAll(async () => {
         this.browser = await puppeteer.launch();
+        this.context = await this.browser.createIncognitoBrowserContext();
         await env.before();
     });
 
     afterAll(async () => {
         await env.after();
+        await this.context.close();
         await this.browser.close();
     });
 
     beforeEach(async () => {
         this.app = await env.initApi();
-        this.page = await this.browser.newPage();
+        this.page = await this.context.newPage();
         await this.page.goto(getPage('/sign_in'));
     });
 
@@ -54,7 +56,7 @@ describe('/sign_in', () => {
         expect(form).toBeTruthy();
     });
 
-    describe('signup form', () => {
+    describe('signin form', () => {
         beforeEach(async () => {
             this.form = await this.page.$('#sign_in_form');
             const rand = `${Math.random()}`;
@@ -99,6 +101,51 @@ describe('/sign_in', () => {
             await submit_button.click();
 
             await this.page.waitFor('#sign_in_error', { timeout: 5000 });
+        });
+
+        it('changes navbar to sign out when signed in', async () => {
+
+            await this.page.type('#root_email', this.good_input.email);
+            await this.page.type('#root_password', this.good_input.password);
+
+            const submit_button = await this.form.$('button.is-primary');
+            await submit_button.click();
+            await this.page.waitFor('#sign_out_nav', { timeout: 5000 });
+        });
+
+        it('signs out', async () => {
+            await this.page.type('#root_email', this.good_input.email);
+            await this.page.type('#root_password', this.good_input.password);
+
+            const submit_button = await this.form.$('button.is-primary');
+            await submit_button.click();
+            await this.page.waitFor('#sign_out_nav', { timeout: 5000 });
+            const sign_out_button = await this.page.$('#sign_out_nav');
+            await sign_out_button.click();
+            await this.page.waitFor('#sign_in_nav', { timeout: 5000 });
+        });
+
+        it('respects redirects', async () => {
+            await this.form.dispose();
+            await this.page.goto(`${getPage('/sign_in')}?redirect=${getPathname('/states')}`);
+            this.form = await this.page.$('#sign_in_form');
+
+            await this.page.type('#root_email', this.good_input.email);
+            await this.page.type('#root_password', this.good_input.password);
+
+            const submit_button = await this.form.$('button.is-primary');
+            await submit_button.click();
+            await this.page.waitFor((expected) => location.pathname === expected, { timeout: 5000 }, getPathname('/states'));
+        });
+
+        it('redirects with user parameter', async () => {
+
+            await this.page.type('#root_email', this.good_input.email);
+            await this.page.type('#root_password', this.good_input.password);
+
+            const submit_button = await this.form.$('button.is-primary');
+            await submit_button.click();
+            await this.page.waitFor((expected) => location.href.indexOf(expected) === 0, { timeout: 5000 }, `${getPage('/home')}?user=`);
         });
     });
 

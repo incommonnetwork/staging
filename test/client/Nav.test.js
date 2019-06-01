@@ -107,8 +107,8 @@ const NavBar = (route, navmap) => {
 
 const loggedOut = {
     '/': '#nav_',
-    '/sign_up': '#nav_signup',
-    '/sign_in': '#nav_signin',
+    '/sign_up': '#sign_up_nav',
+    '/sign_in': '#sign_in_nav',
 };
 
 const routes = {
