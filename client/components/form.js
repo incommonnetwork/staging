@@ -20,7 +20,7 @@ const Form = ({ id, current: { value, meta: { SignUp: { schema, uiSchema, valida
                 loading={value === 'form_submit'}
                 type="submit">
                 Submit
-        </Button>
+            </Button>
         </JsonSchemaForm>
     </div>
 );

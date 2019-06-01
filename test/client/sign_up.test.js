@@ -1,11 +1,28 @@
-/* global jasmine */
+/* global jasmine, location */
 const puppeteer = require('puppeteer');
 const env = require('../setup.env')(3032);
 const getPage = env.getPage;
 
+const wait = (ms) => new Promise(res => setTimeout(res, ms));
+
+const attempt = async (fn, expected) => {
+    const start = Date.now();
+    let res = null;
+    while ((Date.now() - start) < 10000) {
+        await wait(100);
+        res = await fn().catch(() => 'ERROR');
+        if (res !== 'ERROR' && (!expected || (expected === res))) break;
+    }
+
+    if (res === 'ERROR') return fn();
+
+    return res;
+};
+
+
 describe('/', () => {
     beforeAll(async () => {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
         this.browser = await puppeteer.launch();
         await env.before();
     });
@@ -31,8 +48,45 @@ describe('/', () => {
     });
 
     it('has signup form', async () => {
-        const form = await this.page.$('#sign_up_form')
-        expect(form).toBeTruthy()
-    })
+        expect.assertions(1);
+        const form = await this.page.$('#sign_up_form');
+        expect(form).toBeTruthy();
+    });
+
+    describe('signup form', () => {
+        beforeEach(async () => {
+            this.form = await this.page.$('#sign_up_form');
+            const rand = `${Math.random()}`;
+            this.good_input = {
+                email: `${rand}@test.com`,
+                password: rand,
+                confirm_password: rand,
+            };
+        });
+
+        afterEach(async () => {
+            await this.form.dispose();
+        });
+
+        it('accepts input', async () => {
+            await this.page.type('#root_email', this.good_input.email);
+            await this.page.type('#root_password', this.good_input.password);
+            await this.page.type('#root_confirm_password', this.good_input.confirm_password);
+        });
+
+        it('submits good input', async () => {
+            expect.assertions(1);
+
+            await this.page.type('#root_email', this.good_input.email);
+            await this.page.type('#root_password', this.good_input.password);
+            await this.page.type('#root_confirm_password', this.good_input.confirm_password);
+
+            const submit_button = await this.form.$('button.is-primary');
+            await submit_button.click();
+
+            const pathname = await attempt(() => this.page.$eval('body', () => location.pathname), '/home');
+            expect(pathname).toBe('/home');
+        });
+    });
 
 });
