@@ -1,10 +1,11 @@
-/* global jasmine*/
+/* global jest*/
 const url = require('url');
 const fetch = require('node-fetch');
 const feathers = require('@feathersjs/feathers');
 const auth = require('@feathersjs/authentication-client');
 const rest = require('@feathersjs/rest-client');
 
+jest.setTimeout(20000);
 
 const initApi = (url) => {
     const app = feathers();
@@ -17,12 +18,14 @@ const initApi = (url) => {
 
 const testDev = () => {
     const api_url = 'http://localhost:3030';
-
     const before = (done) => {
         // fighting race condition with hot-reload builds
         setTimeout(done, 5000);
     };// (done) => { setTimeout(done, 1000); };
     const after = () => { };//(done) => { setTimeout(done, 1000); };
+
+    const getPathname = pathname => pathname;
+
     const getApi = pathname => url.format({
         hostname: 'localhost',
         protocol: 'http',
@@ -31,21 +34,22 @@ const testDev = () => {
     });
 
     const getPage = getApi;
-    return { getPage, getApi, before, after, initApi: () => initApi(api_url) };
+    return { getPathname, getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
 
 const testStaging = () => {
     const api_url = 'https://staging.incommon.dev';
 
     const before = () => {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     };
     const after = () => { };
+
+    const getPathname = pathname => `/staging${pathname === '/' ? pathname : `${pathname}/`}`;
 
     const getPage = pathname => url.format({
         hostname: 'www.incommon.dev',
         protocol: 'https',
-        pathname: `/staging${pathname === '/' ? pathname : `${pathname}/`}`
+        pathname: getPathname(pathname)
     });
 
     const getApi = pathname => url.format({
@@ -54,19 +58,17 @@ const testStaging = () => {
         pathname,
     });
 
-    return { getPage, getApi, before, after, initApi: () => initApi(api_url) };
+    return { getPathname, getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
 
 const testCI = (port) => {
-    //port = 3030;
-
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
-    jest.setTimeout(20000);
     const api_url = `http://localhost:${port}`;
 
     const logger = require('../server/logger');
     const app = require('../server/app');
     const nextApp = require('../server/nextApp').nextApp;
+
+    const getPathname = pathname => pathname;
 
     const getApi = pathname => url.format({
         hostname: app.get('host') || 'localhost',
@@ -110,7 +112,7 @@ const testCI = (port) => {
 
 
 
-    return { getPage, getApi, before, after, initApi: () => initApi(api_url) };
+    return { getPathname, getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
 
 

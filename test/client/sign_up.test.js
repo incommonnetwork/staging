@@ -1,14 +1,16 @@
 /* global jasmine, location */
 const puppeteer = require('puppeteer');
 const env = require('../setup.env')(3032);
-const getPage = env.getPage;
+const { getPage, getPathname } = env;
+
+jest.setTimeout(30000);
 
 const wait = (ms) => new Promise(res => setTimeout(res, ms));
 
 const attempt = async (fn, expected) => {
     const start = Date.now();
     let res = null;
-    while ((Date.now() - start) < 10000) {
+    while ((Date.now() - start) < 20000) {
         await wait(100);
         res = await fn().catch(() => 'ERROR');
         if (res !== 'ERROR' && (!expected || (expected === res))) break;
@@ -22,7 +24,7 @@ const attempt = async (fn, expected) => {
 
 describe('/', () => {
     beforeAll(async () => {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
         this.browser = await puppeteer.launch();
         await env.before();
     });
@@ -85,7 +87,7 @@ describe('/', () => {
             await submit_button.click();
 
             const pathname = await attempt(() => this.page.$eval('body', () => location.pathname), '/home');
-            expect(pathname).toBe('/home');
+            expect(pathname).toBe(getPathname('/home'));
         });
 
         it('prevents non-matching passwords', async () => {
@@ -106,7 +108,7 @@ describe('/', () => {
             expect(error_message).toBe('confirm_password: Passwords don\'t match');
 
             const pathname = await this.page.$eval('body', () => location.pathname);
-            expect(pathname).toBe('/sign_up');
+            expect(pathname).toBe(getPathname('/sign_up'));
         });
     });
 
