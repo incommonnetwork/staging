@@ -30,4 +30,9 @@ describe('/', () => {
         expect(content.indexOf('<!DOCTYPE html')).toBe(0);
     });
 
+    it('has signup form', async () => {
+        const form = await this.page.$('#sign_up_form');
+        expect(form).toBeTruthy();
+    });
+
 });
