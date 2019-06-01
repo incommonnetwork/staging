@@ -27,6 +27,7 @@ install:
 script:
   - ansible --version
   - npm run ci:test
+  - npm run staging:deploy:client
 deploy:
   - provider: pages
     skip_cleanup: true
@@ -35,6 +36,6 @@ deploy:
     on:
       branch: master
   - provider: script
-    script: npm run staging:deploy
+    script: npm run staging:deploy:api
     on:
       branch: master
