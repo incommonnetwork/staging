@@ -1,4 +1,3 @@
-/* global jasmine */
 const puppeteer = require('puppeteer');
 const env = require('../setup.env')(3032);
 const getPage = env.getPage;
@@ -7,7 +6,6 @@ describe('/', () => {
     beforeAll(async () => {
         this.browser = await puppeteer.launch();
         await env.before();
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
 
     afterAll(async () => {

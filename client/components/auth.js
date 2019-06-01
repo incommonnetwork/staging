@@ -12,13 +12,13 @@ import Link from './link';
 const signed_out = () => (
     <Fragment>
         <Navbar.Item>
-            <Link href='/sign_in' id='nav_signin'>
+            <Link href='/sign_in' id='sign_in_nav'>
                 Sign In
             </Link>
         </Navbar.Item >
 
         <Navbar.Item >
-            <Link href='/sign_up' id='nav_signup'>
+            <Link href='/sign_up' id='sign_up_nav'>
                 Sign up
             </Link>
         </Navbar.Item >
@@ -27,9 +27,11 @@ const signed_out = () => (
 
 
 const signed_in = ({ current, send }) => (
-    <Navbar.Item onClick={() => send('SIGN_OUT')}>
-        {current.matches('signing_out') ? (<Loader />) : 'Sign Out'}
-    </Navbar.Item>
+    <div id="sign_out_nav">
+        <Navbar.Item onClick={() => send('SIGN_OUT')}>
+            {current.matches('signing_out') ? (<Loader />) : 'Sign Out'}
+        </Navbar.Item>
+    </div>
 );
 
 signed_in.propTypes = {
