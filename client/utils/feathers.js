@@ -5,12 +5,15 @@ import rest from '@feathersjs/rest-client';
 let app = null;
 
 const getClientApi = () => {
+    /* eslint-disable */
+    console.log(process.env.CONFIG_NODE_ENV);
     switch (process.env.CONFIG_NODE_ENV) {
         case 'staging':
             return 'https://api.incommon.dev';
         case 'test':
             return 'https://staging.incommon.dev';
     }
+    /* esline-enable */
 };
 
 async function init(req) {
