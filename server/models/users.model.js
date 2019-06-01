@@ -30,15 +30,18 @@ module.exports = function (app) {
         }
 
     }, {
-            hooks: {
-                beforeCount(options) {
-                    options.raw = true;
-                }
+        hooks: {
+            beforeCount(options) {
+                options.raw = true;
             }
-        });
+        }
+    });
 
     sequelizeClient.define('user_roles', {
-        SEEDFILE: Sequelize.STRING
+        SEEDFILE: {
+            type: Sequelize.STRING,
+            allowNull: true
+        }
     });
 
     // eslint-disable-next-line no-unused-vars
