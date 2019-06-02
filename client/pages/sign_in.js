@@ -1,26 +1,60 @@
 import React from 'react';
 
-import { useMachine } from '@xstate/react';
-import signInMachine from '../state/sign_in';
-
 import CardLayout from '../layouts/card';
-
-
 import Form from '../components/form';
-import ErrorElement from '../components/error';
+
+import Router from '../utils/router';
+import getApp from '../utils/feathers';
+import rfc822 from '../utils/rfc822';
 
 const SignIn = () => {
-    const [current, send] = useMachine(signInMachine);
-
-    const Element = current.matches('form_input') || current.matches('form_submit') ? Form
-        : current.matches('error') ? ErrorElement
-            : null;
-
     return (
         <CardLayout>
-            <Element current={current} send={send} id={'sign_in'} />
+            <Form context={context} id={'sign_in'} />
         </CardLayout>
     );
+};
+
+const context = {
+    redirect: '/home',
+    schema: {
+        title: 'Sign In',
+        type: 'object',
+        required: ['email', 'password'],
+        properties: {
+            email: { type: 'string', title: 'email' },
+            password: { type: 'string', title: 'Password' }
+        }
+    },
+    uiSchema: {
+        password: {
+            'ui:widget': 'password'
+        }
+    },
+    validate: (formData, errors) => {
+        if (!rfc822(formData.email)) {
+            errors.email.addError('Email address is not valid');
+        }
+        if (!(8 <= formData.password.length && formData.password.length <= 32)) {
+            errors.password.addError('Password must be between 8 and 32 characters');
+        }
+        return errors;
+    },
+    onSubmit: (send) => ({ formData }) => send({
+        type: 'SUBMIT',
+        formData
+    }),
+    submit_service: async ({ formData }) => {
+        const app = await getApp();
+        await app.authenticate({
+            strategy: 'local',
+            ...formData
+        });
+        const { data: [{ id }] } = await app.service('users').find({ email: formData.email });
+
+        return { id };
+    },
+    submit_service_done: (context, { data: { id } }) => Router.push(`${Router.query.redirect || context.redirect}?user=${id}`)
 };
 
 export default SignIn;
