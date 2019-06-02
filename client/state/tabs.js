@@ -2,7 +2,7 @@ import { Machine, assign } from 'xstate';
 
 
 export default Machine({
-    id: 'auth',
+    id: 'tabs',
     initial: 'waiting',
     strict: true,
     states: {

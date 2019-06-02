@@ -1,7 +1,7 @@
 import { Machine, assign } from 'xstate';
 
 export default Machine({
-    id: 'SignUp',
+    id: 'form',
     initial: 'form_input',
     states: {
         form_input: {

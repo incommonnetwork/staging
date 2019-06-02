@@ -1,6 +1,8 @@
 import React from 'react';
 
-import CardLayout from '../layouts/card';
+import Main from '../layouts/main';
+import { NarrowColumn } from '../layouts/columns';
+import Card from '../layouts/card';
 import Form from '../components/form';
 
 import Router from '../utils/router';
@@ -9,9 +11,13 @@ import rfc822 from '../utils/rfc822';
 
 const SignIn = () => {
     return (
-        <CardLayout>
-            <Form context={context} id={'sign_in'} />
-        </CardLayout>
+        <Main>
+            <NarrowColumn>
+                <Card>
+                    <Form context={context} id={'sign_in'} />
+                </Card>
+            </NarrowColumn>
+        </Main>
     );
 };
 
