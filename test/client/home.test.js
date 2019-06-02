@@ -6,26 +6,26 @@ const { getPage, getPathname } = env;
 
 describe('/home', () => {
     beforeAll(async () => {
-        this.browser = await puppeteer.launch();
-        this.context = await this.browser.createIncognitoBrowserContext();
+        this.browser = await puppeteer.launch({});
         await env.before();
     });
 
     afterAll(async () => {
         await env.after();
-        await this.context.close();
         await this.browser.close();
     });
 
     beforeEach(async () => {
+        this.context = await this.browser.createIncognitoBrowserContext();
         this.app = await env.initApi();
         this.page = await this.context.newPage();
         await this.page.goto(getPage('/home'));
     });
 
     afterEach(async () => {
-        this.app = null;
         await this.page.close();
+        await this.context.close();
+        this.app = null;
     });
 
     it('loads', async () => {
@@ -68,6 +68,14 @@ describe('/home', () => {
             it('has tab', async () => {
                 await this.page.waitFor('#settings_tab', {});
             });
+
+            it('has tab content', async () => {
+                await this.page.waitFor('#settings_tab_content', {});
+            })
+
+            it('has form', async () => {
+                await this.page.waitFor('#settings_form')
+            })
         });
     });
 
