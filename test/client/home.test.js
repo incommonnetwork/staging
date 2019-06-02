@@ -35,12 +35,12 @@ describe('/home', () => {
     });
 
     it('redirects to sign in', async () => {
-        await this.page.waitFor((pathname) => pathname === location.pathname, {}, getPathname('/sign_in'));
+        await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 60000 }, getPathname('/sign_in'));
     });
 
     describe('tabs', () => {
         beforeEach(async () => {
-            await this.page.waitFor((pathname) => pathname === location.pathname, {}, getPathname('/sign_in'));
+            await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 60000 }, getPathname('/sign_in'));
             const form = await this.page.$('#sign_in_form');
             const rand = `${Math.random()}`;
             const good_input = {
@@ -57,7 +57,7 @@ describe('/home', () => {
             const submit_button = await form.$('button.is-primary');
             await submit_button.click();
 
-            await this.page.waitFor((pathname) => pathname === location.pathname, {}, getPathname('/home'));
+            await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 60000 }, getPathname('/home'));
         });
 
         it('has tabs', async () => {

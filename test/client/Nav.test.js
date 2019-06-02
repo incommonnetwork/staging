@@ -1,7 +1,7 @@
 /* global location */
 
 const puppeteer = require('puppeteer');
-const env = require('../setup.env')(3033);
+const env = require('../setup.env')(7033);
 const getPage = env.getPage;
 
 //jest.setTimeout(1000000);
