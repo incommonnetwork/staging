@@ -123,6 +123,7 @@ describe('/sign_in', () => {
             const sign_out_button = await this.page.$('#sign_out_nav');
             await sign_out_button.click();
             await this.page.waitFor('#sign_in_nav', { timeout: 5000 });
+            await this.page.waitFor(pathname => location.pathname === pathname, { timeout: 5000 }, getPathname('/'));
         });
 
         it('respects redirects', async () => {
