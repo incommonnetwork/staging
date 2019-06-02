@@ -8,7 +8,8 @@ export default Machine({
     id: 'SignUp',
     initial: 'form_input',
     context: {
-        user: {}
+        user: {},
+        redirect: '/home'
     },
     meta: {
         schema: {
@@ -59,7 +60,7 @@ export default Machine({
                     return { id };
                 },
                 onDone: {
-                    actions: (context, { data: { id } }) => Router.push(`${Router.query.redirect || '/home'}?user=${id}`)
+                    actions: (context, { data: { id } }) => Router.push(`${Router.query.redirect || context.redirect}?user=${id}`)
                 },
                 onError: {
                     target: 'error',
