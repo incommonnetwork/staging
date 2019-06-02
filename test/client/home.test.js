@@ -35,12 +35,12 @@ describe('/home', () => {
     });
 
     it('redirects to sign in', async () => {
-        await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 20000 }, getPathname('/sign_in'));
+        await this.page.waitFor((pathname) => pathname === location.pathname, {}, getPathname('/sign_in'));
     });
 
     describe('tabs', () => {
         beforeEach(async () => {
-            await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 20000 }, getPathname('/sign_in'));
+            await this.page.waitFor((pathname) => pathname === location.pathname, {}, getPathname('/sign_in'));
             const form = await this.page.$('#sign_in_form');
             const rand = `${Math.random()}`;
             const good_input = {
@@ -57,16 +57,16 @@ describe('/home', () => {
             const submit_button = await form.$('button.is-primary');
             await submit_button.click();
 
-            await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 20000 }, getPathname('/home'));
+            await this.page.waitFor((pathname) => pathname === location.pathname, {}, getPathname('/home'));
         });
 
         it('has tabs', async () => {
-            await this.page.waitFor('#home_tabs', { timeout: 20000 });
+            await this.page.waitFor('#home_tabs', {});
         });
 
         describe('settings', async () => {
             it('has tab', async () => {
-                await this.page.waitFor('#settings_tab', { timeout: 20000 });
+                await this.page.waitFor('#settings_tab', {});
             });
         });
     });
