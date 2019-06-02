@@ -4,7 +4,7 @@ import Router from '../utils/router';
 
 
 export default Machine({
-    id: 'auth',
+    id: 'protected',
     initial: 'init',
     states: {
         init: {

@@ -120,6 +120,7 @@ describe('/sign_in', () => {
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
             await this.page.waitFor('#sign_out_nav', { timeout: 5000 });
+            
             const sign_out_button = await this.page.$('#sign_out_nav');
             await sign_out_button.click();
             await this.page.waitFor('#sign_in_nav', { timeout: 5000 });
