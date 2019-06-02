@@ -3,22 +3,6 @@ const puppeteer = require('puppeteer');
 const env = require('../setup.env')(4032);
 const { getPage, getPathname } = env;
 
-const wait = (ms) => new Promise(res => setTimeout(res, ms));
-
-const attempt = async (fn, expected) => {
-    const start = Date.now();
-    let res = null;
-    while ((Date.now() - start) < 20000) {
-        await wait(100);
-        res = await fn().catch(() => 'ERROR');
-        if (res !== 'ERROR' && (!expected || (expected === res))) break;
-    }
-
-    if (res === 'ERROR') return fn();
-
-    return res;
-};
-
 
 describe('/sign_in', () => {
     beforeAll(async () => {
@@ -79,16 +63,13 @@ describe('/sign_in', () => {
         });
 
         it('logs in succesfully', async () => {
-            expect.assertions(1);
-
             await this.page.type('#root_email', this.good_input.email);
             await this.page.type('#root_password', this.good_input.password);
 
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
 
-            const pathname = await attempt(() => this.page.$eval('body', () => location.pathname), '/home');
-            expect(pathname).toBe(getPathname('/home'));
+            await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 60000 }, getPathname('/home'));
         });
 
         it('errors on bad password', async () => {
@@ -100,7 +81,7 @@ describe('/sign_in', () => {
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
 
-            await this.page.waitFor('#sign_in_error', { timeout: 5000 });
+            await this.page.waitFor('#sign_in_error', {});
         });
 
         it('changes navbar to sign out when signed in', async () => {
@@ -110,7 +91,7 @@ describe('/sign_in', () => {
 
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
-            await this.page.waitFor('#sign_out_nav', { timeout: 5000 });
+            await this.page.waitFor('#sign_out_nav', {});
         });
 
         it('signs out', async () => {
@@ -119,12 +100,12 @@ describe('/sign_in', () => {
 
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
-            await this.page.waitFor('#sign_out_nav', { timeout: 5000 });
-            
+            await this.page.waitFor('#sign_out_nav', {});
+
             const sign_out_button = await this.page.$('#sign_out_nav');
             await sign_out_button.click();
-            await this.page.waitFor('#sign_in_nav', { timeout: 5000 });
-            await this.page.waitFor(pathname => location.pathname === pathname, { timeout: 5000 }, getPathname('/'));
+            await this.page.waitFor('#sign_in_nav', {});
+            await this.page.waitFor(pathname => location.pathname === pathname, { timeout: 60000 }, getPathname('/'));
         });
 
         it('respects redirects', async () => {
@@ -137,7 +118,7 @@ describe('/sign_in', () => {
 
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
-            await this.page.waitFor((expected) => location.pathname === expected, { timeout: 5000 }, getPathname('/states'));
+            await this.page.waitFor((expected) => location.pathname === expected, { timeout: 60000 }, getPathname('/states'));
         });
 
         it('redirects with user parameter', async () => {
@@ -147,7 +128,7 @@ describe('/sign_in', () => {
 
             const submit_button = await this.form.$('button.is-primary');
             await submit_button.click();
-            await this.page.waitFor((expected) => location.href.indexOf(expected) === 0, { timeout: 5000 }, `${getPage('/home')}?user=`);
+            await this.page.waitFor((expected) => location.href.indexOf(expected) === 0, { timeout: 60000 }, `${getPage('/home')}?user=`);
         });
     });
 

@@ -34,7 +34,7 @@ const TabsView = ({ tabs, id }) => {
                             </Tab>
                         ))}
                     </Tabs>
-                    <div id={`${current.context.active.toLowerCase().replace(' ', '_')}_tab`}>
+                    <div id={`${current.context.active.toLowerCase().replace(' ', '_')}_tab_content`}>
                         <Element />
                     </div>
                 </div>
