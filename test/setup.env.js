@@ -5,7 +5,7 @@ const feathers = require('@feathersjs/feathers');
 const auth = require('@feathersjs/authentication-client');
 const rest = require('@feathersjs/rest-client');
 
-jest.setTimeout(20000);
+jest.setTimeout(40000);
 
 const initApi = (url) => {
     const app = feathers();
