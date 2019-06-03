@@ -1,6 +1,7 @@
 import React from 'react';
 import Protected from '../layouts/protected';
 import Tabs from '../layouts/tabs';
+import Table from '../components/table';
 
 
 
@@ -14,7 +15,17 @@ Users.propTypes = {};
 const tabs = [
     {
         label: 'Users',
-        element: Users
+        element: Table,
+        props: {
+            id: 'users',
+            columns: [
+                {
+                    label: 'id'
+                }, {
+                    label: 'email'
+                }
+            ]
+        }
     }
 ];
 
