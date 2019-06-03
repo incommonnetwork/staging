@@ -12,7 +12,9 @@ const Tab = Tabs.Tab;
 
 const TabsView = ({ tabs, id }) => {
     const [current, send] = useMachine(tabMachine.withContext({ active: tabs[0].label, tabs }));
-    const Element = tabs.filter(({ label }) => label === current.context.active)[0].element;
+    const current_tab = tabs.filter(({ label }) => label === current.context.active)[0];
+    const Element = current_tab.element;
+    const props = current_tab.props;
 
     return (
         <WideColumn>
@@ -34,7 +36,7 @@ const TabsView = ({ tabs, id }) => {
                         ))}
                     </Tabs>
                     <div id={`${current.context.active.toLowerCase().replace(' ', '_')}_tab_content`}>
-                        <Element />
+                        <Element {...props} />
                     </div>
                 </div>
             </Card>
