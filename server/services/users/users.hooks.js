@@ -30,27 +30,27 @@ const isAdmin = async (context) => {
 const addRoles = async (context) => {
     const { app, result } = context;
     const sequelizeClient = app.get('sequelizeClient');
-    const userId = result.id
+    const userId = result.id;
 
     const user_roles = await sequelizeClient.model('user_roles').findAll({
         where: {
             userId,
         }
-    })
+    });
 
-    const roles = []
+    const roles = [];
     for (const role_ret of user_roles) {
-        const roleId = role_ret.dataValues.roleId
-        const role = await sequelizeClient.model('roles').findByPk(roleId)
-        roles.push(role.dataValues.type)
+        const roleId = role_ret.dataValues.roleId;
+        const role = await sequelizeClient.model('roles').findByPk(roleId);
+        roles.push(role.dataValues.type);
     }
     context.dispatch = {
         roles: roles.join(','),
         ...context.result
-    }
+    };
 
-    return context
-}
+    return context;
+};
 
 const authorize = async (context) => {
     const { user, query } = context.params;
