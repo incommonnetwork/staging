@@ -21,7 +21,7 @@ const tabs = [
 
 const Home = () => {
     return (
-        <Protected>
+        <Protected role="admin">
             <Tabs tabs={tabs} id="admin" />
         </Protected>
     );

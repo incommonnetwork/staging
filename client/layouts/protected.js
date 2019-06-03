@@ -21,15 +21,16 @@ const Loading = () => (
 );
 
 
-const Protected = ({ children, router }) => {
+const Protected = ({ children, router, role }) => {
     const [current] = useMachine(protectedMachine.withContext({
-        route: router.pathname
+        route: router.pathname,
+        role
     }));
 
 
     return (
         <Main>
-            {current.matches('init') ? (<Loading />) : children}
+            {(current.matches('init') || current.matches('authorize')) ? (<Loading />) : children}
         </Main>
     );
 };
@@ -39,7 +40,8 @@ Protected.propTypes = {
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
-    router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired,
+    role: PropTypes.string
 };
 
 export default withRouter(Protected);

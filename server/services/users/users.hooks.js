@@ -27,6 +27,31 @@ const isAdmin = async (context) => {
     return !!user_roles;
 };
 
+const addRoles = async (context) => {
+    const { app, result } = context;
+    const sequelizeClient = app.get('sequelizeClient');
+    const userId = result.id;
+
+    const user_roles = await sequelizeClient.model('user_roles').findAll({
+        where: {
+            userId,
+        }
+    });
+
+    const roles = [];
+    for (const role_ret of user_roles) {
+        const roleId = role_ret.dataValues.roleId;
+        const role = await sequelizeClient.model('roles').findByPk(roleId);
+        roles.push(role.dataValues.type);
+    }
+    context.dispatch = {
+        roles: roles.join(','),
+        ...context.result
+    };
+
+    return context;
+};
+
 const authorize = async (context) => {
     const { user, query } = context.params;
 
@@ -54,7 +79,7 @@ const authorize = async (context) => {
         case 'update':
         case 'patch':
         case 'remove':
-            if (user && (user.id !== query.id)) throw new Forbidden('Not Authorized');
+            if (user && (!(await isAdmin(context)) && (user.id !== context.id))) throw new Forbidden('Not Authorized');
             break;
         default:
             throw new NotImplemented(__dirname);
@@ -84,7 +109,7 @@ module.exports = {
             protect('password')
         ],
         find: [],
-        get: [],
+        get: [addRoles],
         create: [],
         update: [],
         patch: [],
