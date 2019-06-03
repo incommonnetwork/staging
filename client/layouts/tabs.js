@@ -20,7 +20,6 @@ const TabsView = ({ tabs, id }) => {
                 <div id={`${id}_tabs`}>
                     <Tabs
                         type='boxed'
-                        align='left'
                     >
                         {tabs.map(({ label }) => (
                             <Tab
