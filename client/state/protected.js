@@ -1,4 +1,4 @@
-import { Machine } from 'xstate';
+import { Machine, assign } from 'xstate';
 import getApp from '../utils/feathers';
 import Router from '../utils/router';
 
@@ -16,10 +16,30 @@ export default Machine({
                     return res;
                 },
                 onDone: {
-                    target: 'signed_in'
+                    target: 'authorize',
+                    actions: assign({
+                        userId: (context, { data: { userId } }) => userId
+                    })
                 },
                 onError: {
                     actions: (context) => Router.push(`/sign_in?redirect=${context.route}`)
+                }
+            }
+        },
+        authorize: {
+            invoke: {
+                id: 'authorize',
+                src: async (context) => {
+                    if (!context.role) return;
+                    const app = await getApp();
+                    const user = await app.service('users').get(context.userId);
+                    if (user.roles.split(',').indexOf(context.role) === -1) throw new Error('unauthorized');
+                },
+                onDone: {
+                    target: 'signed_in'
+                },
+                onError: {
+                    actions: () => Router.push('/home')
                 }
             }
         },
