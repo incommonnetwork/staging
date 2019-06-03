@@ -1,10 +1,10 @@
 /* global location */
 const puppeteer = require('puppeteer');
-const env = require('../setup.env')(5032);
+const env = require('../setup.env')(6032);
 const { getPage, getPathname } = env;
 
 
-describe('/home', () => {
+describe('/admin', () => {
     beforeAll(async () => {
         this.browser = await puppeteer.launch({});
         await env.before();
@@ -19,7 +19,7 @@ describe('/home', () => {
         this.context = await this.browser.createIncognitoBrowserContext();
         this.app = await env.initApi();
         this.page = await this.context.newPage();
-        await this.page.goto(getPage('/home'));
+        await this.page.goto(getPage('/admin'));
     });
 
     afterEach(async () => {
@@ -57,25 +57,11 @@ describe('/home', () => {
             const submit_button = await form.$('button.is-primary');
             await submit_button.click();
 
-            await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 60000 }, getPathname('/home'));
+            await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 60000 }, getPathname('/admin'));
         });
 
         it('has tabs', async () => {
-            await this.page.waitFor('#home_tabs', {});
-        });
-
-        describe('settings', async () => {
-            it('has tab', async () => {
-                await this.page.waitFor('#settings_tab', {});
-            });
-
-            it('has tab content', async () => {
-                await this.page.waitFor('#settings_tab_content', {});
-            });
-
-            it('has form', async () => {
-                await this.page.waitFor('#settings_form');
-            });
+            await this.page.waitFor('#admin_tabs', {});
         });
     });
 
