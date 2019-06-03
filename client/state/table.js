@@ -32,6 +32,32 @@ export default Machine({
                     actions: assign({
                         query: (context, { query }) => query
                     })
+                },
+                UPDATE_FILTER: {
+                    actions: assign({
+                        filter: (context, { filter }) => filter
+                    })
+                },
+                SELECT_FILTER: {
+                    actions: assign({
+                        filter: (context, { filter }) => filter,
+                        query: () => ({})
+                    })
+                },
+                SUBMIT_FILTER: {
+                    target: 'loading',
+                    actions: assign({
+                        query: ({ filter }) => ({
+                            [filter.field.toLowerCase()]: filter.value
+                        })
+                    })
+                },
+                RESET_FILTER: {
+                    target: 'loading',
+                    actions: assign({
+                        query: () => ({}),
+                        filter: () => ({})
+                    })
                 }
             }
         }
