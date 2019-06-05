@@ -50,9 +50,9 @@ Pagination.propTypes = {
     send: PropTypes.func.isRequired
 };
 
-const TableBody = ({ columns, page }) => (
+const TableBody = ({ columns, page, id }) => (
 
-    <tbody>
+    <tbody id={`${id}_table_body`} total={page.total}>
         {page.data.map((data) => (
             <tr key={data.id}>
                 {columns.map(({ label }) => (
@@ -66,6 +66,7 @@ const TableBody = ({ columns, page }) => (
 );
 
 TableBody.propTypes = {
+    id: PropTypes.string.isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired,
     page: PropTypes.object
 };
@@ -138,7 +139,7 @@ const Table = ({ id, columns }) => {
             </Level>
             <BulmaTable>
                 <TableHeader columns={columns} />
-                {current.matches('display') ? <TableBody columns={columns} page={current.context.page} /> : null}
+                {current.matches('display') ? <TableBody id={id} columns={columns} page={current.context.page} /> : null}
             </BulmaTable>
             {current.matches('loading') ? <Loader /> : <Pagination page={current.context.page} id={id} send={send} />}
         </div>
