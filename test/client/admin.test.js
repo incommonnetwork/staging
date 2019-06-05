@@ -81,6 +81,47 @@ describe('/admin', () => {
         it('has tabs', async () => {
             await this.page.waitFor('#admin_tabs', {});
         });
+
+        describe('users', async () => {
+            beforeEach(async () => {
+                const tab = await this.page.waitFor('#users_tab');
+                await tab.click();
+            });
+
+            it('has tab', async () => {
+                await this.page.waitFor('#users_tab', {});
+            });
+
+            it('has tab content', async () => {
+                await this.page.waitFor('#users_tab_content', {});
+            });
+
+            it('has table', async () => {
+                await this.page.waitFor('#users_table');
+            });
+
+            it('has filter dropdown', async () => {
+                await this.page.waitFor('#users_filter_dropdown');
+            });
+
+            it('can filter based on id', async () => {
+                expect.assertions(1);
+                const dropdown = await this.page.waitFor('#users_filter_dropdown');
+                await dropdown.click();
+                const id_selector = await this.page.waitFor('#users_id_selector');
+                await id_selector.click();
+                await this.page.type('#users_filter', '1');
+                const submit_button = await this.page.waitFor('#users_filter_submit');
+                await submit_button.click();
+                await this.page.waitFor('#users_table_body');
+                const total = await this.page.$eval('#users_table_body', (node) => node.getAttribute('total'));
+
+                expect(total).toBe('1');
+            });
+
+
+
+        });
     });
 
 });
