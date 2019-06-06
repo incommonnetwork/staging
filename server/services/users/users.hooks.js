@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { Forbidden, NotImplemented } = require('@feathersjs/errors');
+const mailer = require('../../mailer');
 
 const {
     hashPassword, protect
@@ -90,6 +91,18 @@ const authorize = async (context) => {
     return context;
 };
 
+const email_confirm = async (context) => {
+    const email = context.result.email;
+    await mailer.sendMail({
+        to: email,
+        subject: 'Welcome to InCommon',
+        text: `
+            This email address was used to register an account at incommon.dev
+            If you did not do this, please email ryan@incommon.dev to have yourself removed from our database
+        `
+    });
+};
+
 
 module.exports = {
     before: {
@@ -110,7 +123,7 @@ module.exports = {
         ],
         find: [],
         get: [addRoles],
-        create: [],
+        create: [email_confirm],
         update: [],
         patch: [],
         remove: []
