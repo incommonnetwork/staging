@@ -1,5 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { Forbidden, NotImplemented } = require('@feathersjs/errors');
+const nodemailer = require('nodemailer');
+
 const mailer = require('../../mailer');
 
 const {
@@ -93,7 +95,7 @@ const authorize = async (context) => {
 
 const email_confirm = async (context) => {
     const email = context.result.email;
-    await mailer.sendMail({
+    const info = await mailer.sendMail({
         to: email,
         subject: 'Welcome to InCommon',
         text: `
@@ -101,6 +103,10 @@ const email_confirm = async (context) => {
             If you did not do this, please email ryan@incommon.dev to have yourself removed from our database
         `
     });
+
+    if (info) {
+        context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
+    }
 };
 
 
