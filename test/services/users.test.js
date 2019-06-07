@@ -103,8 +103,8 @@ describe('\'users\' service', () => {
             await page.waitFor('.mp_address_email');
             const sent_email = await page.$eval('.mp_address_email', (el) => el.getAttribute('title'));
             expect(sent_email).toBe(email);
-            await page.close()
-            await browser.close()
+            await page.close();
+            await browser.close();
         });
 
         it('handles duplicate create', async () => {
