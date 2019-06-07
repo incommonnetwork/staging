@@ -96,6 +96,7 @@ const authorize = async (context) => {
 const email_confirm = async (context) => {
     const email = context.result.email;
     const info = await mailer.sendMail({
+        from: 'InCommon <noreply@bots.incommon.dev>',
         to: email,
         subject: 'Welcome to InCommon',
         text: `
@@ -104,9 +105,7 @@ const email_confirm = async (context) => {
         `
     });
 
-    if (info) {
-        context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
-    }
+    context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
 };
 
 

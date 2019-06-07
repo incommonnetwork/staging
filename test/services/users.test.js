@@ -105,7 +105,7 @@ describe('\'users\' service', () => {
                 await page.goto(res.email_confirmation);
                 await page.waitFor('.mp_address_email');
                 const sent_email = await page.$eval('.mp_address_email', (el) => el.getAttribute('title'));
-                expect(sent_email).toBe(email);
+                expect(sent_email).toBe('noreply@bots.incommon.dev');
                 await page.close();
                 await browser.close();
             }
