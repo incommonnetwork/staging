@@ -44,6 +44,13 @@
         insertafter: \[Service\]
         line: Environment="POSTGRES_CONNECTION={{ incommon_POSTGRES_CONNECTION }}"
         path: "{{ incommon_service_file }}"
+    - name: service FASTMAIL_PASSWORD
+      become: yes
+      lineinfile:
+        state: present
+        insertafter: \[Service\]
+        line: Environment="FASTMAIL_PASSWORD={{ incommon_FASTMAIL_PASSWORD }}"
+        path: "{{ incommon_service_file }}"
     - name: service loaded, enabled, started
       become: yes
       systemd:
