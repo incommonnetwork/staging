@@ -84,7 +84,7 @@ describe('\'users\' service', () => {
         });
 
         it('handles create', async () => {
-            const isProdStaging = ['production', 'staging'].indexOf(process.env.TEST_ENV) !== -1
+            const isProdStaging = ['production', 'staging'].indexOf(process.env.TEST_ENV) !== -1;
             expect.assertions(isProdStaging ? 4 : 5);
 
             const email = `${rand}@example.com`;

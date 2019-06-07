@@ -1,5 +1,4 @@
 
-const app = require('../server/app');
 const env = process.env.NODE_ENV || 'development';
 const dialect = 'postgres';
 
@@ -15,10 +14,12 @@ const useSSL = (() => {
     return _ssl;
 })();
 
+const PGRES_URL = process.env.POSTGRES_CONNECTION || "postgres://incommon:incommon@localhost:5432/incommon"
+
 module.exports = {
     [env]: {
         dialect,
-        url: app.get(dialect),
+        url: PGRES_URL,
         migrationStorageTableName: '_migrations',
         dialectOptions: {
             ssl: useSSL
