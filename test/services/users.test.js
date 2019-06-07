@@ -1,5 +1,5 @@
 const env = require('../setup.env.js')(3031);
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer');
 const initApi = env.initApi;
 let rand = Math.random();
 
@@ -95,14 +95,14 @@ describe('\'users\' service', () => {
             expect(res.id).toBeTruthy();
             expect(res.email).toBe(email);
             expect(res.password).toBeFalsy();
-            expect(res.email_confirmation).toBeTruthy()
+            expect(res.email_confirmation).toBeTruthy();
 
-            const browser = await puppeteer.launch()
+            const browser = await puppeteer.launch();
             const page = await browser.newPage();
-            await page.goto(res.email_confirmation)
-            await page.waitFor('.mp_address_email')
-            const sent_email = await page.$eval('.mp_address_email', (el) => el.getAttribute('title'))
-            expect(sent_email).toBe(email)
+            await page.goto(res.email_confirmation);
+            await page.waitFor('.mp_address_email');
+            const sent_email = await page.$eval('.mp_address_email', (el) => el.getAttribute('title'));
+            expect(sent_email).toBe(email);
         });
 
         it('handles duplicate create', async () => {
