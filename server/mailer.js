@@ -9,12 +9,12 @@ const config = ['staging', 'production'].indexOf(process.env.NODE_ENV) === -1 ? 
         pass: 'MPjp1xKSyfdWNFNBmy'
     }
 } : {
-    service: 'FastMail',
-    auth: {
-        user: 'noreply@bots.incommon.dev',
-        pass: process.env.FASTMAIL_PASSWORD
-    }
-};
+        service: 'FastMail',
+        auth: {
+            user: 'noreply@bots.incommon.dev',
+            pass: process.env.FASTMAIL_PASSWORD
+        }
+    };
 
 const transport = nodemailer.createTransport(config);
 
