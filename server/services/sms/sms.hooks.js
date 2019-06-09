@@ -8,12 +8,23 @@ module.exports = {
         create: [async (context) => {
             const sequelizeClient = context.app.get('sequelizeClient');
             const phones = sequelizeClient.models.phones;
-            await phones.findOrCreate({
+            const [result] = await phones.findOrCreate({
                 where: {
-                    number: context.data.From
-
+                    number: context.data.From,
+                    zip: context.data.FromZip,
+                    city: context.data.FromCity,
+                    state: context.data.FromState,
+                    country: context.data.FromCountry
                 }
             });
+
+            const {data: [user]} = await context.app.service('users').find({
+                query: {
+                    phoneId: result.get('id')
+                }
+            })
+
+            context.params.user = user || false;
         }],
         update: [],
         patch: [],
