@@ -22,7 +22,7 @@ module.exports = {
                 query: {
                     phoneId: result.get('id')
                 }
-            })
+            });
 
             context.params.user = user || false;
         }],
