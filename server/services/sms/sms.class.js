@@ -1,3 +1,5 @@
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
+
 /* eslint-disable no-unused-vars */
 class Service {
     constructor(options) {
@@ -5,11 +7,10 @@ class Service {
     }
 
     async create(data, params) {
-        if (Array.isArray(data)) {
-            return Promise.all(data.map(current => this.create(current, params)));
-        }
+        const twiml = new MessagingResponse();
 
-        return data;
+        twiml.message('The Robots are coming! Head for the hills!');
+        return twiml.toString();
     }
 }
 
