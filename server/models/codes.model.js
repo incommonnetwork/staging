@@ -11,18 +11,18 @@ module.exports = function (app) {
             allowNull: false
         }
     }, {
-            hooks: {
-                beforeCount(options) {
-                    options.raw = true;
-                }
+        hooks: {
+            beforeCount(options) {
+                options.raw = true;
             }
-        });
+        }
+    });
 
     // eslint-disable-next-line no-unused-vars
     codes.associate = function (models) {
-        models.codes.belongsTo(models.users, { as: 'assigned_by' })
-        models.codes.belongsToMany(models.users, { as: 'attendees', through: 'user_codes' })
-        models.users.belongsToMany(models.codes, { as: 'interests', through: 'user_codes' })
+        models.codes.belongsTo(models.users, { as: 'assigned_by' });
+        models.codes.belongsToMany(models.users, { as: 'attendees', through: 'user_codes' });
+        models.users.belongsToMany(models.codes, { as: 'interests', through: 'user_codes' });
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
     };
