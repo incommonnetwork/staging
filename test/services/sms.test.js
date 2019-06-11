@@ -61,8 +61,4 @@ describe('\'sms\' service', () => {
             expect(body.indexOf('<Response><Message>')).toBeGreaterThan(-1);
         }
     });
-
-    it('should respond with a twilio xml definition', async () => {
-
-    });
 });

@@ -26,7 +26,7 @@ Form.propTypes = {
     id: PropTypes.string.isRequired
 };
 
-const InnerForm = ({ id, current: { value, context: { schema, uiSchema, validate, onSubmit } }, send }) => (
+const InnerForm = ({ id, current: { value, context: { schema, uiSchema, validate, onSubmit, form_submit_label } }, send }) => (
     <div id={id + '_form'}>
         <JsonSchemaForm
             disabled={value === 'form_submit'}
@@ -40,7 +40,7 @@ const InnerForm = ({ id, current: { value, context: { schema, uiSchema, validate
                 fullwidth
                 loading={value === 'form_submit'}
                 type="submit">
-                Submit
+                {form_submit_label || 'Submit'}
             </Button>
         </JsonSchemaForm>
     </div>
