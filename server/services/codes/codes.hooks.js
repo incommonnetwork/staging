@@ -26,14 +26,18 @@ const isAdmin = async (context) => {
 const authorize = async (context) => {
     if (!(await isAdmin(context))) throw new Forbidden();
 };
+
+const assignedBy = async (context) => {
+    context.data.assignedById = context.params.user.id;
+};
 module.exports = {
     before: {
-        all: [authenticate('jwt'),authorize],
+        all: [authenticate('jwt'), authorize],
         find: [],
         get: [],
-        create: [],
-        update: [],
-        patch: [],
+        create: [assignedBy],
+        update: [assignedBy],
+        patch: [assignedBy],
         remove: []
     },
 
