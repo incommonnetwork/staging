@@ -167,8 +167,54 @@ describe('\'codes\' service', () => {
                 await this.api.authenticate(this.creds);
             });
 
-            describe('should allow', () => {
+            describe('should allow all ops', () => {
+                beforeEach(async () => {
+                    this.service = this.api.service('codes')
+                    this.code_id = (await this.service.create({
+                        text: this.run
+                    })).id
+                })
 
+                it('allows create', async () => {
+                    await this.service.create({
+                        text: this.run
+                    })
+                })
+
+                it('allows get', async () => {
+                    await this.service.get(this.code_id)
+                })
+
+                it('allows find', async () => {
+                    await this.service.find({})
+                })
+
+                it('alows update', async () => {
+                    expect.assertions(1)
+
+                    await this.service.update(this.code_id, {
+                        text: 'updated'
+                    })
+
+                    const updated = await this.service.get(this.code_id)
+
+                    expect(updated.text).toBe('updated')
+                })
+
+                it('allows remove', async () => {
+                    expect.assertions(1)
+
+                    await this.service.remove(this.code_id)
+
+                    await this.service.get(this.code_id).catch(e => {
+                        expect(e.code).toBe(404)
+                    })
+                })
+
+                it('populates assignedBy', async () => {
+                    const code = await this.service.get(this.code_id)
+                    expect(code.assignedById).toBe(1)
+                })
             });
         });
 
