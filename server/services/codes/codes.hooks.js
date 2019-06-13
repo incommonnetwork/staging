@@ -28,8 +28,8 @@ const authorize = async (context) => {
 };
 
 const assignedBy = async (context) => {
-    context.data.assignedById = context.params.user.id
-}
+    context.data.assignedById = context.params.user.id;
+};
 module.exports = {
     before: {
         all: [authenticate('jwt'), authorize],
