@@ -10,6 +10,7 @@ const {
 
 const isAdmin = async (context) => {
     const { app, params: { user } } = context;
+
     const sequelizeClient = app.get('sequelizeClient');
 
     const [adminRole] = await sequelizeClient.model('roles').findAll({
@@ -49,10 +50,23 @@ const addRoles = async (context) => {
     }
     context.dispatch = {
         roles: roles.join(','),
-        ...context.result
+        ...(context.dispatch || context.result)
     };
 
     return context;
+};
+
+const addCodes = async (context) => {
+    const { app, result, dispatch } = context;
+    const to_mod = dispatch || result;
+    const sequelizeClient = app.get('sequelizeClient');
+    const userId = result.id;
+    const user_model = await sequelizeClient.model('users').findByPk(userId);
+    const interests = await user_model.getInterests();
+    context.dispatch = {
+        interests,
+        ...to_mod
+    };
 };
 
 const authorize = async (context) => {
@@ -79,6 +93,9 @@ const authorize = async (context) => {
             }
             break;
         case 'get':
+            if (user && !(await isAdmin(context))) {
+                context.id = user.id;
+            }
         case 'update':
         case 'patch':
         case 'remove':
@@ -127,7 +144,7 @@ module.exports = {
             protect('password')
         ],
         find: [],
-        get: [addRoles],
+        get: [addRoles, addCodes],
         create: [email_confirm],
         update: [],
         patch: [],

@@ -249,15 +249,6 @@ describe('\'users\' service', () => {
                     });
                 });
 
-                it('getting another user', async () => {
-                    expect.assertions(2);
-
-                    await this.service.get(1).catch(e => {
-                        expect(e.code).toBe(403);
-                        expect(e.message).toBe('Not Authorized');
-                    });
-                });
-
                 it('updating another user', async () => {
                     expect.assertions(2);
 
@@ -293,6 +284,14 @@ describe('\'users\' service', () => {
 
             describe('should allow', async () => {
 
+
+                it('getting self', async () => {
+                    expect.assertions(1);
+
+                    const user = await this.service.get(1);
+                    expect(user.id).toBe(this.id);
+                });
+
                 it('finding self', async () => {
                     expect.assertions(3);
 
@@ -302,6 +301,15 @@ describe('\'users\' service', () => {
                     expect(res.data[0].id).toBe(this.id);
                     expect(res.data[0].email).toBe(this.creds.email);
                 });
+
+                it('getting self', async () => {
+
+                    expect.assertions(1);
+
+                    const res = await this.service.get(1);
+                    expect(res.interests).toBeTruthy();
+                });
+
             });
         });
 
