@@ -222,6 +222,6 @@ describe('\'codes\' service', () => {
             beforeEach(async () => {
                 this.run = `${Math.random()}`;
             });
-        })
+        });
     });
 });

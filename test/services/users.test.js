@@ -1,4 +1,5 @@
 const env = require('../setup.env.js')(3031);
+const fetch = require('node-fetch');
 const puppeteer = require('puppeteer');
 const initApi = env.initApi;
 let rand = Math.random();
@@ -139,6 +140,49 @@ describe('\'users\' service', () => {
                 expect(e.code).toBe(403);
             });
         });
+
+        describe('associates with phone number', () => {
+            beforeEach(async () => {
+                this.number = `+1${Math.floor(Math.random() * 1000000000)}`;
+                this.run = `${Math.random()}`;
+                this.api = env.initApi();
+                await this.api.authenticate({
+                    strategy: 'local',
+                    email: 'admin@mock.admin',
+                    password: 'admin123'
+                });
+
+                await fetch(`${env.getApi('/sms')}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        From: this.number,
+                        FromCity: 'BOULDER',
+                        FromZip: '80301',
+                        FromCountry: 'UNITED STATES',
+                        FromState: 'CO',
+                        body: this.code
+                    })
+                });
+            });
+
+            it('associates', async () => {
+                expect.assertions(1);
+
+                const { id } = await this.api.service('users').create({
+                    email: `${this.run}@example.com`,
+                    password: this.run,
+                    confirm_password: this.run,
+                    phoneId: 1
+                });
+
+                const gotten = await this.api.service('users').get(id);
+                expect(gotten.phone.id).toBe(1);
+            });
+        });
+
     });
 
     describe('authentication', () => {
