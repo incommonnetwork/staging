@@ -15,6 +15,12 @@ const getPage = pathname => {
             break;
         case 'development':
         case 'test':
+            if (process.env.TEST_ENV === 'staging') {
+                opts.hostname = 'www.incommon.dev'
+                opts.protocol = 'https'
+                opts.pathname = `/staging${opts.pathname}`
+                break
+            }
         default:
             opts.hostname = 'localhost';
             opts.protocol = 'http';
