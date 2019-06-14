@@ -62,6 +62,7 @@ const testStaging = () => {
 };
 
 const testCI = (port) => {
+    app.set('port', port)
     const api_url = `http://localhost:${port}`;
 
     const logger = require('../server/logger');
