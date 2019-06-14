@@ -69,6 +69,19 @@ const addCodes = async (context) => {
     };
 };
 
+const addPhone = async (context) => {
+    const { app, result, dispatch } = context;
+    const to_mod = dispatch || result;
+    const sequelizeClient = app.get('sequelizeClient');
+    const userId = result.id;
+    const user_model = await sequelizeClient.model('users').findByPk(userId);
+    const phone = await user_model.getPhone();
+    context.dispatch = {
+        phone,
+        ...to_mod
+    };
+};
+
 const authorize = async (context) => {
     const { user, query } = context.params;
 
@@ -144,7 +157,7 @@ module.exports = {
             protect('password')
         ],
         find: [],
-        get: [addRoles, addCodes],
+        get: [addRoles, addCodes, addPhone],
         create: [email_confirm],
         update: [],
         patch: [],

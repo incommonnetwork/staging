@@ -93,12 +93,13 @@ const testCI = (port) => {
             );
 
             server.once('listening', () => {
+                app.set('port', port);
                 logger.info(
                     'Feathers application started on http://%s:%d',
                     app.get('host'),
                     port,
                 );
-                setTimeout(resolve, 5000);
+                resolve();
             });
         });
     };
