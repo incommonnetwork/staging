@@ -16,10 +16,10 @@ const getPage = pathname => {
         case 'development':
         case 'test':
             if (process.env.TEST_ENV === 'staging') {
-                opts.hostname = 'www.incommon.dev'
-                opts.protocol = 'https'
-                opts.pathname = `/staging${opts.pathname}`
-                break
+                opts.hostname = 'www.incommon.dev';
+                opts.protocol = 'https';
+                opts.pathname = `/staging${opts.pathname}`;
+                break;
             }
         default:
             opts.hostname = 'localhost';
@@ -44,7 +44,7 @@ class Service {
         } else if (!params.user) {
             twiml.message(`Thanks for reaching out! visit ${getPage('/sign_up')}?c=${params.code.id}&p=${params.phone.id} to finish signing up`);
         } else {
-            twiml.message(`Succesfully registered with code : ${params.code.text}`);
+            twiml.message(`Successfully registered with code : ${params.code.text}`);
         }
 
         return twiml.toString();
