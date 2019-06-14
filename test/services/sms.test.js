@@ -136,8 +136,6 @@ describe('\'sms\' service', () => {
 
             it('responds with signup link', async () => {
                 expect.assertions(1);
-                /*eslint-disable no-console */
-                console.log('MESSAGE', this.message, env.getPage('/sign_up'));
                 expect(this.message.indexOf(env.getPage('/sign_up'))).toBeGreaterThan(-1);
             });
         });

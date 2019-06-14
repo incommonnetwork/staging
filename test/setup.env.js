@@ -99,7 +99,7 @@ const testCI = (port) => {
                     app.get('host'),
                     port,
                 );
-                resolve()
+                resolve();
             });
         });
     };
