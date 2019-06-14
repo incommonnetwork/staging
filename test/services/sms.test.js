@@ -1,4 +1,3 @@
-
 const env = require('../setup.env.js')(4431);
 const fetch = require('node-fetch');
 
@@ -8,6 +7,7 @@ describe('\'sms\' service', () => {
 
     beforeEach(async () => {
         this.number = `+1${Math.floor(Math.random() * 1000000000)}`;
+        this.code = this.number;
     });
 
     it('responds to create', async () => {
@@ -61,4 +61,34 @@ describe('\'sms\' service', () => {
             expect(body.indexOf('<Response><Message>')).toBeGreaterThan(-1);
         }
     });
+
+    describe('no user with number', () => {
+        beforeEach(async () => {
+            this.result = await fetch(`${env.getApi('/sms')}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    From: this.number,
+                    FromCity: 'BOULDER',
+                    FromZip: '80301',
+                    FromCountry: 'UNITED STATES',
+                    FromState: 'CO',
+                    body: this.code
+                })
+            });
+
+            this.result_text = await this.result.text();
+            this.message = this.result_text.split('<Message>').pop().split('</Message>')[0];
+        });
+
+        it('responds with signup link', async () => {
+            expect.assertions(1);
+
+            expect(this.result_text.indexOf(env.getPage('/sign_up'))).toBeGreaterThan(-1);
+        });
+    });
+
+
 });
