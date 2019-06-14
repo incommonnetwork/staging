@@ -23,7 +23,8 @@ describe('\'sms\' service', () => {
                 FromCity: 'BOULDER',
                 FromZip: '80301',
                 FromCountry: 'UNITED STATES',
-                FromState: 'CO'
+                FromState: 'CO',
+                body: this.code
             })
         });
         expect(result.ok).toBe(true);
@@ -49,7 +50,8 @@ describe('\'sms\' service', () => {
                     FromCity: 'BOULDER',
                     FromZip: '80301',
                     FromCountry: 'UNITED STATES',
-                    FromState: 'CO'
+                    FromState: 'CO',
+                    body: this.code
                 })
             });
 
@@ -62,32 +64,81 @@ describe('\'sms\' service', () => {
         }
     });
 
-    describe('no user with number', () => {
-        beforeEach(async () => {
-            this.result = await fetch(`${env.getApi('/sms')}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    From: this.number,
-                    FromCity: 'BOULDER',
-                    FromZip: '80301',
-                    FromCountry: 'UNITED STATES',
-                    FromState: 'CO',
-                    body: this.code
-                })
+    describe('no user', () => {
+
+        describe('without code', async () => {
+
+            beforeEach(async () => {
+                this.result = await fetch(`${env.getApi('/sms')}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        From: this.number,
+                        FromCity: 'BOULDER',
+                        FromZip: '80301',
+                        FromCountry: 'UNITED STATES',
+                        FromState: 'CO',
+                        body: this.code
+                    })
+                });
+
+                this.result_text = await this.result.text();
+                this.message = this.result_text.split('<Message>').pop().split('</Message>')[0];
             });
 
-            this.result_text = await this.result.text();
-            this.message = this.result_text.split('<Message>').pop().split('</Message>')[0];
+            it('responds with error', () => {
+                expect.assertions(1);
+
+                expect(this.message.indexOf('Unrecognized')).toBe(0);
+            });
         });
 
-        it('responds with signup link', async () => {
-            expect.assertions(1);
+        describe('with code', async () => {
 
-            expect(this.result_text.indexOf(env.getPage('/sign_up'))).toBeGreaterThan(-1);
+            beforeEach(async () => {
+                this.api = await env.initApi();
+                this.run = `${Math.random()}`;
+                const strategy = 'local';
+                // see server/services/seeders/20190530221359-mock-admin-user.js
+                const email = 'admin@mock.admin';
+                const password = 'admin123';
+
+                this.creds = { strategy, email, password };
+
+                await this.api.authenticate(this.creds);
+
+                await this.api.service('codes').create({
+                    text: this.run
+                });
+
+                this.result = await fetch(`${env.getApi('/sms')}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        From: this.number,
+                        FromCity: 'BOULDER',
+                        FromZip: '80301',
+                        FromCountry: 'UNITED STATES',
+                        FromState: 'CO',
+                        body: this.run
+                    })
+                });
+
+                this.result_text = await this.result.text();
+                this.message = this.result_text.split('<Message>').pop().split('</Message>')[0];
+
+            });
+
+            it('responds with signup link', async () => {
+                expect.assertions(1);
+                expect(this.message.indexOf(env.getPage('/sign_up'))).toBeGreaterThan(-1);
+            });
         });
+
     });
 
 

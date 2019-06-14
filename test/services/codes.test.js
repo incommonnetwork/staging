@@ -218,5 +218,10 @@ describe('\'codes\' service', () => {
             });
         });
 
+        describe('sms', () => {
+            beforeEach(async () => {
+                this.run = `${Math.random()}`;
+            });
+        })
     });
 });
