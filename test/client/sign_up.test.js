@@ -2,7 +2,7 @@
 const puppeteer = require('puppeteer');
 const env = require('../setup.env')(3034);
 const { getPage, getPathname } = env;
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
 
 const wait = (ms) => new Promise(res => setTimeout(res, ms));
 
