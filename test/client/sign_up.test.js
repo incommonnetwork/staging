@@ -2,6 +2,7 @@
 const puppeteer = require('puppeteer');
 const env = require('../setup.env')(3034);
 const { getPage, getPathname } = env;
+const fetch = require('node-fetch')
 
 const wait = (ms) => new Promise(res => setTimeout(res, ms));
 
@@ -106,6 +107,43 @@ describe('/sign_up', () => {
 
             const pathname = await this.page.$eval('body', () => location.pathname);
             expect(pathname).toBe(getPathname('/sign_up'));
+        });
+
+        describe('sms referal', () => {
+            beforeEach(async () => {
+                this.api = await env.initApi();
+                this.run = `${Math.random()}`;
+                const strategy = 'local';
+                // see server/services/seeders/20190530221359-mock-admin-user.js
+                const email = 'admin@mock.admin';
+                const password = 'admin123';
+
+                this.creds = { strategy, email, password };
+
+                await this.api.authenticate(this.creds);
+
+                await this.api.service('codes').create({
+                    text: this.run
+                });
+
+                this.result = await fetch(`${env.getApi('/sms')}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        From: this.number,
+                        FromCity: 'BOULDER',
+                        FromZip: '80301',
+                        FromCountry: 'UNITED STATES',
+                        FromState: 'CO',
+                        body: this.run
+                    })
+                });
+
+                this.result_text = await this.result.text();
+                this.message = this.result_text.split('<Message>').pop().split('</Message>')[0];
+            });
         });
     });
 
