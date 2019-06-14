@@ -111,6 +111,8 @@ describe('/sign_up', () => {
 
         describe('sms referal', () => {
             beforeEach(async () => {
+                this.number = `+1${Math.floor(Math.random() * 1000000000)}`;
+                this.code = this.number;
                 this.api = await env.initApi();
                 this.run = `${Math.random()}`;
                 const strategy = 'local';
@@ -137,12 +139,45 @@ describe('/sign_up', () => {
                         FromZip: '80301',
                         FromCountry: 'UNITED STATES',
                         FromState: 'CO',
-                        body: this.run
+                        Body: this.run
                     })
                 });
 
                 this.result_text = await this.result.text();
                 this.message = this.result_text.split('<Message>').pop().split('</Message>')[0];
+                const parts = this.message.split(' ');
+                for (const word of parts) {
+                    if (word.indexOf('http') === 0) {
+                        this.signup_url = word.replace('amp;', '');
+                    }
+                }
+            });
+
+            it('correct path and host', async () => {
+                expect.assertions(1);
+
+                const url_no_query = this.signup_url.split('?')[0];
+                expect(url_no_query).toBe(env.getPage('/sign_up'));
+            });
+
+            it('has code and phone query', async () => {
+                expect.assertions(2);
+
+                function parseQuery(queryString) {
+                    var query = {};
+                    var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+                    for (var i = 0; i < pairs.length; i++) {
+                        var pair = pairs[i].split('=');
+                        query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+                    }
+                    return query;
+                }
+
+                const queryString = this.signup_url.split('?').pop();
+                const query = parseQuery(queryString);
+
+                expect(query.p).toBeTruthy();
+                expect(query.c).toBeTruthy();
             });
         });
     });
