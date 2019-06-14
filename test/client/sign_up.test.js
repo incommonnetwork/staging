@@ -179,6 +179,28 @@ describe('/sign_up', () => {
                 expect(query.p).toBeTruthy();
                 expect(query.c).toBeTruthy();
             });
+
+            describe('registration', () => {
+                beforeEach(async () => {
+                    await this.page.goto(this.signup_url)
+
+                    await this.page.type('#root_email', this.good_input.email);
+                    await this.page.type('#root_password', this.good_input.password);
+                    await this.page.type('#root_confirm_password', this.good_input.confirm_password);
+
+                    const submit_button = await this.form.$('button.is-primary');
+                    await submit_button.click();
+                    await this.page.waitFor(() => location.pathname = '/home')
+                })
+
+                it('has user', async () => {
+                    const { data: [user] } = await this.api.find({
+                        email: this.good_input.email
+                    })
+
+                    expect(user).toBeTruthy()
+                })
+            })
         });
     });
 
