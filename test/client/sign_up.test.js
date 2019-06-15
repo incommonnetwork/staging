@@ -33,7 +33,9 @@ describe('/sign_up', () => {
     });
 
     beforeEach(async () => {
-        this.page = await this.browser.newPage();
+        this.context = await this.browser.createIncognitoBrowserContext();
+        this.app = await env.initApi();
+        this.page = await this.context.newPage();
         await this.page.goto(getPage('/sign_up'));
     });
 
@@ -182,7 +184,8 @@ describe('/sign_up', () => {
 
             describe('registration', () => {
                 beforeEach(async () => {
-                    await this.page.goto(this.signup_url)
+                    await this.page.goto(this.signup_url);
+                    this.form = await this.page.$('#sign_up_form');
 
                     await this.page.type('#root_email', this.good_input.email);
                     await this.page.type('#root_password', this.good_input.password);
@@ -190,17 +193,68 @@ describe('/sign_up', () => {
 
                     const submit_button = await this.form.$('button.is-primary');
                     await submit_button.click();
-                    await this.page.waitFor(() => location.pathname = '/home')
-                })
+                    await this.page.waitFor((expected) => location.pathname === expected, {}, getPathname('/home'));
+                });
 
                 it('has user', async () => {
-                    const { data: [user] } = await this.api.find({
-                        email: this.good_input.email
+                    expect.assertions(1)
+
+                    this.api = await env.initApi()
+                    await this.api.authenticate({
+                        strategy: 'local',
+                        ...this.good_input
                     })
 
-                    expect(user).toBeTruthy()
+                    const { data: [{ id }] } = await this.api.service('users').find({
+                        email: this.good_input.email
+                    });
+
+                    const user = await this.api.service('users').get(id)
+
+                    expect(user).toBeTruthy();
+                });
+
+                it('has associated interest', async () => {
+                    expect.assertions(4)
+
+                    this.api = await env.initApi()
+                    await this.api.authenticate({
+                        strategy: 'local',
+                        ...this.good_input
+                    })
+
+                    const { data: [{ id }] } = await this.api.service('users').find({
+                        email: this.good_input.email
+                    });
+
+                    const user = await this.api.service('users').get(id)
+
+                    expect(user).toBeTruthy();
+                    expect(user.interests).toBeTruthy()
+                    expect(user.interests.length).toBe(1)
+                    expect(user.interests[0].text).toBe(this.run)
                 })
-            })
+
+                it('has associated phone number', async () => {
+                    expect.assertions(3)
+
+                    this.api = await env.initApi()
+                    await this.api.authenticate({
+                        strategy: 'local',
+                        ...this.good_input
+                    })
+
+                    const { data: [{ id }] } = await this.api.service('users').find({
+                        email: this.good_input.email
+                    });
+
+                    const user = await this.api.service('users').get(id)
+
+                    expect(user).toBeTruthy();
+                    expect(user.phone).toBeTruthy()
+                    expect(user.phone.number).toBe(this.number)
+                })
+            });
         });
     });
 

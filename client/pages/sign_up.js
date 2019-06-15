@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 
 import Main from '../layouts/main';
@@ -59,8 +60,12 @@ const context = {
         formData
     }),
     submit_service: async ({ formData }) => {
+        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+
         const app = await getApp();
-        const created = await app.service('users').create(formData, context);
+        const created = await app.service('users').create(formData, {
+            query
+        });
         await app.authenticate({
             strategy: 'local',
             ...formData

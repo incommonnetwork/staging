@@ -138,10 +138,37 @@ const email_confirm = async (context) => {
     context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
 };
 
+const associate_code = async (context) => {
+    if (!context._query.c) return;
+
+    const sequelizeClient = context.app.get('sequelizeClient');
+
+    const user = await sequelizeClient.models.users.findByPk(context.result.id);
+    const code = await sequelizeClient.models.codes.findByPk(Number.parseInt(context._query.c));
+
+    await user.addInterest(code);
+};
+
+const associate_phone = async (context) => {
+    if (!context._query.p) return;
+
+    const sequelizeClient = context.app.get('sequelizeClient');
+
+    const user = await sequelizeClient.models.users.findByPk(context.result.id);
+    const phone = await sequelizeClient.models.phones.findByPk(Number.parseInt(context._query.p));
+
+    user.phoneId = phone.get('id');
+    await user.save();
+};
+
+const persistQuery = async (context) => {
+    context._query = JSON.parse(JSON.stringify(context.params.query || {}));
+};
+
 
 module.exports = {
     before: {
-        all: [],
+        all: [persistQuery],
         find: [authenticate('jwt'), authorize],
         get: [authenticate('jwt'), authorize],
         create: [hashPassword(), authorize],
@@ -158,7 +185,7 @@ module.exports = {
         ],
         find: [],
         get: [addRoles, addCodes, addPhone],
-        create: [email_confirm],
+        create: [email_confirm, associate_code, associate_phone],
         update: [],
         patch: [],
         remove: []
