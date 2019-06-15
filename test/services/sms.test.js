@@ -25,7 +25,7 @@ describe('\'sms\' service', () => {
                 FromZip: '80301',
                 FromCountry: 'UNITED STATES',
                 FromState: 'CO',
-                body: this.code
+                Body: this.code
             })
         });
         expect(result.ok).toBe(true);
@@ -52,7 +52,7 @@ describe('\'sms\' service', () => {
                     FromZip: '80301',
                     FromCountry: 'UNITED STATES',
                     FromState: 'CO',
-                    body: this.code
+                    Body: this.code
                 })
             });
 
@@ -81,7 +81,7 @@ describe('\'sms\' service', () => {
                         FromZip: '80301',
                         FromCountry: 'UNITED STATES',
                         FromState: 'CO',
-                        body: this.code
+                        Body: this.code
                     })
                 });
 
@@ -125,7 +125,7 @@ describe('\'sms\' service', () => {
                         FromZip: '80301',
                         FromCountry: 'UNITED STATES',
                         FromState: 'CO',
-                        body: this.run
+                        Body: this.run
                     })
                 });
 
@@ -167,7 +167,7 @@ describe('\'sms\' service', () => {
                         FromZip: '80301',
                         FromCountry: 'UNITED STATES',
                         FromState: 'CO',
-                        body: this.code
+                        Body: this.code
                     })
                 });
 
@@ -211,7 +211,7 @@ describe('\'sms\' service', () => {
                         FromZip: '80301',
                         FromCountry: 'UNITED STATES',
                         FromState: 'CO',
-                        body: this.run
+                        Body: this.run
                     })
                 });
 
@@ -226,12 +226,14 @@ describe('\'sms\' service', () => {
                     }
                 }
 
-                await this.api.service('users').create({
+                this.creds = {
                     email: `${this.run}@example.com`,
                     password: this.run,
                     confirm_password: this.run,
                     phoneId: Number.parseInt(this.phone_id)
-                });
+                };
+
+                await this.api.service('users').create(this.creds);
 
                 this.result = await fetch(`${env.getApi('/sms')}`, {
                     method: 'POST',
@@ -244,7 +246,7 @@ describe('\'sms\' service', () => {
                         FromZip: '80301',
                         FromCountry: 'UNITED STATES',
                         FromState: 'CO',
-                        body: this.run
+                        Body: this.run
                     })
                 });
 
@@ -258,6 +260,20 @@ describe('\'sms\' service', () => {
             it('responds with success', async () => {
                 expect.assertions(1);
                 expect(this.message.indexOf('Successfully')).toBeGreaterThan(-1);
+            });
+
+            it('populates code field of user', async () => {
+                expect.assertions(3);
+
+                await this.api.authenticate({
+                    strategy: 'local',
+                    ...this.creds
+                });
+
+                const user = await this.api.service('users').get(1);
+                expect(user.interests).toBeTruthy();
+                expect(user.interests.length).toBe(1);
+                expect(user.interests[0].text).toBe(this.run);
             });
         });
     });

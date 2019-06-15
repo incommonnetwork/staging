@@ -11,8 +11,10 @@ const getUser = async (context) => {
         }
     });
 
-    const { data: [user] } = await context.app.service('users').find({
-        query: {
+    const users = sequelizeClient.models.users;
+
+    const user = await users.findOne({
+        where: {
             phoneId: result.get('id')
         }
     });
@@ -23,14 +25,19 @@ const getUser = async (context) => {
 
 const getCode = async (context) => {
     const sequelizeClient = context.app.get('sequelizeClient');
-
+    
     const code = await sequelizeClient.models.codes.findOne({
         where: {
-            text: context.data.body
+            text: context.data.Body
         }
     });
 
     context.params.code = code || false;
+};
+
+const addInterest = async (context) => {
+    if (!(context.params.code && context.params.user)) return;
+    await context.params.user.addInterest(context.params.code);
 };
 
 module.exports = {
@@ -38,7 +45,7 @@ module.exports = {
         all: [],
         find: [],
         get: [],
-        create: [getUser, getCode],
+        create: [getUser, getCode, addInterest],
         update: [],
         patch: [],
         remove: []
