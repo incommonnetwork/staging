@@ -197,63 +197,63 @@ describe('/sign_up', () => {
                 });
 
                 it('has user', async () => {
-                    expect.assertions(1)
+                    expect.assertions(1);
 
-                    this.api = await env.initApi()
+                    this.api = await env.initApi();
                     await this.api.authenticate({
                         strategy: 'local',
                         ...this.good_input
-                    })
+                    });
 
                     const { data: [{ id }] } = await this.api.service('users').find({
                         email: this.good_input.email
                     });
 
-                    const user = await this.api.service('users').get(id)
+                    const user = await this.api.service('users').get(id);
 
                     expect(user).toBeTruthy();
                 });
 
                 it('has associated interest', async () => {
-                    expect.assertions(4)
+                    expect.assertions(4);
 
-                    this.api = await env.initApi()
+                    this.api = await env.initApi();
                     await this.api.authenticate({
                         strategy: 'local',
                         ...this.good_input
-                    })
+                    });
 
                     const { data: [{ id }] } = await this.api.service('users').find({
                         email: this.good_input.email
                     });
 
-                    const user = await this.api.service('users').get(id)
+                    const user = await this.api.service('users').get(id);
 
                     expect(user).toBeTruthy();
-                    expect(user.interests).toBeTruthy()
-                    expect(user.interests.length).toBe(1)
-                    expect(user.interests[0].text).toBe(this.run)
-                })
+                    expect(user.interests).toBeTruthy();
+                    expect(user.interests.length).toBe(1);
+                    expect(user.interests[0].text).toBe(this.run);
+                });
 
                 it('has associated phone number', async () => {
-                    expect.assertions(3)
+                    expect.assertions(3);
 
-                    this.api = await env.initApi()
+                    this.api = await env.initApi();
                     await this.api.authenticate({
                         strategy: 'local',
                         ...this.good_input
-                    })
+                    });
 
                     const { data: [{ id }] } = await this.api.service('users').find({
                         email: this.good_input.email
                     });
 
-                    const user = await this.api.service('users').get(id)
+                    const user = await this.api.service('users').get(id);
 
                     expect(user).toBeTruthy();
-                    expect(user.phone).toBeTruthy()
-                    expect(user.phone.number).toBe(this.number)
-                })
+                    expect(user.phone).toBeTruthy();
+                    expect(user.phone.number).toBe(this.number);
+                });
             });
         });
     });
