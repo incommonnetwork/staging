@@ -9,111 +9,111 @@ const context = {
 
 
     schema: {
-        "type": "object",
-        "required": [
-            "firstName",
-            "city",
-            "state",
-            "dinnerTime",
-            "availability",
-            "notice"
+        'type': 'object',
+        'required': [
+            'firstName',
+            'city',
+            'state',
+            'dinnerTime',
+            'availability',
+            'notice'
         ],
-        "properties": {
-            "firstName": {
-                "type": "string",
-                "title": "First name"
+        'properties': {
+            'firstName': {
+                'type': 'string',
+                'title': 'First name'
             },
-            "city": {
-                "type": "string",
-                "title": "City"
+            'city': {
+                'type': 'string',
+                'title': 'City'
             },
-            "state": {
-                "type": "string",
-                "title": "State"
+            'state': {
+                'type': 'string',
+                'title': 'State'
             },
-            "telephone": {
-                "type": "string",
-                "title": "Telephone",
-                "minLength": 10
+            'telephone': {
+                'type': 'string',
+                'title': 'Telephone',
+                'minLength': 10
             },
-            "textInvites": {
-                "title": "Text Invites",
-                "description": "Would you like to receive invites via sms, in addition to email?",
-                "type": "boolean"
+            'textInvites': {
+                'title': 'Text Invites',
+                'description': 'Would you like to receive invites via sms, in addition to email?',
+                'type': 'boolean'
             },
-            "dinnerTime": {
-                "title": "Dinner Time",
-                "type": "string",
-                "description": "When do you like to eat dinner?",
-                "enum": [
-                    "4:00 PM",
-                    "5:00 PM",
-                    "6:00 PM",
-                    "7:00 PM",
-                    "8:00 PM"
+            'dinnerTime': {
+                'title': 'Dinner Time',
+                'type': 'string',
+                'description': 'When do you like to eat dinner?',
+                'enum': [
+                    '4:00 PM',
+                    '5:00 PM',
+                    '6:00 PM',
+                    '7:00 PM',
+                    '8:00 PM'
                 ],
-                "default": "7:00 PM"
+                'default': '7:00 PM'
             },
-            "availability": {
-                "title": "Availability",
-                "description": "what days would you like to recieve invites for",
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "enum": [
-                        "Sunday",
-                        "Monday",
-                        "Tuesday",
-                        "Wednesday",
-                        "Thursday",
-                        "Friday",
-                        "Saturday"
+            'availability': {
+                'title': 'Availability',
+                'description': 'what days would you like to recieve invites for',
+                'type': 'array',
+                'items': {
+                    'type': 'string',
+                    'enum': [
+                        'Sunday',
+                        'Monday',
+                        'Tuesday',
+                        'Wednesday',
+                        'Thursday',
+                        'Friday',
+                        'Saturday'
                     ]
                 },
-                "uniqueItems": true
+                'uniqueItems': true
             },
-            "notice": {
-                "title": "Availability",
-                "description": "how much time do you need to make plans?",
-                "type": "string",
-                "enum": [
-                    "A Couple Hours",
-                    "A Day",
-                    "Two or more days"
+            'notice': {
+                'title': 'Availability',
+                'description': 'how much time do you need to make plans?',
+                'type': 'string',
+                'enum': [
+                    'A Couple Hours',
+                    'A Day',
+                    'Two or more days'
                 ],
-                "default": "A Couple Hours"
+                'default': 'A Couple Hours'
             },
-            "diet": {
-                "title": "Diet",
-                "description": "Do you have any dietary restrictions?",
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "enum": [
-                        "Vegetarian",
-                        "Vegan",
-                        "Gluten-Free"
+            'diet': {
+                'title': 'Diet',
+                'description': 'Do you have any dietary restrictions?',
+                'type': 'array',
+                'items': {
+                    'type': 'string',
+                    'enum': [
+                        'Vegetarian',
+                        'Vegan',
+                        'Gluten-Free'
                     ]
                 },
-                "uniqueItems": true
+                'uniqueItems': true
             }
         }
     },
     uiSchema: {
-        "dinnerTime": {
-            "ui:widget": 'select'
+        'dinnerTime': {
+            'ui:widget': 'select'
         },
-        "availability": {
-            "ui:widget": "checkboxes",
-            "ui:options": {
-                "inline": true
+        'availability': {
+            'ui:widget': 'checkboxes',
+            'ui:options': {
+                'inline': true
             }
         },
-        "notice": {
-            "ui:widget": "select"
+        'notice': {
+            'ui:widget': 'select'
         },
-        "diet": {
-            "ui:widget": "checkboxes"
+        'diet': {
+            'ui:widget': 'checkboxes'
         }
     },
     validate: (formData, errors) => {
