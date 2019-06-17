@@ -9,6 +9,10 @@ module.exports = function (app) {
         text: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        SEEDFILE: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     }, {
         hooks: {
