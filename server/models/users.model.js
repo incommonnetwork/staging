@@ -26,7 +26,25 @@ module.exports = function (app) {
         SEEDFILE: {
             type: Sequelize.STRING,
             allowNull: true
-        }
+        },
+
+        firstName: { type: Sequelize.STRING },
+
+        city: { type: Sequelize.STRING },
+
+        state: { type: Sequelize.STRING },
+
+        telephone: { type: Sequelize.STRING },
+
+        textInvites: { type: Sequelize.BOOLEAN },
+
+        dinnerTime: { type: Sequelize.STRING },
+
+        availability: { type: Sequelize.ARRAY(Sequelize.STRING) },
+
+        notice: { type: Sequelize.STRING },
+
+        diet: { type: Sequelize.ARRAY(Sequelize.STRING) }
 
     }, {
         hooks: {
