@@ -47,12 +47,12 @@ module.exports = function (app) {
         diet: { type: Sequelize.ARRAY(Sequelize.STRING) }
 
     }, {
-            hooks: {
-                beforeCount(options) {
-                    options.raw = true;
-                }
+        hooks: {
+            beforeCount(options) {
+                options.raw = true;
             }
-        });
+        }
+    });
 
     sequelizeClient.define('user_roles', {
         SEEDFILE: {
