@@ -25,10 +25,10 @@ const getUser = async (context) => {
 
 const getCode = async (context) => {
     const sequelizeClient = context.app.get('sequelizeClient');
-    
+
     const code = await sequelizeClient.models.codes.findOne({
         where: {
-            text: context.data.Body
+            text: context.data.Body.toLowerCase()
         }
     });
 
