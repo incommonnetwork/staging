@@ -24,7 +24,7 @@ const getPage = pathname => {
         default:
             opts.hostname = 'localhost';
             opts.protocol = 'http';
-            opts.port = port
+            opts.port = port;
     }
     /* eslint-enable no-fallthrough */
 
