@@ -45,7 +45,7 @@ class Service {
         } else if (!params.user) {
             twiml.message(`Thanks for reaching out! visit ${getPage('/sign_up')}?c=${params.code.id}&p=${params.phone.id} to finish signing up`);
         } else {
-            twiml.message(`Successfully registered with code : ${params.code.text}`);
+            twiml.message(`Successfully registered with code : ${params.code.text}, visit ${getPage('/home')} to manage how you recieve invites`);
         }
 
         return twiml.toString();
