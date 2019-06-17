@@ -4,7 +4,7 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const getPage = pathname => {
     const app = require('./../../app');
     const port = app.get('port');
-    const opts = { pathname, port };
+    const opts = { pathname };
     /* eslint-disable no-fallthrough */
     switch (process.env.NODE_ENV) {
         case 'staging':
@@ -24,6 +24,7 @@ const getPage = pathname => {
         default:
             opts.hostname = 'localhost';
             opts.protocol = 'http';
+            opts.port = port;
     }
     /* eslint-enable no-fallthrough */
 
