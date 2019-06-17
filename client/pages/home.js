@@ -1,3 +1,4 @@
+/* global alert */
 import React from 'react';
 import Protected from '../layouts/protected';
 import Tabs from '../layouts/tabs';
@@ -124,7 +125,11 @@ const context = {
         formData
     }),
 
-    form_submit_done: () => { }
+    submit_service: () => {
+        alert('you have reached the end of the demo');
+    },
+
+    submit_service_done: () => { }
 };
 
 const Settings = () => (
