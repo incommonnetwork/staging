@@ -3,15 +3,6 @@ import Protected from '../layouts/protected';
 import Tabs from '../layouts/tabs';
 import Table from '../components/table';
 
-
-
-const Users = () => (
-    <p>users</p>
-);
-
-Users.propTypes = {};
-
-
 const tabs = [
     {
         label: 'Users',

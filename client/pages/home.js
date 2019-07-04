@@ -126,7 +126,7 @@ const context = {
     }),
 
     submit_service: () => {
-        alert('you have reached the end of the demo')
+        alert('you have reached the end of the demo');
     },
 
     submit_service_done: () => { }

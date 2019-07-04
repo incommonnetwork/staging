@@ -9,6 +9,8 @@ import Level from 'react-bulma-components/src/components/level';
 import { Input } from 'react-bulma-components/src/components/form';
 import Button from 'react-bulma-components/src/components/button';
 
+import Modal from './modal.js';
+
 import { useMachine } from '@xstate/react';
 import tableMachine from '../state/table.js';
 
@@ -51,7 +53,6 @@ Pagination.propTypes = {
 };
 
 const TableBody = ({ columns, page, id }) => (
-
     <tbody id={`${id}_table_body`} total={page.total}>
         {page.data.map((data) => (
             <tr key={data.id}>
@@ -71,33 +72,31 @@ TableBody.propTypes = {
     page: PropTypes.object
 };
 
-const TableFilter = ({ columns, filter, send, id }) => (
-    <Fragment>
-        <Level>
-            <div id={`${id}_filter_dropdown`}>
-                <Dropdown
-                    value={filter.field || 'Filter...'}
-                    onChange={(selected) => send({
-                        type: 'SELECT_FILTER',
-                        filter: {
-                            field: selected
-                        }
-                    })}
-                >
-                    {[{ label: 'Filter...' }, ...columns].map(({ label }) => (
-                        <Dropdown.Item id={`${id}_${label}_selector`} key={label} value={label}>
-                            {label}
-                        </Dropdown.Item>
-                    ))}
-                </Dropdown>
-            </div>
-            {filter.field && (filter.field !== 'Filter...') ? <FilterInput id={id} filter={filter} send={send} /> : null}
-
-        </Level>
-    </Fragment>
+const TableTop = ({ columns, filter, send, id }) => (
+    <Level>
+        <div id={`${id}_filter_dropdown`}>
+            <Dropdown
+                value={filter.field || 'Filter...'}
+                onChange={(selected) => send({
+                    type: 'SELECT_FILTER',
+                    filter: {
+                        field: selected
+                    }
+                })}
+            >
+                {[{ label: 'Filter...' }, ...columns].map(({ label }) => (
+                    <Dropdown.Item id={`${id}_${label}_selector`} key={label} value={label}>
+                        {label}
+                    </Dropdown.Item>
+                ))}
+            </Dropdown>
+        </div>
+        {filter.field && (filter.field !== 'Filter...') ? <FilterInput id={id} filter={filter} send={send} /> : null}
+        <Create id={id} />
+    </Level>
 );
 
-TableFilter.propTypes = {
+TableTop.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.object).isRequired,
     id: PropTypes.string.isRequired,
     send: PropTypes.func.isRequired,
@@ -129,14 +128,23 @@ FilterInput.propTypes = {
     send: PropTypes.func.isRequired
 };
 
+const Create = ({ id }) => (
+    <Modal id={id}>
+        modal content
+    </Modal>
+);
+
+Create.propTypes = {
+    id: PropTypes.string.isRequired
+};
+
+
 const Table = ({ id, columns }) => {
     const [current, send] = useMachine(tableMachine.withContext({ id }));
 
     return (
         <div id={`${id}_table`}>
-            <Level>
-                {current.matches('loading') ? <Loader /> : <TableFilter filter={current.context.filter || {}} columns={columns} id={id} send={send} />}
-            </Level>
+            {current.matches('loading') ? <Loader /> : <TableTop filter={current.context.filter || {}} columns={columns} id={id} send={send} />}
             <BulmaTable>
                 <TableHeader columns={columns} />
                 {current.matches('display') ? <TableBody id={id} columns={columns} page={current.context.page} /> : null}
