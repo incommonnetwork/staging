@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import Button from 'react-bulma-components/src/components/button';
 import Modal from 'react-bulma-components/src/components/modal';
 import modalMachine from '../state/modal.js';
@@ -38,6 +38,6 @@ OpenModal.propTypes = {
         PropTypes.node
     ]),
     modal: PropTypes.object
-}
+};
 
 export default OpenModal;
