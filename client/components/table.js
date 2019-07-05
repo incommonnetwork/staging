@@ -131,7 +131,7 @@ FilterInput.propTypes = {
 };
 
 const Create = ({ id, context }) => (
-    <Modal id={id}>
+    <Modal id={id} button={'Create'} title={context.title}>
         <Form id={`create_${id}`} context={context} />
     </Modal>
 );
