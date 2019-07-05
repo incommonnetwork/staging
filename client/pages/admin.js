@@ -1,39 +1,14 @@
+
 import React from 'react';
 import Protected from '../layouts/protected';
 import Tabs from '../layouts/tabs';
-import Table from '../components/table';
 
-
-
-const Users = () => (
-    <p>users</p>
-);
-
-Users.propTypes = {};
-
-
-const tabs = [
-    {
-        label: 'Users',
-        element: Table,
-        props: {
-            id: 'users',
-            columns: [
-                {
-                    label: 'id'
-                }, {
-                    label: 'email'
-                }
-            ]
-        }
-    }
-];
-
+import adminTabs from '../schemas/admin_tabs';
 
 const Home = () => {
     return (
         <Protected role="admin">
-            <Tabs tabs={tabs} id="admin" />
+            <Tabs tabs={adminTabs} id="admin" />
         </Protected>
     );
 };

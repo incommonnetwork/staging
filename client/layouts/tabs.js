@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { WideColumn } from './columns';
-import Card from './card';
 import Tabs from 'react-bulma-components/src/components/tabs';
 
 import { useMachine } from '@xstate/react';
@@ -15,32 +14,31 @@ const TabsView = ({ tabs, id }) => {
     const current_tab = tabs.filter(({ label }) => label === current.context.active)[0];
     const Element = current_tab.element;
     const props = current_tab.props;
+    const current_id = current.context.active.toLowerCase().replace(' ', '_');
 
     return (
         <WideColumn>
-            <Card>
-                <div id={`${id}_tabs`}>
-                    <Tabs
-                        type='boxed'
-                    >
-                        {tabs.map(({ label }) => (
-                            <Tab
-                                key={label}
-                                onClick={() => (current.context.active != label) && send({ type: 'TAB_SWITCH', label })}
-                                active={current.context.active === label}
-                            >
-                                <div id={`${label.toLowerCase().replace(' ', '_')}_tab`}>
-                                    {label}
-                                </div>
-                            </Tab>
-                        ))}
-                    </Tabs>
-                    <div id={`${current.context.active.toLowerCase().replace(' ', '_')}_tab_content`}>
-                        <Element {...props} />
-                    </div>
+            <div id={`${id}_tabs`} style={{ marginTop: '2em' }}>
+                <Tabs
+                    type='boxed'
+                >
+                    {tabs.map(({ label }) => (
+                        <Tab
+                            key={label}
+                            onClick={() => (current.context.active != label) && send({ type: 'TAB_SWITCH', label })}
+                            active={current.context.active === label}
+                        >
+                            <div id={`${label.toLowerCase().replace(' ', '_')}_tab`}>
+                                {label}
+                            </div>
+                        </Tab>
+                    ))}
+                </Tabs>
+                <div id={`${current_id}_tab_content`}>
+                    <Element key={current_id} id={current_id} {...props} />
                 </div>
-            </Card>
-        </WideColumn>
+            </div>
+        </WideColumn >
     );
 };
 

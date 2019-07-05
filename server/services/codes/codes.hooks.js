@@ -30,6 +30,18 @@ const authorize = async (context) => {
 const assignedBy = async (context) => {
     context.data.assignedById = context.params.user.id;
 };
+
+const addAssignedBy = async (context) => {
+
+    const sequelizeClient = context.app.get('sequelizeClient');
+
+    for (const codeData of context.result.data) {
+        const code = await sequelizeClient.models.codes.findByPk(codeData.id);
+        const assignedByUser = await sequelizeClient.models.users.findByPk(code.get('assignedById'));
+        codeData.assignedBy = assignedByUser.get('email');
+    }
+};
+
 module.exports = {
     before: {
         all: [authenticate('jwt'), authorize],
@@ -43,7 +55,7 @@ module.exports = {
 
     after: {
         all: [],
-        find: [],
+        find: [addAssignedBy],
         get: [],
         create: [],
         update: [],
