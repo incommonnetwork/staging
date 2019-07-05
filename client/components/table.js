@@ -135,6 +135,7 @@ const Create = ({ id, context }) => (
         <Form id={`create_${id}`} context={context} />
     </Modal>
 );
+
 Create.propTypes = {
     id: PropTypes.string.isRequired,
     context: PropTypes.object.isRequired
@@ -142,7 +143,8 @@ Create.propTypes = {
 
 
 const Table = ({ id, columns, create }) => {
-    const [current, send] = useMachine(tableMachine.withContext({ id }));
+    const machine = tableMachine(id).withContext({ id });
+    const [current, send] = useMachine(machine);
 
     return (
         <div id={`${id}_table`}>

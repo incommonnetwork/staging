@@ -1,8 +1,8 @@
 import { Machine, assign } from 'xstate';
 import getApp from '../utils/feathers';
 
-export default Machine({
-    id: 'table',
+export default (id) => Machine({
+    id: `${id}_table`,
     initial: 'loading',
     strict: true,
     context: {},
