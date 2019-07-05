@@ -10,6 +10,8 @@ export default {
                 label: 'id'
             }, {
                 label: 'assignedBy'
+            }, {
+                label: 'text'
             }
         ]
     }
