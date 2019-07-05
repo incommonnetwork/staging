@@ -1,15 +1,16 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bulma-components/src/components/button';
 import Modal from 'react-bulma-components/src/components/modal';
-import modalMachine from '../state/modal.js';
+
+import modalMachine from '../state/modal';
 import { useMachine } from '@xstate/react';
 
 const OpenModal = ({ id, button = 'Open', title = 'Modal', modal = {}, children }) => {
-    const [current, send] = useMachine(modalMachine.withContext({ id }));
+    const [current, send] = useMachine(modalMachine);
 
     return (
-        <Fragment>
+        <div id={`${id}_modal`}>
             <Button onClick={() => send('OPEN')}>
                 {button}
             </Button>
@@ -25,7 +26,7 @@ const OpenModal = ({ id, button = 'Open', title = 'Modal', modal = {}, children 
                     </Modal.Card.Body>
                 </Modal.Card>
             </Modal>
-        </Fragment>
+        </div>
     );
 };
 
