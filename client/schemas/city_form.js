@@ -49,6 +49,10 @@ export default {
         }
         return errors;
     },
+    onChange: (send) => ({ formData }) => send({
+        type: 'CHANGE',
+        formData
+    }),
     onSubmit: (send) => ({ formData }) => send({
         type: 'SUBMIT',
         formData
