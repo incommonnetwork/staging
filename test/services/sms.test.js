@@ -145,6 +145,7 @@ describe('\'sms\' service', () => {
     describe('with user', () => {
         beforeEach(async () => {
             this.run = `${Math.random()}`;
+            this.api = await env.initApi();
 
             await this.api.service('users').create({
                 email: `${this.run}@example.com`,
