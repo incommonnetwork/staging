@@ -6,7 +6,7 @@ const { getPage, getPathname } = env;
 
 describe('/admin', () => {
     beforeAll(async () => {
-        this.browser = await puppeteer.launch({ headless: false });
+        this.browser = await puppeteer.launch({});
         await env.before();
     });
 

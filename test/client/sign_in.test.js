@@ -111,7 +111,7 @@ describe('/sign_in', () => {
         it('respects redirects', async () => {
             await this.form.dispose();
             await this.page.goto(`${getPage('/sign_in')}?redirect=${getPathname('/states')}`);
-            await this.page.waitFor('#sign_in_form')
+            await this.page.waitFor('#sign_in_form');
             this.form = await this.page.$('#sign_in_form');
 
             await this.page.type('#root_email', this.good_input.email);
