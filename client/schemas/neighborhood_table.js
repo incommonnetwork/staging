@@ -13,6 +13,10 @@ export default {
             {
                 label: 'id'
             }, {
+                label: 'city'
+            }, {
+                label: 'area'
+            }, {
                 label: 'neighborhood'
             }, {
                 label: 'latitude'
