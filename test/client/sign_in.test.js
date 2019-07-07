@@ -6,19 +6,18 @@ const { getPage, getPathname } = env;
 
 describe('/sign_in', () => {
     beforeAll(async () => {
-        this.browser = await puppeteer.launch();
-        this.context = await this.browser.createIncognitoBrowserContext();
+        this.browser = await puppeteer.launch({});
         await env.before();
     });
 
     afterAll(async () => {
         await env.after();
-        await this.context.close();
         await this.browser.close();
     });
 
     beforeEach(async () => {
         this.app = await env.initApi();
+        this.context = await this.browser.createIncognitoBrowserContext();
         this.page = await this.context.newPage();
         await this.page.goto(getPage('/sign_in'));
     });
@@ -26,6 +25,7 @@ describe('/sign_in', () => {
     afterEach(async () => {
         this.app = null;
         await this.page.close();
+        await this.context.close();
     });
 
     it('loads', async () => {
@@ -42,6 +42,7 @@ describe('/sign_in', () => {
 
     describe('signin form', () => {
         beforeEach(async () => {
+            await this.page.waitFor('#sign_in_form');
             this.form = await this.page.$('#sign_in_form');
             const rand = `${Math.random()}`;
             this.good_input = {
@@ -111,6 +112,7 @@ describe('/sign_in', () => {
         it('respects redirects', async () => {
             await this.form.dispose();
             await this.page.goto(`${getPage('/sign_in')}?redirect=${getPathname('/states')}`);
+            await this.page.waitFor('#sign_in_form');
             this.form = await this.page.$('#sign_in_form');
 
             await this.page.type('#root_email', this.good_input.email);

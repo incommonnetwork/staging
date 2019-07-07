@@ -4,6 +4,7 @@ import rfc822 from '../utils/rfc822';
 
 export default {
     redirect: '/home',
+    title: 'Create User',
     schema: {
         type: 'object',
         required: ['email', 'password'],
