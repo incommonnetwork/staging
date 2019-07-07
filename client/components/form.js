@@ -17,7 +17,7 @@ const Form = ({ context, id }) => {
         : current.matches('form_init') ? Loader
             : InnerForm;
 
-    const props = Element === ErrorElement ? { current }
+    const props = Element === ErrorElement ? { current, id }
         : Element === Loader ? {}
             : { current, send, id };
 

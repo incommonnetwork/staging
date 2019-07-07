@@ -6,19 +6,18 @@ const { getPage, getPathname } = env;
 
 describe('/sign_in', () => {
     beforeAll(async () => {
-        this.browser = await puppeteer.launch();
-        this.context = await this.browser.createIncognitoBrowserContext();
+        this.browser = await puppeteer.launch({ headless: false });
         await env.before();
     });
 
     afterAll(async () => {
         await env.after();
-        await this.context.close();
         await this.browser.close();
     });
 
     beforeEach(async () => {
         this.app = await env.initApi();
+        this.context = await this.browser.createIncognitoBrowserContext();
         this.page = await this.context.newPage();
         await this.page.goto(getPage('/sign_in'));
     });
@@ -26,6 +25,7 @@ describe('/sign_in', () => {
     afterEach(async () => {
         this.app = null;
         await this.page.close();
+        await this.context.close();
     });
 
     it('loads', async () => {
