@@ -52,14 +52,14 @@ describe('/sign_up', () => {
 
     it('has signup form', async () => {
         expect.assertions(1);
-        await this.page.waitFor('#sign_in_form');
+        await this.page.waitFor('#sign_up_form');
         const form = await this.page.$('#sign_up_form');
         expect(form).toBeTruthy();
     });
 
     describe('signup form', () => {
         beforeEach(async () => {
-            await this.page.waitFor('#sign_in_form');
+            await this.page.waitFor('#sign_up_form');
             this.form = await this.page.$('#sign_up_form');
             const rand = `${Math.random()}`;
             this.good_input = {
