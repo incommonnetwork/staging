@@ -1,3 +1,4 @@
+/* global location */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -10,7 +11,7 @@ import tabMachine from '../state/tabs';
 const Tab = Tabs.Tab;
 
 const TabsView = ({ tabs, id }) => {
-    const [current, send] = useMachine(tabMachine.withContext({ active: tabs[0].label, tabs }));
+    const [current, send] = useMachine(tabMachine.withContext({ active: location.hash ? location.hash.substr(1) : tabs[0].label, tabs }));
     const current_tab = tabs.filter(({ label }) => label === current.context.active)[0];
     const Element = current_tab.element;
     const props = current_tab.props;
@@ -25,7 +26,7 @@ const TabsView = ({ tabs, id }) => {
                     {tabs.map(({ label }) => (
                         <Tab
                             key={label}
-                            onClick={() => (current.context.active != label) && send({ type: 'TAB_SWITCH', label })}
+                            onClick={() => (current.context.active != label) && (location.hash = label) && send({ type: 'TAB_SWITCH', label })}
                             active={current.context.active === label}
                         >
                             <div id={`${label.toLowerCase().replace(' ', '_')}_tab`}>

@@ -31,7 +31,7 @@ export default Machine({
                 SUBMIT: 'form_submit',
                 CHANGE: {
                     target: 'form_update',
-                    cond: (context, event) => context.form_should_update(context, event)
+                    cond: (context, event) => context.form_should_update && context.form_should_update(context, event)
                 }
             },
         },
