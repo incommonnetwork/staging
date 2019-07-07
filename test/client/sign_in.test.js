@@ -42,6 +42,7 @@ describe('/sign_in', () => {
 
     describe('signin form', () => {
         beforeEach(async () => {
+            await this.page.waitFor('#sign_in_form');
             this.form = await this.page.$('#sign_in_form');
             const rand = `${Math.random()}`;
             this.good_input = {
