@@ -50,7 +50,7 @@ module.exports = {
 
     after: {
         all: [],
-        find: [],
+        find: [addCity],
         get: [],
         create: [],
         update: [],
@@ -60,7 +60,7 @@ module.exports = {
 
     error: {
         all: [],
-        find: [addCity],
+        find: [],
         get: [],
         create: [],
         update: [],
