@@ -9,7 +9,7 @@ export default {
         required: ['city', 'neighborhood', 'latitude', 'longitude'],
         properties: {
             city: {
-                title: 'Vity',
+                title: 'City',
                 type: 'string'
             },
             neighborhood: {
