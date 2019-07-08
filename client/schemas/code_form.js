@@ -6,15 +6,32 @@ export default {
     title: 'Create Code',
     schema: {
         type: 'object',
-        required: ['text'],
+        required: ['text', 'dates'],
         properties: {
             text: {
                 title: 'text',
                 type: 'string'
+            },
+            description: {
+                title: 'Description',
+                type: 'string'
+            },
+            dates: {
+                title: 'Dates',
+                type: 'array',
+                items: {
+                    type: 'string',
+                    format: 'date'
+                }
             }
         }
     },
     uiSchema: {
+        dates: {
+            "ui:options": {
+                orderable: false
+            }
+        }
     },
     validate: (formData, errors) => {
         return errors;
