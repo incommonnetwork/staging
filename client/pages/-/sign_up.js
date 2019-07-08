@@ -24,7 +24,7 @@ const SignUp = () => {
 };
 
 const context = {
-    redirect: '/home',
+    redirect: '/-/home',
     schema: {
         title: 'Sign Up',
         type: 'object',

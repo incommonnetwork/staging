@@ -23,7 +23,7 @@ const attempt = async (fn, expected) => {
 
 describe('/sign_up', () => {
     beforeAll(async () => {
-        this.browser = await puppeteer.launch();
+        this.browser = await puppeteer.launch({ headless: false });
         await env.before();
     });
 

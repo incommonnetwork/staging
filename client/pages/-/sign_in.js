@@ -22,7 +22,7 @@ const SignIn = () => {
 };
 
 const context = {
-    redirect: '/home',
+    redirect: '/-/home',
     schema: {
         title: 'Sign In',
         type: 'object',

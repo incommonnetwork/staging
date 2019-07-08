@@ -24,7 +24,7 @@ const testDev = () => {
     };// (done) => { setTimeout(done, 1000); };
     const after = () => { };//(done) => { setTimeout(done, 1000); };
 
-    const getPathname = pathname => pathname;
+    const getPathname = pathname => `/-${pathname === '/' ? '' : pathname}`;
 
     const getApi = pathname => url.format({
         hostname: 'localhost',
@@ -33,7 +33,12 @@ const testDev = () => {
         pathname
     });
 
-    const getPage = getApi;
+    const getPage = pathname => url.format({
+        hostname: 'localhost',
+        protocol: 'http',
+        port: 3030,
+        pathname: getPathname(pathname)
+    });;
     return { getPathname, getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
 
@@ -44,7 +49,7 @@ const testStaging = () => {
     };
     const after = () => { };
 
-    const getPathname = pathname => `/staging${pathname === '/' ? pathname : `${pathname}/`}`;
+    const getPathname = pathname => `/staging/-${pathname}`;
 
     const getPage = pathname => url.format({
         hostname: 'www.incommon.dev',
