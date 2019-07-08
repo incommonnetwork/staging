@@ -8,7 +8,7 @@ import NextJsLink from 'next/link';
 const assetPrefix = process.env.ASSET_PREFIX;
 
 const Link = ({ href, children, id }) => (
-    <NextJsLink href={`/-${href}`} as={`/-${assetPrefix}${href}`}>
+    <NextJsLink href={href} as={`${assetPrefix}${href}`}>
         <div id={id}>
             {children}
         </div>

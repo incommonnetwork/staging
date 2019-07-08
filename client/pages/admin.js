@@ -1,9 +1,9 @@
 
 import React from 'react';
-import Protected from '../../layouts/protected';
-import Tabs from '../../layouts/tabs';
+import Protected from '../layouts/protected';
+import Tabs from '../layouts/tabs';
 
-import adminTabs from '../../schemas/admin_tabs';
+import adminTabs from '../schemas/admin_tabs';
 
 const Home = () => {
     return (

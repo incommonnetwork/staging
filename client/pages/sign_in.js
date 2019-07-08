@@ -1,22 +1,20 @@
-/* global window */
 import React from 'react';
 
-import Main from '../../layouts/main';
-import Card from '../../layouts/card';
-import { NarrowColumn } from '../../layouts/columns';
+import Main from '../layouts/main';
+import { NarrowColumn } from '../layouts/columns';
+import Card from '../layouts/card';
+import Form from '../components/form';
 
-import Form from '../../components/form';
+import Router from '../utils/router';
+import getApp from '../utils/feathers';
+import rfc822 from '../utils/rfc822';
 
-import Router from '../../utils/router';
-import getApp from '../../utils/feathers';
-import rfc822 from '../../utils/rfc822';
-
-const SignUp = () => {
+const SignIn = () => {
     return (
         <Main>
             <NarrowColumn>
                 <Card>
-                    <Form context={context} id={'sign_up'} />
+                    <Form context={context} id={'sign_in'} />
                 </Card>
             </NarrowColumn>
         </Main>
@@ -24,22 +22,18 @@ const SignUp = () => {
 };
 
 const context = {
-    redirect: '/-/home',
+    redirect: '/home',
     schema: {
-        title: 'Sign Up',
+        title: 'Sign In',
         type: 'object',
         required: ['email', 'password'],
         properties: {
             email: { type: 'string', title: 'email' },
-            password: { type: 'string', title: 'Password' },
-            confirm_password: { type: 'string', title: 'Confirm Password' }
+            password: { type: 'string', title: 'Password' }
         }
     },
     uiSchema: {
         password: {
-            'ui:widget': 'password'
-        },
-        confirm_password: {
             'ui:widget': 'password'
         }
     },
@@ -50,9 +44,6 @@ const context = {
         if (!(8 <= formData.password.length && formData.password.length <= 32)) {
             errors.password.addError('Password must be between 8 and 32 characters');
         }
-        if (formData.password !== formData.confirm_password) {
-            errors.confirm_password.addError('Passwords don\'t match');
-        }
         return errors;
     },
     onSubmit: (send) => ({ formData }) => send({
@@ -60,19 +51,16 @@ const context = {
         formData
     }),
     submit_service: async ({ formData }) => {
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
-
         const app = await getApp();
-        const created = await app.service('users').create(formData, {
-            query
-        });
         await app.authenticate({
             strategy: 'local',
             ...formData
         });
-        return created;
+        const { data: [{ id }] } = await app.service('users').find({ email: formData.email });
+
+        return { id };
     },
     submit_service_done: (context, { data: { id } }) => Router.push(`${Router.query.redirect || context.redirect}?user=${id}`)
 };
 
-export default SignUp;
+export default SignIn;
