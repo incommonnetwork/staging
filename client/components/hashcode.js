@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import { useMachine } from '@xstate/react'
-import hashcodeMachine from '../state/hashcode'
+import { useMachine } from '@xstate/react';
+import hashcodeMachine from '../state/hashcode';
 
 const Hash = () => {
-    useMachine(hashcodeMachine)
+    useMachine(hashcodeMachine);
 
-    return <div />
-}
+    return <div />;
+};
 
-export default Hash
+export default Hash;

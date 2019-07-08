@@ -1,6 +1,6 @@
 import React from 'react';
 import Main from '../layouts/main';
-import HashCode from '../components/hashcode'
+import HashCode from '../components/hashcode';
 
 const Index = () => (
     <Main>

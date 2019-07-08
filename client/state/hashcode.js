@@ -12,18 +12,10 @@ export default Machine({
             invoke: {
                 id: 'initHashCode',
                 src: async () => {
-                    console.log('initHashCode', location.hash)
                     if (location.hash) {
-
-                        const code = location.hash.substr(1)
-                        Router.push(`/code?text=${code}`)
+                        const code = location.hash.substr(1);
+                        Router.push(`/code?text=${code}`);
                     }
-                },
-                onDone: {
-                    target: 'signed_in'
-                },
-                onError: {
-                    target: 'signed_out'
                 }
             }
         }

@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import Protected from '../layouts/protected'
+import Protected from '../layouts/protected';
 
 const Code = () => (
     <Protected>
         protected code page
     </Protected>
-)
+);
 
-export default Code
+export default Code;
