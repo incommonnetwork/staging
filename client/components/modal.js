@@ -15,16 +15,18 @@ const OpenModal = ({ id, button = 'Open', title = 'Modal', modal = {}, children 
                 {button}
             </Button>
             <Modal show={current.matches('modal_opened')} onClose={() => send('CLOSE')} closeOnBlur={true} {...modal}>
-                <Modal.Card>
-                    <Modal.Card.Head showClose={false}>
-                        <Modal.Card.Title>
-                            {title}
-                        </Modal.Card.Title>
-                    </Modal.Card.Head>
-                    <Modal.Card.Body>
-                        {children}
-                    </Modal.Card.Body>
-                </Modal.Card>
+                <div id={`${id}_modal_open`}>
+                    <Modal.Card>
+                        <Modal.Card.Head showClose={false}>
+                            <Modal.Card.Title>
+                                {title}
+                            </Modal.Card.Title>
+                        </Modal.Card.Head>
+                        <Modal.Card.Body>
+                            {children}
+                        </Modal.Card.Body>
+                    </Modal.Card>
+                </div>
             </Modal>
         </div>
     );
