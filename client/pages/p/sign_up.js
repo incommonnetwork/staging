@@ -1,15 +1,15 @@
 /* global window */
 import React from 'react';
 
-import Main from '../layouts/main';
-import Card from '../layouts/card';
-import { NarrowColumn } from '../layouts/columns';
+import Main from '../../layouts/main';
+import Card from '../../layouts/card';
+import { NarrowColumn } from '../../layouts/columns';
 
-import Form from '../components/form';
+import Form from '../../components/form';
 
-import Router from '../utils/router';
-import getApp from '../utils/feathers';
-import rfc822 from '../utils/rfc822';
+import Router from '../../utils/router';
+import getApp from '../../utils/feathers';
+import rfc822 from '../../utils/rfc822';
 
 const SignUp = () => {
     return (

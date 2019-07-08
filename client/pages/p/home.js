@@ -1,8 +1,8 @@
 /* global alert */
 import React from 'react';
-import Protected from '../layouts/protected';
-import Tabs from '../layouts/tabs';
-import Form from '../components/form';
+import Protected from '../../layouts/protected';
+import Tabs from '../../layouts/tabs';
+import Form from '../../components/form';
 
 
 const context = {

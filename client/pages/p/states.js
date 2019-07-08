@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Main from '../layouts/main';
-import form from '../state/form.js';
-import auth from '../state/auth.js';
-import tabs from '../state/tabs.js';
-import protectedMachine from '../state/protected';
+import Main from '../../layouts/main';
+import form from '../../state/form.js';
+import auth from '../../state/auth.js';
+import tabs from '../../state/tabs.js';
+import protectedMachine from '../../state/protected';
 
-import StateChart from '../utils/state-charts';
+import StateChart from '../../utils/state-charts';
 
 const States = () => (
     <Main>

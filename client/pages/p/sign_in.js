@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Main from '../layouts/main';
-import { NarrowColumn } from '../layouts/columns';
-import Card from '../layouts/card';
-import Form from '../components/form';
+import Main from '../../layouts/main';
+import { NarrowColumn } from '../../layouts/columns';
+import Card from '../../layouts/card';
+import Form from '../../components/form';
 
-import Router from '../utils/router';
-import getApp from '../utils/feathers';
-import rfc822 from '../utils/rfc822';
+import Router from '../../utils/router';
+import getApp from '../../utils/feathers';
+import rfc822 from '../../utils/rfc822';
 
 const SignIn = () => {
     return (
