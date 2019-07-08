@@ -97,6 +97,11 @@ describe('/admin', () => {
                     await this.page.waitFor(`#${id}_tab_content`, {});
                 });
 
+                it('reloads to same tab', async () => {
+                    await this.page.reload()
+                    await this.page.waitFor(`#${id}_tab_content`, {});
+                })
+
                 it('has table', async () => {
                     await this.page.waitFor(`#${id}_table`);
                 });
