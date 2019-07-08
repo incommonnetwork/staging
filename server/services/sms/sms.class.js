@@ -2,7 +2,7 @@ const url = require('url');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 const getPage = pathname => {
-    pathname = `/-${pathname}`
+    pathname = `/-${pathname}`;
     const app = require('./../../app');
     const port = app.get('port');
     const opts = { pathname };

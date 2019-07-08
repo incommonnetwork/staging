@@ -38,7 +38,7 @@ const testDev = () => {
         protocol: 'http',
         port: 3030,
         pathname: getPathname(pathname)
-    });;
+    });
     return { getPathname, getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
 
