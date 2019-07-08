@@ -36,6 +36,7 @@ describe('/sign_in', () => {
 
     it('has signin form', async () => {
         expect.assertions(1);
+        await this.page.waitFor('#sign_in_form');
         const form = await this.page.$('#sign_in_form');
         expect(form).toBeTruthy();
     });
