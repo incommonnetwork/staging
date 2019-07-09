@@ -35,7 +35,7 @@ module.exports = function (app) {
         models.codes.belongsTo(models.users, { as: 'assigned_by' });
         models.codes.belongsToMany(models.users, { as: 'attendees', through: 'user_codes' });
         models.users.belongsToMany(models.codes, { as: 'interests', through: 'user_codes' });
-        models.codes.hasOne(models.city);
+        models.codes.belongsTo(models.cities);
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
     };
