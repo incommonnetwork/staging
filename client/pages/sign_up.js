@@ -72,7 +72,15 @@ const context = {
         });
         return created;
     },
-    submit_service_done: (context, { data: { id } }) => Router.push(`${Router.query.redirect || context.redirect}?user=${id}`)
+    submit_service_done: (context, { data: { id } }) => {
+
+        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const path = Router.query.redirect || context.redirect;
+        delete query.redirect;
+        const queryParams = Object.keys(query).map(k => `${k}=${query[k]}`).join('&');
+
+        Router.push(`${path}?user=${id}${queryParams ? '&' + queryParams : ''}`);
+    }
 };
 
 export default SignUp;

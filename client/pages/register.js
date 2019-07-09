@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Main from '../layouts/main';
+import Protected from '../layouts/protected';
 import { NarrowColumn } from '../layouts/columns';
 import Card from '../layouts/card';
 
@@ -18,13 +18,13 @@ const Register = () => {
 
 
     return (
-        <Main>
+        <Protected>
             <NarrowColumn>
                 <Card>
                     <Form context={context} id={'register'} />
                 </Card>
             </NarrowColumn>
-        </Main>
+        </Protected>
     );
 };
 

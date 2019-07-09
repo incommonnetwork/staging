@@ -1,3 +1,4 @@
+/* global location */
 import { Machine, assign } from 'xstate';
 import getApp from '../utils/feathers';
 import Router from '../utils/router';
@@ -22,7 +23,7 @@ export default Machine({
                     })
                 },
                 onError: {
-                    actions: (context) => Router.push(`/sign_in?redirect=${context.route}`)
+                    actions: (context) => Router.push(`/sign_up?redirect=${context.route}${location.search ? '&' + location.search.substr(1) : ''}`)
                 }
             }
         },
