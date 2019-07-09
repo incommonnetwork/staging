@@ -29,6 +29,6 @@ describe('/', () => {
     });
 
     it('contains a code form', async () => {
-        await this.page.waitFor('#code_lookup_form')
+        await this.page.waitFor('#code_lookup_form');
     });
 });

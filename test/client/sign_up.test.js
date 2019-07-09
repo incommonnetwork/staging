@@ -45,7 +45,7 @@ describe('/sign_up', () => {
     });
 
     it('loads', async () => {
-        expect.assertifons(1);
+        expect.assertions(1);
         const content = await this.page.content();
         expect(content.indexOf('<!DOCTYPE html')).toBe(0);
     });
