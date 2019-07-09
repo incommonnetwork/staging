@@ -6,7 +6,7 @@ export default {
     title: 'Create Code',
     schema: {
         type: 'object',
-        required: ['text', 'dates'],
+        required: ['text', 'dates', 'city'],
         properties: {
             text: {
                 title: 'text',
