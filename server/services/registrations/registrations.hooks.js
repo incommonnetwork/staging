@@ -1,11 +1,16 @@
+const { authenticate } = require('@feathersjs/authentication').hooks;
+
+const addUser = async (context) => {
+    context.data.userId = context.params.user.id;
+};
 
 
 module.exports = {
     before: {
-        all: [],
+        all: [authenticate('jwt')],
         find: [],
         get: [],
-        create: [],
+        create: [addUser],
         update: [],
         patch: [],
         remove: []
