@@ -23,7 +23,7 @@ const Register = () => {
         <Main>
             <NarrowColumn>
                 <Card>
-                    <Form context={context} id={'register'} />
+                    <Form context={context} id={'code_lookup'} />
                 </Card>
             </NarrowColumn>
         </Main>

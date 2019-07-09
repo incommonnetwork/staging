@@ -3,7 +3,6 @@ import getApp from '../utils/feathers';
 
 export default {
     redirect: '/home',
-    title: 'Create Neighborhood',
     schema: {
         type: 'object',
         required: ['text'],

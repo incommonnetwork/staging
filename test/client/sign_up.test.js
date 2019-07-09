@@ -45,7 +45,7 @@ describe('/sign_up', () => {
     });
 
     it('loads', async () => {
-        expect.assertions(1);
+        expect.assertifons(1);
         const content = await this.page.content();
         expect(content.indexOf('<!DOCTYPE html')).toBe(0);
     });
@@ -130,7 +130,8 @@ describe('/sign_up', () => {
                 await this.api.authenticate(this.creds);
 
                 await this.api.service('codes').create({
-                    text: this.run
+                    text: this.run,
+                    dates: [Date.now()]
                 });
 
                 this.result = await fetch(`${env.getApi('/sms')}`, {

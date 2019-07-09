@@ -15,7 +15,7 @@ describe('/', () => {
 
     beforeEach(async () => {
         this.page = await this.browser.newPage();
-        await this.page.goto(getPage('/'));
+        await this.page.goto(getPage('/about'));
     });
 
     afterEach(async () => {
@@ -28,7 +28,15 @@ describe('/', () => {
         expect(content.indexOf('<!DOCTYPE html')).toBe(0);
     });
 
-    it('contains a code form', async () => {
-        await this.page.waitFor('#code_lookup_form')
+    it('contains an iframe to spark', async () => {
+        expect.assertions(4);
+
+        const iframe = await this.page.$eval('#spark', (spark) => spark.tagName);
+        expect(iframe).toBeTruthy();
+        expect(iframe).toBe('IFRAME');
+
+        const src = await this.page.$eval('#spark', spark => spark.src);
+        expect(src).toBeTruthy();
+        expect(src).toBe('https://spark.adobe.com/page/oFoZUUzRZITY1/');
     });
 });
