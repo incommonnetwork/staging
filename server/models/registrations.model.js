@@ -16,18 +16,18 @@ module.exports = function (app) {
         }
 
     }, {
-            hooks: {
-                beforeCount(options) {
-                    options.raw = true;
-                }
+        hooks: {
+            beforeCount(options) {
+                options.raw = true;
             }
-        });
+        }
+    });
 
     // eslint-disable-next-line no-unused-vars
     registrations.associate = function (models) {
-        models.registrations.belongsTo(models.neighborhoods)
-        models.registrations.belongsTo(models.codes)
-        models.registrations.belongsTo(models.users)
+        models.registrations.belongsTo(models.neighborhoods);
+        models.registrations.belongsTo(models.codes);
+        models.registrations.belongsTo(models.users);
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
     };
