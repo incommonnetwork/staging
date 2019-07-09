@@ -5,15 +5,11 @@ import { NarrowColumn } from '../layouts/columns'
 import Card from '../layouts/card'
 
 import Form from '../components/form'
-import formContext from '../schemas/code_lookup_form'
-
-import Router from '../utils/router'
+import formContext from '../schemas/register_form'
 
 const context = {
     ...formContext,
-    submit_service_done: (ctx, code) => {
-        console.log("CODE", code)
-        Router.push(`/register?code=${code.data.id}`)
+    submit_service_done: () => {
         console.log('done')
     }
 }

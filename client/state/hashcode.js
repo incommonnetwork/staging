@@ -14,7 +14,7 @@ export default Machine({
                 src: async () => {
                     if (location.hash) {
                         const code = location.hash.substr(1);
-                        Router.push(`/code?text=${code}`);
+                        Router.push(`/register?text=${code}`);
                     }
                 }
             }
