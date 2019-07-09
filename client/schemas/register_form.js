@@ -1,6 +1,5 @@
-
+/* global window */
 import getApp from '../utils/feathers';
-import Router from '../utils/router'
 
 export default {
     redirect: '/home',
@@ -55,29 +54,27 @@ export default {
             cityEnum.push(key);
         }
 
+        const uiSchema = {};
         const schema = context.schema;
         schema.changed = true;
         schema.properties.city.enum = cityEnum;
-        console.log('CODE', code)
-        const uiSchema = {}
+
         if (code.cityId) {
             for (const [key, city] of cityMap) {
-                console.log('compare', key, city.id, code.cityId)
                 if (city.id === code.cityId) {
-                    delete schema.properties.city.enum
-                    schema.properties.city.default = key
+                    delete schema.properties.city.enum;
+                    schema.properties.city.default = key;
                     uiSchema.city = {
-                        "ui:readonly": true
-                    }
-                    break
+                        'ui:readonly': true
+                    };
+                    break;
                 }
             }
         }
 
 
         const maps = { cityMap };
-        console.log(schema)
-        return { schema, maps, uiSchema }
+        return { schema, maps, uiSchema };
     },
     submit_service_done: () => {
         throw new Error('submit_service_done() NOT IMPLEMENTED');

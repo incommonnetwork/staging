@@ -1,6 +1,5 @@
 
 import getApp from '../utils/feathers';
-import Router from '../utils/router'
 
 export default {
     redirect: '/home',
@@ -28,17 +27,15 @@ export default {
         type: 'SUBMIT',
         formData
     }),
-    submit_service: async ({ formData }, context) => {
+    submit_service: async ({ formData }) => {
         const app = await getApp();
         const result = await app.service('codes').find({
             query: formData
         });
-        if (!result.total) throw new Error('Code Not Found')
-        console.log(result)
+        if (!result.total) throw new Error('Code Not Found');
         return result.data[0];
     },
-    submit_service_done: (context, code) => {
-        console.log('submit_service_done')
-        Router.push(`/register?code=${code.id}`)
+    submit_service_done: () => {
+        throw new Error('NOT IMPLEMENTED');
     }
 };

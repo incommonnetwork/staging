@@ -29,13 +29,13 @@ const authorize = async (context) => {
 
 module.exports = {
     before: {
-        all: [authenticate('jwt')],
+        all: [],
         find: [],
         get: [],
-        create: [authorize],
-        update: [authorize],
-        patch: [authorize],
-        remove: [authorize]
+        create: [authenticate('jwt'), authorize],
+        update: [authenticate('jwt'), authorize],
+        patch: [authenticate('jwt'), authorize],
+        remove: [authenticate('jwt'), authorize]
     },
 
     after: {
