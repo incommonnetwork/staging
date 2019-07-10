@@ -2,31 +2,75 @@
 import getApp from '../utils/feathers';
 import moment from 'moment';
 
+const getCityNeighborhoodSchema = async () => {
+    const app = await getApp();
+    const cities = await app.service('cities').find({
+        query: {
+            $limit: 50
+        }
+    });
+
+    const schema = {
+        title: 'City',
+        type: 'object',
+        anyOf: [{
+            title: 'Select City...'
+        }]
+    };
+
+    for (const city of cities.data) {
+        const neighborhoodSchema = await getNeighborhoodSchema(city.id);
+        schema.anyOf.push({
+            title: city.city,
+            properties: {
+                neighborhood: neighborhoodSchema
+            },
+            required: ['neighborhood']
+        });
+    }
+
+    return schema;
+};
+
+const getNeighborhoodSchema = async (cityId) => {
+    const app = await getApp();
+    const city = await app.service('cities').get(cityId);
+    const neighborhoods = await app.service('neighborhoods').find({
+        query: {
+            cityId,
+            $limit: 50
+        }
+    });
+
+    const schema = {
+        title: `Neighborhood - ${city.city}`,
+        type: 'number',
+        enum: [],
+        enumNames: []
+    };
+
+    for (const neighborhood of neighborhoods.data) {
+        const key = `${neighborhood.area ? `${neighborhood.area} - ` : ''}${neighborhood.neighborhood}`;
+        schema.enum.push(neighborhood.id);
+        schema.enumNames.push(key);
+    }
+
+    return schema;
+};
+
 export default {
     redirect: '/home',
     title: 'Create Neighborhood',
+    maps: {},
     schema: {
         type: 'object',
-        required: ['city', 'neighborhood', 'dates'],
+        required: ['neighborhood', 'dates', 'city'],
         properties: {
-            city: {
-                title: 'City',
-                type: 'string'
-            },
-            neighborhood: {
-                title: 'Neighborhood',
-                type: 'string'
-            },
-            dates: {
-                type: 'array',
-                items: {
-                    type: 'string',
-                },
-                uniqueItems: true
-            }
         }
     },
     uiSchema: {
+        'city': {
+        },
         'dates': {
             'ui:widget': 'checkboxes'
         },
@@ -34,10 +78,6 @@ export default {
     validate: (formData, errors) => {
         return errors;
     },
-    onChange: (send) => ({ formData }) => send({
-        type: 'CHANGE',
-        formData
-    }),
     onSubmit: (send) => ({ formData }) => send({
         type: 'SUBMIT',
         formData
@@ -59,57 +99,36 @@ export default {
         return created;
     },
     form_init: async (context) => {
+
+        const schema = context.schema;
         const app = await getApp();
         const query = Object.fromEntries(new URLSearchParams(window.location.search));
         const code = await app.service('codes').get(query.code);
 
-        const cities = await app.service('cities').find();
-        const cityMap = new Map();
-        const cityEnum = [];
-        const neighborhoodMap = new Map();
-        const neighborhoodEnum = [];
-
-        for (const city of cities.data) {
-            const key = `${city.state} - ${city.city}`;
-            cityMap.set(key, city);
-            cityEnum.push(key);
-        }
-
-        const uiSchema = context.uiSchema;
-        const schema = context.schema;
-        schema.changed = true;
-        schema.properties.city.enum = cityEnum;
-        schema.properties.neighborhood.enum = neighborhoodEnum;
-
-        if (code.cityId) {
-            for (const [key, city] of cityMap) {
-                if (city.id === code.cityId) {
-                    delete schema.properties.city.enum;
-                    schema.properties.city.default = key;
-                    uiSchema.city = {
-                        'ui:readonly': true
-                    };
-
-                    const neighborhoods = await app.service('neighborhoods').find({
-                        query: {
-                            cityId: city.id
-                        }
-                    });
-
-                    for (const neighborhood of neighborhoods.data) {
-                        const key = `${neighborhood.area ? `${neighborhood.area} - ` : ''}${neighborhood.neighborhood}`;
-                        neighborhoodMap.set(key, neighborhood);
-                        neighborhoodEnum.push(key);
-                    }
-                    break;
-                }
-            }
+        if (!code.cityId) {
+            const citySchema = await getCityNeighborhoodSchema();
+            schema.properties.city = citySchema;
+        } else {
+            const neighborhood = await getNeighborhoodSchema(code.cityId);
+            schema.properties.neighborhood = neighborhood;
         }
 
         const dateMap = new Map();
         const dateEnum = [];
         code.dates = code.dates || [Date.now()];
 
+        schema.title = code.text.toUpperCase();
+        schema.description = code.description;
+
+        schema.properties.dates = {
+            title: 'Dates',
+            description: 'select the dates you are most likely to be free for dinner',
+            type: 'array',
+            items: {
+                type: 'string',
+            },
+            uniqueItems: true
+        };
 
         for (const date of (code.dates || [Date.now()])) {
             const m = moment(date);
@@ -120,8 +139,8 @@ export default {
 
         schema.properties.dates.items.enum = code.dates.map(d => moment(d).format('dddd, MMMM Do')) || [];
 
-        const maps = { cityMap, neighborhoodMap, dateMap };
-        return { schema, maps, uiSchema };
+        const maps = { dateMap };
+        return { schema, maps };
     },
     submit_service_done: () => {
         throw new Error('submit_service_done() NOT IMPLEMENTED');
