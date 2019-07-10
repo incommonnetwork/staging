@@ -1,4 +1,3 @@
-/* global window */
 import getApp from '../utils/feathers';
 const getSchema = async () => {
     const app = await getApp();
@@ -68,11 +67,18 @@ const getSchema = async () => {
                 };
 
                 for (const [date, registrationSet] of dateRegistration) {
+                    const restaurants = await app.service('restaurants').find({
+                        query: {
+                            neighborhoodId: neighborhood.id
+                        }
+                    });
+
                     const dateSchema = {
                         title: date,
                         type: 'object',
+                        required: ['registrations', 'restaurant'],
                         properties: {
-                            registration: {
+                            registrations: {
                                 type: 'array',
                                 uniqueItems: true,
                                 items: {
@@ -80,15 +86,26 @@ const getSchema = async () => {
                                     enum: [],
                                     enumNames: []
                                 }
+                            },
+                            restaurant: {
+                                type: 'number',
+                                enum: [],
+                                enumNames: []
                             }
                         }
                     };
 
+                    for (const restaurant of restaurants.data) {
+                        const id = restaurant.id;
+                        dateSchema.properties.restaurant.enum.push(id);
+                        dateSchema.properties.restaurant.enumNames.push(restaurant.name);
+                    }
+
                     for (const registration of Array.from(registrationSet)) {
                         const id = registration.id;
                         const user = await app.service('users').get(registration.userId);
-                        dateSchema.properties.registration.items.enum.push(id);
-                        dateSchema.properties.registration.items.enumNames.push(user.email);
+                        dateSchema.properties.registrations.items.enum.push(id);
+                        dateSchema.properties.registrations.items.enumNames.push(user.email);
                     }
 
                     neighborhoodSchema.oneOf.push(dateSchema);
@@ -108,7 +125,7 @@ const getSchema = async () => {
 
 export default {
     redirect: '/home',
-    title: 'Create Neighborhood',
+    title: 'Create Invite',
     maps: {},
     schema: {
         type: 'object',
@@ -119,7 +136,7 @@ export default {
     uiSchema: {
         'city': {
         },
-        'registration': {
+        'registrations': {
             'ui:widget': 'checkboxes'
         },
     },
@@ -130,21 +147,7 @@ export default {
         type: 'SUBMIT',
         formData
     }),
-    submit_service: async ({ formData }, context) => {
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
-
-        const neighborhoodId = formData.city ? formData.city.neighborhood : formData.neighborhood;
-        const dates = formData.dates.map(k => context.maps.dateMap.get(k));
-
-        const registration = {
-            codeId: Number.parseInt(query.code),
-            neighborhoodId,
-            dates
-        };
-
-        const app = await getApp();
-        const created = await app.service('registrations').create(registration);
-        return created;
+    submit_service: async () => {
     },
     form_init: async () => {
 
