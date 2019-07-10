@@ -11,16 +11,16 @@ module.exports = function (app) {
             allowNull: false
         }
     }, {
-            hooks: {
-                beforeCount(options) {
-                    options.raw = true;
-                }
+        hooks: {
+            beforeCount(options) {
+                options.raw = true;
             }
-        });
+        }
+    });
 
     // eslint-disable-next-line no-unused-vars
     rsvps.associate = function (models) {
-        models.rsvps.belongsTo(models.users)
+        models.rsvps.belongsTo(models.users);
 
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
