@@ -64,7 +64,7 @@ export default {
     maps: {},
     schema: {
         type: 'object',
-        required: ['neighborhood', 'dates', 'city'],
+        required: ['dates'],
         properties: {
         }
     },
@@ -85,7 +85,7 @@ export default {
     submit_service: async ({ formData }, context) => {
         const query = Object.fromEntries(new URLSearchParams(window.location.search));
 
-        const neighborhoodId = context.maps.neighborhoodMap.get(formData.neighborhood).id;
+        const neighborhoodId = formData.city ? formData.city.neighborhood : formData.neighborhood;
         const dates = formData.dates.map(k => context.maps.dateMap.get(k));
 
         const registration = {
@@ -106,11 +106,13 @@ export default {
         const code = await app.service('codes').get(query.code);
 
         if (!code.cityId) {
+            schema.required.push('city');
             const citySchema = await getCityNeighborhoodSchema();
             schema.properties.city = citySchema;
         } else {
             const neighborhood = await getNeighborhoodSchema(code.cityId);
             schema.properties.neighborhood = neighborhood;
+            schema.required.push('neighborhood');
         }
 
         const dateMap = new Map();
