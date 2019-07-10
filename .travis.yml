@@ -26,7 +26,7 @@ install:
   - npm install
 script:
   - ansible --version
-  - travis_wait npm run ci:test
+  - npm run ci:test
   - npm run staging:deploy:client
 deploy:
   - provider: pages
