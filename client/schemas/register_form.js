@@ -13,14 +13,14 @@ const getCityNeighborhoodSchema = async () => {
     const schema = {
         title: 'City',
         type: 'object',
-        anyOf: [{
+        oneOf: [{
             title: 'Select City...'
         }]
     };
 
     for (const city of cities.data) {
         const neighborhoodSchema = await getNeighborhoodSchema(city.id);
-        schema.anyOf.push({
+        schema.oneOf.push({
             title: city.city,
             properties: {
                 neighborhood: neighborhoodSchema

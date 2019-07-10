@@ -13,7 +13,7 @@ export default {
             }, {
                 label: 'user'
             }, {
-                label: 'invitationId'
+                label: 'inviteId'
             }, {
                 label: 'neighborhood'
             }
