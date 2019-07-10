@@ -37,8 +37,6 @@ const getSchema = async () => {
         }]
     };
 
-    const uiSchema = {};
-
     for (const [id, cityNeighborhoods] of codeCities) {
         const code = await app.service('codes').get(id);
 
@@ -86,10 +84,6 @@ const getSchema = async () => {
                         }
                     };
 
-                    uiSchema[date] = {
-                        'ui:widget': 'checkboxes'
-                    };
-
                     for (const registration of Array.from(registrationSet)) {
                         const id = registration.id;
                         const user = await app.service('users').get(registration.userId);
@@ -109,8 +103,7 @@ const getSchema = async () => {
         schema.oneOf.push(codeSchema);
     }
 
-
-    return { schema, uiSchema };
+    return { schema };
 };
 
 export default {
@@ -126,7 +119,7 @@ export default {
     uiSchema: {
         'city': {
         },
-        'dates': {
+        'registration': {
             'ui:widget': 'checkboxes'
         },
     },
@@ -155,9 +148,9 @@ export default {
     },
     form_init: async () => {
 
-        const { schema, uiSchema } = await getSchema();
+        const { schema } = await getSchema();
 
-        return { schema, maps: {}, uiSchema };
+        return { schema, maps: {} };
     },
     submit_service_done: () => {
         throw new Error('submit_service_done() NOT IMPLEMENTED');
