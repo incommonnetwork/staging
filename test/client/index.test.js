@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const env = require('../setup.env')(3033);
+const env = require('../setup.env')(3035);
 const getPage = env.getPage;
 
 describe('/', () => {
@@ -14,12 +14,14 @@ describe('/', () => {
     });
 
     beforeEach(async () => {
-        this.page = await this.browser.newPage();
+        this.context = await this.browser.createIncognitoBrowserContext();
+        this.page = await this.context.newPage();
         await this.page.goto(getPage('/'));
     });
 
     afterEach(async () => {
         await this.page.close();
+        await this.context.close()
     });
 
     it('loads', async () => {
