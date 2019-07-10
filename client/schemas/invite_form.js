@@ -8,6 +8,8 @@ const getSchema = async () => {
         }
     });
 
+    const registrationMap = new Map();
+
     const codeCities = new Map();
 
     for (const registration of registrationsWithoutInvite.data) {
@@ -26,12 +28,13 @@ const getSchema = async () => {
         dateRegistration.set(registration.dates[0], registrationSet);
 
         registrationSet.add(registration);
+        registrationMap.set(registration.id, registration.dates[0]);
     }
 
     const schema = {
         title: 'Code',
         type: 'object',
-        oneOf: [{
+        anyOf: [{
             title: 'Select Code...'
         }]
     };
@@ -41,7 +44,7 @@ const getSchema = async () => {
 
         const codeSchema = {
             title: code.text,
-            oneOf: [{
+            anyOf: [{
                 title: 'Select City...'
             }]
         };
@@ -51,7 +54,7 @@ const getSchema = async () => {
 
             const citySchema = {
                 title: city.city,
-                oneOf: [{
+                anyOf: [{
                     title: 'Select Neighborhood...'
                 }]
             };
@@ -61,7 +64,7 @@ const getSchema = async () => {
 
                 const neighborhoodSchema = {
                     title: neighborhood.neighborhood,
-                    oneOf: [{
+                    anyOf: [{
                         title: 'Select Date'
                     }]
                 };
@@ -87,7 +90,8 @@ const getSchema = async () => {
                                     enumNames: []
                                 }
                             },
-                            restaurant: {
+                            restaurantId: {
+                                title: 'Restaurant',
                                 type: 'number',
                                 enum: [],
                                 enumNames: []
@@ -97,8 +101,8 @@ const getSchema = async () => {
 
                     for (const restaurant of restaurants.data) {
                         const id = restaurant.id;
-                        dateSchema.properties.restaurant.enum.push(id);
-                        dateSchema.properties.restaurant.enumNames.push(restaurant.name);
+                        dateSchema.properties.restaurantId.enum.push(id);
+                        dateSchema.properties.restaurantId.enumNames.push(restaurant.name);
                     }
 
                     for (const registration of Array.from(registrationSet)) {
@@ -108,19 +112,19 @@ const getSchema = async () => {
                         dateSchema.properties.registrations.items.enumNames.push(user.email);
                     }
 
-                    neighborhoodSchema.oneOf.push(dateSchema);
+                    neighborhoodSchema.anyOf.push(dateSchema);
                 }
 
-                citySchema.oneOf.push(neighborhoodSchema);
+                citySchema.anyOf.push(neighborhoodSchema);
             }
 
-            codeSchema.oneOf.push(citySchema);
+            codeSchema.anyOf.push(citySchema);
         }
 
-        schema.oneOf.push(codeSchema);
+        schema.anyOf.push(codeSchema);
     }
 
-    return { schema };
+    return { schema, maps: { registrationMap } };
 };
 
 export default {
@@ -147,13 +151,24 @@ export default {
         type: 'SUBMIT',
         formData
     }),
-    submit_service: async () => {
+    submit_service: async ({ formData }, context) => {
+        const { restaurantId, registrations } = formData;
+        const date = context.maps.registrationMap.get(registrations[0]);
+        const app = await getApp();
+        const invite = await app.service('invites').create({ date, restaurantId });
+
+        for (const id of registrations) {
+            await app.service('registrations').patch(id, {
+                inviteId: invite.id
+            });
+        }
+        return invite;
     },
     form_init: async () => {
 
-        const { schema } = await getSchema();
+        const { schema, maps } = await getSchema();
 
-        return { schema, maps: {} };
+        return { schema, maps };
     },
     submit_service_done: () => {
         throw new Error('submit_service_done() NOT IMPLEMENTED');
