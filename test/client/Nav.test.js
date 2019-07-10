@@ -4,7 +4,6 @@ const puppeteer = require('puppeteer');
 const env = require('../setup.env')(7033);
 const getPage = env.getPage;
 
-//jest.setTimeout(1000000);
 // Next.js does frontend routing; so we have to wait manually rather than listening to pageload events
 const wait = (ms) => new Promise(res => setTimeout(res, ms));
 
