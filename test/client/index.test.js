@@ -21,7 +21,7 @@ describe('/', () => {
 
     afterEach(async () => {
         await this.page.close();
-        await this.context.close()
+        await this.context.close();
     });
 
     it('loads', async () => {
