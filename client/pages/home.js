@@ -149,7 +149,7 @@ const tabs = [
 
 const Home = () => {
     return (
-        <Protected>
+        <Protected redirect="/sign_in">
             <Tabs tabs={tabs} id="home" />
         </Protected>
     );
