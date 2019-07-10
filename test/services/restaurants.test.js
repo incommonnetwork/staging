@@ -1,8 +1,8 @@
 // const app = require('../../server/app');
 
-describe('\'neighborhoods\' service', () => {
+describe('\'restaurants\' service', () => {
     it('registered the service', () => {
-        // const service = app.service('neighborhoods');
+        // const service = app.service('restaurants');
         // expect(service).toBeTruthy();
     });
 });
