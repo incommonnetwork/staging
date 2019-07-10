@@ -4,6 +4,16 @@ const addUser = async (context) => {
     context.data.userId = context.params.user.id;
 };
 
+const populateFieldsFind = async (context) => {
+    const sequelizeClient = context.app.get('sequelizeClient');
+
+    for (const registrationData of context.result.data) {
+        registrationData.user = (await sequelizeClient.models.users.findByPk(registrationData.userId)).email;
+        registrationData.code = (await sequelizeClient.models.codes.findByPk(registrationData.codeId)).text;
+        registrationData.neighborhood = (await sequelizeClient.models.neighborhoods.findByPk(registrationData.neighborhoodId)).neighborhood;
+    }
+};
+
 
 module.exports = {
     before: {
@@ -18,7 +28,7 @@ module.exports = {
 
     after: {
         all: [],
-        find: [],
+        find: [populateFieldsFind],
         get: [],
         create: [],
         update: [],

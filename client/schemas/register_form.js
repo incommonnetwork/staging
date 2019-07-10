@@ -120,7 +120,9 @@ export default {
         code.dates = code.dates || [Date.now()];
 
         schema.title = code.text.toUpperCase();
-        schema.description = code.description;
+        if (code.description) {
+            schema.description = code.description;
+        }
 
         schema.properties.dates = {
             title: 'Dates',
