@@ -21,10 +21,11 @@ const Loading = () => (
 );
 
 
-const Protected = ({ children, router, role }) => {
+const Protected = ({ children, router, role, redirect }) => {
     const [current] = useMachine(protectedMachine.withContext({
         route: router.pathname,
-        role
+        role,
+        redirect
     }));
 
 
@@ -41,7 +42,8 @@ Protected.propTypes = {
         PropTypes.node
     ]),
     router: PropTypes.object.isRequired,
-    role: PropTypes.string
+    role: PropTypes.string,
+    redirect: PropTypes.string
 };
 
 export default withRouter(Protected);

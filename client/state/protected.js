@@ -23,7 +23,7 @@ export default Machine({
                     })
                 },
                 onError: {
-                    actions: (context) => Router.push(`/sign_up?redirect=${context.route}${location.search ? '&' + location.search.substr(1) : ''}`)
+                    actions: (context) => Router.push(`${context.redirect || '/sign_up'}?redirect=${context.route}${location.search ? '&' + location.search.substr(1) : ''}`)
                 }
             }
         },
