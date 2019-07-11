@@ -18,7 +18,7 @@ const Rsvp = () => {
 
 
     return (
-        <Protected>
+        <Protected redirect="/sign_in">
             <NarrowColumn>
                 <Card>
                     <Form context={context} id={'rsvp'} />

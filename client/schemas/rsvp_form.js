@@ -25,8 +25,14 @@ export default {
         type: 'SUBMIT',
         formData
     }),
-    submit_service: async () => {
-        // console.log('submit', formData);
+    submit_service: async ({ formData }) => {
+        const total = formData.total;
+        const app = await getApp();
+        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const inviteId = Number.parseInt(query.invite);
+        const accepted = true;
+        const created = await app.service('rsvps').create({ inviteId, accepted, total });
+        return created;
     },
     form_init: async () => {
 
@@ -36,6 +42,7 @@ export default {
 
         const schema = {
             type: 'object',
+            required: ['total'],
             properties: {
                 code: {
                     title: 'Invite',
@@ -46,6 +53,21 @@ export default {
                     title: 'Restaurant',
                     description: invite.restaurant,
                     type: 'null'
+                },
+                total: {
+                    title: 'Plus',
+                    type: 'number',
+                    default: 1,
+                    enum: [
+                        1,
+                        2,
+                        3
+                    ],
+                    enumNames: [
+                        '0',
+                        '1',
+                        '2'
+                    ]
                 }
             }
         };
