@@ -1,8 +1,8 @@
-/* global window */
+
 import getApp from '../utils/feathers';
 import moment from 'moment';
 
-const getCityNeighborhoodSchema = async () => {
+const getCityNeighborhoodSchema = async (codeId) => {
     const app = await getApp();
     const cities = await app.service('cities').find({
         query: {
@@ -13,14 +13,14 @@ const getCityNeighborhoodSchema = async () => {
     const schema = {
         title: 'City',
         type: 'object',
-        oneOf: [{
+        anyOf: [{
             title: 'Select City...'
         }]
     };
 
     for (const city of cities.data) {
-        const neighborhoodSchema = await getNeighborhoodSchema(city.id);
-        schema.oneOf.push({
+        const neighborhoodSchema = await getNeighborhoodSchema(city.id, codeId);
+        schema.anyOf.push({
             title: city.city,
             properties: {
                 neighborhood: neighborhoodSchema
@@ -32,7 +32,7 @@ const getCityNeighborhoodSchema = async () => {
     return schema;
 };
 
-const getNeighborhoodSchema = async (cityId) => {
+const getNeighborhoodSchema = async (cityId, codeId) => {
     const app = await getApp();
     const city = await app.service('cities').get(cityId);
     const neighborhoods = await app.service('neighborhoods').find({
@@ -44,14 +44,14 @@ const getNeighborhoodSchema = async (cityId) => {
 
     const schema = {
         title: `Neighborhood - ${city.city}`,
-        type: 'number',
+        type: 'string',
         enum: [],
         enumNames: []
     };
 
     for (const neighborhood of neighborhoods.data) {
         const key = `${neighborhood.area ? `${neighborhood.area} - ` : ''}${neighborhood.neighborhood}`;
-        schema.enum.push(neighborhood.id);
+        schema.enum.push(`${codeId}:${neighborhood.id}`);
         schema.enumNames.push(key);
     }
 
@@ -66,14 +66,36 @@ const getCodeSchema = async () => {
         }
     });
 
+    const users = await app.service('users').find({
+        query: {
+            $limit: 50
+        }
+    });
+
     const codeSchema = {
-        title: 'Code',
         type: 'object',
-        required: [],
-        oneOf: [{
-            title: 'Select Code...'
-        }]
+        properties: {
+            code: {
+                title: 'Code',
+                type: 'object',
+                required: [],
+                anyOf: [{
+                    title: 'Select Code...'
+                }]
+            },
+            userId: {
+                title: 'User',
+                type: 'integer',
+                enum: [],
+                enumNames: []
+            }
+        }
     };
+
+    for (const user of users.data) {
+        codeSchema.properties.userId.enum.push(user.id);
+        codeSchema.properties.userId.enumNames.push(user.email);
+    }
 
     const dateMap = new Map();
 
@@ -84,14 +106,14 @@ const getCodeSchema = async () => {
             required: [],
             properties: {}
         };
-        codeSchema.oneOf.push(schema);
+        codeSchema.properties.code.anyOf.push(schema);
 
         if (!code.cityId) {
             schema.required.push('city');
-            const citySchema = await getCityNeighborhoodSchema();
+            const citySchema = await getCityNeighborhoodSchema(code.id);
             schema.properties.city = citySchema;
         } else {
-            const neighborhood = await getNeighborhoodSchema(code.cityId);
+            const neighborhood = await getNeighborhoodSchema(code.cityId, code.id);
             schema.properties.neighborhood = neighborhood;
             schema.required.push('neighborhood');
         }
@@ -106,7 +128,6 @@ const getCodeSchema = async () => {
 
         schema.properties.dates = {
             title: 'Dates',
-            description: 'select the dates you are most likely to be free for dinner',
             type: 'array',
             items: {
                 type: 'string',
@@ -129,7 +150,7 @@ const getCodeSchema = async () => {
 
 export default {
     redirect: '/home',
-    title: 'Create Neighborhood',
+    title: 'Create Registration',
     maps: {},
     schema: {
         type: 'object',
@@ -138,11 +159,11 @@ export default {
         }
     },
     uiSchema: {
-        'city': {
-        },
-        'dates': {
-            'ui:widget': 'checkboxes'
-        },
+        'code': {
+            'dates': {
+                'ui:widget': 'checkboxes'
+            }
+        }
     },
     validate: (formData, errors) => {
         return errors;
@@ -152,19 +173,15 @@ export default {
         formData
     }),
     submit_service: async ({ formData }, context) => {
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const neighborhoodParts = formData.code.city.neighborhood.split(':');
+        const [codeId, neighborhoodId] = neighborhoodParts.map((s) => Number.parseInt(s));
+        const { userId } = formData;
 
-        const neighborhoodId = formData.city ? formData.city.neighborhood : formData.neighborhood;
-        const dates = formData.dates.map(k => context.maps.dateMap.get(k));
-
-        const registration = {
-            codeId: Number.parseInt(query.code),
-            neighborhoodId,
-            dates
-        };
+        const dates = formData.code.dates.map(k => context.maps.dateMap.get(k));
+        const createData = { codeId, neighborhoodId, userId, dates };
 
         const app = await getApp();
-        const created = await app.service('registrations').create(registration);
+        const created = await app.service('registrations').create(createData);
         return created;
     },
     form_init: async () => {
