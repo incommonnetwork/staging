@@ -1,5 +1,6 @@
 
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const { NotAuthenticated } = require('@feathersjs/errors');
 
 const isAdmin = async (context) => {
     const { app, params: { user } } = context;
@@ -20,12 +21,30 @@ const isAdmin = async (context) => {
         }
     });
 
-    return !!user_roles;
+    if (!user_roles) {
+        throw new NotAuthenticated();
+    }
 };
 
 const addUser = async (context) => {
     context.data.userId = context.params.user.id;
 };
+
+const addCodeAndUser = async (context) => {
+    const sequelizeClient = context.app.get('sequelizeClient');
+
+    for (const rsvpData of context.result.data) {
+        const rsvp = await sequelizeClient.models.rsvps.findByPk(rsvpData.id)
+        const user = await rsvp.getUser()
+        const invite = await sequelizeClient.models.invites.findByPk(rsvpData.inviteId)
+        const registrations = await invite.getRegistrations();
+        const firstRegistration = registrations[0];
+        const code = await firstRegistration.getCode()
+
+        rsvpData.user = user.get('email')
+        rsvpData.code = code.get('text')
+    }
+}
 
 
 module.exports = {
@@ -41,7 +60,7 @@ module.exports = {
 
     after: {
         all: [],
-        find: [],
+        find: [addCodeAndUser],
         get: [],
         create: [],
         update: [],

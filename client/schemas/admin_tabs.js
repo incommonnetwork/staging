@@ -5,6 +5,7 @@ import neighborhoodTable from './neighborhood_table';
 import registrationTable from './registration_table';
 import inviteTable from './invite_table';
 import restaurantTable from './restaurant_table';
+import rsvpTable from './rsvps_table'
 
 export default [
     userTable,
@@ -13,5 +14,6 @@ export default [
     neighborhoodTable,
     registrationTable,
     inviteTable,
-    restaurantTable
+    restaurantTable,
+    rsvpTable
 ];
