@@ -6,8 +6,12 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
     const sequelizeClient = app.get('sequelizeClient');
     const rsvps = sequelizeClient.define('rsvps', {
-        text: {
-            type: DataTypes.STRING,
+        accepted: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+        total: {
+            type: DataTypes.INTEGER,
             allowNull: false
         }
     }, {
