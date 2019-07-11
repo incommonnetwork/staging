@@ -9,7 +9,7 @@ const Header = () => (
     <Navbar color='primary'>
 
         <Navbar.Brand>
-            <Link href='/' id='nav_'>
+            <Link href='/about' id='nav_'>
                 <Navbar.Item>
                     InCommon
                 </Navbar.Item>

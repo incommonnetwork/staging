@@ -15,22 +15,6 @@ describe('\'codes\' service', () => {
             this.service = this.api.service('codes');
         });
 
-        it('throws on get', async () => {
-            expect.assertions(1);
-
-            await this.service.get(1).catch(e => {
-                expect(e.code).toBe(401);
-            });
-        });
-
-        it('throws on find', async () => {
-            expect.assertions(1);
-
-            await this.service.find({}).catch(e => {
-                expect(e.code).toBe(401);
-            });
-        });
-
         it('throws on create', async () => {
             expect.assertions(1);
 
@@ -88,25 +72,9 @@ describe('\'codes\' service', () => {
                 await this.api.authenticate(this.creds);
             });
 
-            describe('should forbid all ops', () => {
+            describe('should forbid write ops', () => {
                 beforeEach(async () => {
                     this.service = this.api.service('codes');
-                });
-
-                it('throws on get', async () => {
-                    expect.assertions(1);
-
-                    await this.service.get(1).catch(e => {
-                        expect(e.code).toBe(403);
-                    });
-                });
-
-                it('throws on find', async () => {
-                    expect.assertions(1);
-
-                    await this.service.find({}).catch(e => {
-                        expect(e.code).toBe(403);
-                    });
                 });
 
                 it('throws on create', async () => {
@@ -171,13 +139,15 @@ describe('\'codes\' service', () => {
                 beforeEach(async () => {
                     this.service = this.api.service('codes');
                     this.code_id = (await this.service.create({
-                        text: this.run
+                        text: this.run,
+                        dates: [Date.now()]
                     })).id;
                 });
 
                 it('allows create', async () => {
                     await this.service.create({
-                        text: this.run
+                        text: this.run,
+                        dates: [Date.now()]
                     });
                 });
 
@@ -193,7 +163,8 @@ describe('\'codes\' service', () => {
                     expect.assertions(1);
 
                     await this.service.update(this.code_id, {
-                        text: 'updated'
+                        text: 'updated',
+                        dates: [Date.now()]
                     });
 
                     const updated = await this.service.get(this.code_id);

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useMachine } from '@xstate/react';
 import formMachine from '../state/form';
 
-import 'bootstrap/dist/css/bootstrap.css';
+import '../vendor/bootstrap.css';
 import JsonSchemaForm from 'react-jsonschema-form';
 import Button from 'react-bulma-components/src/components/button';
 import ErrorElement from '../components/error';
@@ -17,7 +17,7 @@ const Form = ({ context, id }) => {
         : current.matches('form_init') ? Loader
             : InnerForm;
 
-    const props = Element === ErrorElement ? { current, id }
+    const props = Element === ErrorElement ? { current, send, id }
         : Element === Loader ? {}
             : { current, send, id };
 

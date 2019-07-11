@@ -35,7 +35,7 @@ describe('/admin', () => {
     });
 
     it('redirects to sign in', async () => {
-        await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 60000 }, getPathname('/sign_in'));
+        await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 5000 }, getPathname('/sign_in'));
     });
 
     it('redirects to home if not admin', async () => {
@@ -61,6 +61,7 @@ describe('/admin', () => {
     });
 
     describe('tabs', () => {
+
         beforeEach(async () => {
             await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 5000 }, getPathname('/sign_in'));
             const form = await this.page.$('#sign_in_form');

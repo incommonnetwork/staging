@@ -44,13 +44,13 @@ const addAssignedBy = async (context) => {
 
 module.exports = {
     before: {
-        all: [authenticate('jwt'), authorize],
+        all: [],
         find: [],
         get: [],
-        create: [assignedBy],
-        update: [assignedBy],
-        patch: [assignedBy],
-        remove: []
+        create: [authenticate('jwt'), authorize, assignedBy],
+        update: [authenticate('jwt'), authorize, assignedBy],
+        patch: [authenticate('jwt'), authorize, assignedBy],
+        remove: [authenticate('jwt'), authorize]
     },
 
     after: {

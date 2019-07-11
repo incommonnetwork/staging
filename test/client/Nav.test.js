@@ -4,7 +4,6 @@ const puppeteer = require('puppeteer');
 const env = require('../setup.env')(7033);
 const getPage = env.getPage;
 
-//jest.setTimeout(1000000);
 // Next.js does frontend routing; so we have to wait manually rather than listening to pageload events
 const wait = (ms) => new Promise(res => setTimeout(res, ms));
 
@@ -106,13 +105,13 @@ const NavBar = (route, navmap) => {
 };
 
 const loggedOut = {
-    '/': '#nav_',
+    '/about': '#nav_',
     '/sign_up': '#sign_up_nav',
     '/sign_in': '#sign_in_nav',
 };
 
 const routes = {
-    '/': {
+    '/about': {
         navbar: loggedOut
     },
     '/sign_up': {

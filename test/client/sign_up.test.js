@@ -130,7 +130,8 @@ describe('/sign_up', () => {
                 await this.api.authenticate(this.creds);
 
                 await this.api.service('codes').create({
-                    text: this.run
+                    text: this.run,
+                    dates: [Date.now()]
                 });
 
                 this.result = await fetch(`${env.getApi('/sms')}`, {

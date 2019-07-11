@@ -15,7 +15,8 @@ export default Machine({
                     target: 'form_input',
                     actions: assign({
                         schema: (context, event) => event.data.schema || context.schema,
-                        maps: (context, event) => event.data.maps || context.maps
+                        maps: (context, event) => event.data.maps || context.maps,
+                        uiSchema: (context, event) => event.data.uiSchema || context.uiSchema
                     })
                 },
                 onError: {
@@ -43,7 +44,8 @@ export default Machine({
                     target: 'form_input',
                     actions: assign({
                         schema: (context, event) => event.data.schema || context.schema,
-                        maps: (context, event) => event.data.maps || context.maps
+                        maps: (context, event) => event.data.maps || context.maps,
+                        uiSchema: (context, event) => event.data.uiSchema || context.uiSchema
                     })
                 },
                 onError: {

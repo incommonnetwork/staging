@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const env = require('../setup.env')(3033);
+const env = require('../setup.env')(3035);
 const getPage = env.getPage;
 
 describe('/', () => {
@@ -14,12 +14,14 @@ describe('/', () => {
     });
 
     beforeEach(async () => {
-        this.page = await this.browser.newPage();
+        this.context = await this.browser.createIncognitoBrowserContext();
+        this.page = await this.context.newPage();
         await this.page.goto(getPage('/'));
     });
 
     afterEach(async () => {
         await this.page.close();
+        await this.context.close();
     });
 
     it('loads', async () => {
@@ -28,15 +30,7 @@ describe('/', () => {
         expect(content.indexOf('<!DOCTYPE html')).toBe(0);
     });
 
-    it('contains an iframe to spark', async () => {
-        expect.assertions(4);
-
-        const iframe = await this.page.$eval('#spark', (spark) => spark.tagName);
-        expect(iframe).toBeTruthy();
-        expect(iframe).toBe('IFRAME');
-
-        const src = await this.page.$eval('#spark', spark => spark.src);
-        expect(src).toBeTruthy();
-        expect(src).toBe('https://spark.adobe.com/page/oFoZUUzRZITY1/');
+    it('contains a code form', async () => {
+        await this.page.waitFor('#code_lookup_form');
     });
 });

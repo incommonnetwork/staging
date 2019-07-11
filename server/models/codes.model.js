@@ -10,6 +10,14 @@ module.exports = function (app) {
             type: DataTypes.STRING,
             allowNull: false
         },
+        description: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        dates: {
+            type: DataTypes.ARRAY(DataTypes.DATEONLY),
+            allowNull: false
+        },
         SEEDFILE: {
             type: DataTypes.STRING,
             allowNull: true
@@ -27,6 +35,7 @@ module.exports = function (app) {
         models.codes.belongsTo(models.users, { as: 'assigned_by' });
         models.codes.belongsToMany(models.users, { as: 'attendees', through: 'user_codes' });
         models.users.belongsToMany(models.codes, { as: 'interests', through: 'user_codes' });
+        models.codes.belongsTo(models.cities);
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
     };

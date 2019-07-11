@@ -1,12 +1,33 @@
 import React from 'react';
+
 import Main from '../layouts/main';
-import HashCode from '../components/hashcode';
+import { NarrowColumn } from '../layouts/columns';
+import Card from '../layouts/card';
 
-const Index = () => (
-    <Main>
-        <HashCode />
-        <iframe id="spark" width="100%" height="100%" frameBorder="0" src="https://spark.adobe.com/page/oFoZUUzRZITY1/" />
-    </Main>
-);
+import Form from '../components/form';
+import formContext from '../schemas/code_lookup_form';
 
-export default Index;
+import Router from '../utils/router';
+
+const context = {
+    ...formContext,
+    submit_service_done: (ctx, code) => {
+        Router.push(`/register?code=${code.data.id}`);
+    }
+};
+
+const Register = () => {
+
+
+    return (
+        <Main>
+            <NarrowColumn>
+                <Card>
+                    <Form context={context} id={'code_lookup'} />
+                </Card>
+            </NarrowColumn>
+        </Main>
+    );
+};
+
+export default Register;
