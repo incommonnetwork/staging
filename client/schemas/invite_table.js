@@ -17,7 +17,7 @@ export default {
             }, {
                 label: 'date'
             }, {
-                label: 'restaturant'
+                label: 'restaurant'
             }, {
                 label: 'users'
             }

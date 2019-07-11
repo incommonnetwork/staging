@@ -23,7 +23,7 @@ const isAdmin = async (context) => {
 };
 
 const addUser = async (context) => {
-    const _admin = await isAdmin(context)
+    const _admin = await isAdmin(context);
     context.data.userId = _admin ? context.data.userId : context.params.user.id;
 };
 

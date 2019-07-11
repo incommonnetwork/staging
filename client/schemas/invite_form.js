@@ -61,6 +61,13 @@ const getSchema = async () => {
 
             for (const [id, dateRegistration] of neighborhoodDates) {
                 const neighborhood = await app.service('neighborhoods').get(id);
+                const restaurants = await app.service('restaurants').find({
+                    query: {
+                        neighborhoodId: neighborhood.id
+                    }
+                });
+
+                if (!restaurants.total) continue;
 
                 const neighborhoodSchema = {
                     title: neighborhood.neighborhood,
@@ -70,11 +77,7 @@ const getSchema = async () => {
                 };
 
                 for (const [date, registrationSet] of dateRegistration) {
-                    const restaurants = await app.service('restaurants').find({
-                        query: {
-                            neighborhoodId: neighborhood.id
-                        }
-                    });
+
 
                     const dateSchema = {
                         title: date,
@@ -167,7 +170,6 @@ export default {
     form_init: async () => {
 
         const { schema, maps } = await getSchema();
-
         return { schema, maps };
     },
     submit_service_done: () => {
