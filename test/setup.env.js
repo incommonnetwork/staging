@@ -61,7 +61,7 @@ const testStaging = () => {
     return { getPathname, getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
 
-const testCI = (port) => {
+const testCI = () => {
     const api_url = 'http://localhost:3030';
 
 
@@ -70,7 +70,7 @@ const testCI = (port) => {
     const getApi = pathname => url.format({
         hostname: 'localhost',
         protocol: 'http',
-        port,
+        port: 3030,
         pathname
     });
 
@@ -83,7 +83,7 @@ const testCI = (port) => {
 
     const after = async () => {
 
-    }
+    };
 
 
     return { getPathname, getPage, getApi, before, after, initApi: () => initApi(api_url) };
