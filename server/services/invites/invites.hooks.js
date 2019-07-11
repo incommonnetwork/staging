@@ -23,6 +23,17 @@ const addCodeAndUsers = async (context) => {
     }
 };
 
+const addCode = async (context) => {
+    const sequelizeClient = context.app.get('sequelizeClient');
+
+    const invite = await sequelizeClient.models.invites.findByPk(context.result.id);
+    const registrations = await invite.getRegistrations();
+    const firstRegistration = registrations[0];
+    const code = await firstRegistration.getCode();
+
+    context.result.code = code.get('text');
+};
+
 module.exports = {
     before: {
         all: [authenticate('jwt')],
@@ -37,7 +48,7 @@ module.exports = {
     after: {
         all: [],
         find: [addRestaurant, addCodeAndUsers],
-        get: [],
+        get: [addCode],
         create: [],
         update: [],
         patch: [],
