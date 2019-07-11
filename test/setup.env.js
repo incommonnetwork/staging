@@ -61,54 +61,29 @@ const testStaging = () => {
     return { getPathname, getPage, getApi, before, after, initApi: () => initApi(api_url) };
 };
 
-const testCI = (port) => {
-    const api_url = `http://localhost:${port}`;
+const testCI = () => {
+    const api_url = 'http://localhost:3030';
 
-    const logger = require('../server/logger');
-    const app = require('../server/app');
-    const nextApp = require('../server/nextApp').nextApp;
 
     const getPathname = pathname => pathname;
 
     const getApi = pathname => url.format({
-        hostname: app.get('host') || 'localhost',
+        hostname: 'localhost',
         protocol: 'http',
-        port,
+        port: 3030,
         pathname
     });
 
     const getPage = getApi;
 
-    let server = null;
 
     const before = async () => {
 
-        await nextApp.prepare();
-
-        return new Promise((resolve) => {
-            server = app.listen(port);
-
-            process.on('unhandledRejection', (reason, p) =>
-                logger.error('Unhandled Rejection at: Promise ', p, reason),
-            );
-
-            server.once('listening', () => {
-                app.set('port', port);
-                logger.info(
-                    'Feathers application started on http://%s:%d',
-                    app.get('host'),
-                    port,
-                );
-                resolve();
-            });
-        });
     };
 
-    const after = async () => new Promise(async (resolve) => {
-        await app.get('sequelizeClient').close();
-        server.close(resolve);
-    });
+    const after = async () => {
 
+    };
 
 
     return { getPathname, getPage, getApi, before, after, initApi: () => initApi(api_url) };
