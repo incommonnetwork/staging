@@ -104,11 +104,9 @@ const testCI = (port) => {
         });
     };
 
-    const after = async () => new Promise((resolve) => {
-
-        server.close(() => {
-            app.get('sequelizeClient').close().then(resolve).catch(resolve);
-        });
+    const after = async () => new Promise(async (resolve) => {
+        await app.get('sequelizeClient').close();
+        server.close(resolve);
     });
 
 
