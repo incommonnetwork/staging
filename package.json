@@ -36,7 +36,7 @@
         "dev:log": "pm2 log all",
         "dev:test": "export TEST_ENV=dev; jest --verbose --watch test/",
         "dev:cleanup": "npm run dev:server:stop; npm run dev:postgres:stop",
-        "ci:test": "npm run ci:test:prepare && npm run sequelize:migrate && NODE_ENV=test pm2 start server && sleep 20 && npm run ci:test:jest",
+        "ci:test": "npm run ci:test:prepare && npm run sequelize:migrate && pm2 start server && sleep 20 && npm run ci:test:jest",
         "ci:test:prepare": "npm run eslint; npm run ci:client:build;",
         "ci:test:jest": "export TEST_ENV=ci; jest test/",
         "ci:client:build": "NODE_ENV=travis next build ./client",
