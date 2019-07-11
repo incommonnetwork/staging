@@ -184,7 +184,7 @@ describe('\'codes\' service', () => {
 
                 it('populates assignedBy', async () => {
                     const code = await this.service.get(this.code_id);
-                    expect(code.assignedById).toBe(1);
+                    expect(code.assignedById).toBeTruthy()
                 });
             });
         });
