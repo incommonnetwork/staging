@@ -23,15 +23,17 @@ const addCodeAndUsers = async (context) => {
     }
 };
 
-const addCode = async (context) => {
+const addCodeAndRestaurant = async (context) => {
     const sequelizeClient = context.app.get('sequelizeClient');
 
     const invite = await sequelizeClient.models.invites.findByPk(context.result.id);
     const registrations = await invite.getRegistrations();
     const firstRegistration = registrations[0];
     const code = await firstRegistration.getCode();
+    const restaurant = await invite.getRestaurant();
 
     context.result.code = code.get('text');
+    context.result.restaurant = restaurant.get('name');
 };
 
 module.exports = {
@@ -48,7 +50,7 @@ module.exports = {
     after: {
         all: [],
         find: [addRestaurant, addCodeAndUsers],
-        get: [addCode],
+        get: [addCodeAndRestaurant],
         create: [],
         update: [],
         patch: [],

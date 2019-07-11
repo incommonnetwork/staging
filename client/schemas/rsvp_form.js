@@ -39,7 +39,12 @@ export default {
             properties: {
                 code: {
                     title: 'Invite',
-                    desctiption: invite.code,
+                    description: invite.code,
+                    type: 'null'
+                },
+                restaurant: {
+                    title: 'Restaurant',
+                    description: invite.restaurant,
                     type: 'null'
                 }
             }
