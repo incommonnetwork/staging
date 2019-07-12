@@ -14,7 +14,7 @@ export default {
         }
     },
     uiSchema: {
-        'address': {
+        'location': {
             'ui:widget': RestaurantLocation
         },
         'dates': {
@@ -44,6 +44,15 @@ export default {
         const query = Object.fromEntries(new URLSearchParams(window.location.search));
         const invite = await app.service('invites').get(query.invite);
         const restaurant = await app.service('restaurants').get(invite.restaurantId);
+        const neighborhood = await app.service('neighborhoods').get(restaurant.neighborhoodId);
+
+        const location = {
+            name: restaurant.name,
+            address: restaurant.address,
+            neighborhood: neighborhood.neighborhood,
+            city: neighborhood.city,
+            map: restaurant.map
+        };
 
 
         const schema = {
@@ -51,17 +60,13 @@ export default {
             type: 'object',
             required: ['total'],
             properties: {
-                code: {
-                    title: invite.code,
+                time: {
+                    title: '7:30 PM',
                     type: 'null'
                 },
-                restaurant: {
-                    description: invite.restaurant,
-                    type: 'null'
-                },
-                address: {
-                    title: restaurant.address,
-                    default: restaurant.map,
+                location: {
+                    title: location.name,
+                    default: JSON.stringify(location),
                     type: 'string'
                 },
                 total: {
