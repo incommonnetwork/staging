@@ -9,7 +9,7 @@ if (!isProdStaging) {
     describe('email hooks', () => {
         beforeAll(async () => {
             await env.before();
-            this.browser = await puppeteer.launch();
+            this.browser = await puppeteer.launch({ headless: false });
         });
 
         afterAll(async () => {
@@ -70,6 +70,8 @@ if (!isProdStaging) {
             };
 
             this.user = await this.app.service('users').create(this.user_creds);
+            this.user_creds.strategy = 'local'
+
             await this.app.authenticate({
                 strategy: 'local',
                 ...this.user_creds
@@ -143,6 +145,43 @@ if (!isProdStaging) {
                     expect(sent_email).toBe('noreply@bots.incommon.dev');
                 }
 
+            });
+        });
+
+        describe('rsvp', () => {
+            beforeEach(async () => {
+                this.registration = await this.app.service('registrations').create({
+                    codeId: this.code.id,
+                    neighborhoodId: this.neighborhood.id,
+                    dates: this.code.dates
+                });
+
+                await this.app.authenticate(this.admin_creds);
+
+                this.invite = await this.app.service('invites').create({
+                    date: this.code.dates[0],
+                    restaurantId: this.restaurant.id,
+                    registrations: [this.registration.id]
+                });
+
+                await this.app.authenticate(this.user_creds)
+
+                this.rsvp = await this.app.service('rsvps').create({
+                    inviteId: this.invite.id,
+                    accepted: true,
+                    total: 1,
+                })
+            });
+
+
+            it('has email confirmation', async () => {
+                expect.assertions(2);
+                expect(this.rsvp.email_confirmation).toBeTruthy();
+
+                await this.page.goto(this.rsvp.email_confirmation);
+                await this.page.waitFor('.mp_address_email');
+                const sent_email = await this.page.$eval('.mp_address_email', (el) => el.getAttribute('title'));
+                expect(sent_email).toBe('noreply@bots.incommon.dev');
             });
         });
     });

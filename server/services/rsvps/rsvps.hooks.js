@@ -2,6 +2,10 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { NotAuthenticated } = require('@feathersjs/errors');
 
+const nodemailer = require('nodemailer');
+
+const mailer = require('../../mailer');
+
 const isAdmin = async (context) => {
     const { app, params: { user } } = context;
     const sequelizeClient = app.get('sequelizeClient');
@@ -46,6 +50,25 @@ const addCodeAndUser = async (context) => {
     }
 };
 
+const emailConfirmations = async (context) => {
+    const app = context.app;
+    const sequelizeClient = await app.get('sequelizeClient');
+    const rsvp = await sequelizeClient.models.rsvps.findByPk(context.result.id);
+
+    const user = await rsvp.getUser();
+    const email = user.get('email');
+
+    const info = await mailer.sendMail({
+        from: 'InCommon <noreply@bots.incommon.dev>',
+        to: email,
+        subject: 'InCommon: RSVP Recieved',
+        text: `
+            Your RSVP has been received, we're waiting for others now, please await a confirmation.
+        `
+    });
+
+    context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
+};
 
 module.exports = {
     before: {
@@ -62,7 +85,7 @@ module.exports = {
         all: [],
         find: [addCodeAndUser],
         get: [],
-        create: [],
+        create: [emailConfirmations],
         update: [],
         patch: [],
         remove: []
