@@ -16,4 +16,8 @@ CardLayout.propTypes = {
     ])
 };
 
+const CardHeader = Card.Header;
+
+export { CardHeader as Header };
+
 export default CardLayout;

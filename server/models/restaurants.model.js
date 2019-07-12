@@ -17,6 +17,10 @@ module.exports = function (app) {
         address: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        map: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     }, {
         hooks: {

@@ -10,8 +10,8 @@ module.exports = {
           return queryInterface.createTable('users', { id: Sequelize.INTEGER });
         */
 
-        await queryInterface.addColumn('rsvps', 'total', {
-            type: Sequelize.INTEGER,
+        await queryInterface.addColumn('restaurants', 'map', {
+            type: Sequelize.STRING,
             allowNull: false
         })
 
@@ -26,6 +26,6 @@ module.exports = {
           return queryInterface.dropTable('users');
         */
 
-        await queryInterface.removeColumn('rsvps', 'total')
+        await queryInterface.removeColumn('restaurants', 'map')
     }
 };

@@ -67,6 +67,10 @@ export default {
                     url: {
                         title: 'URL',
                         type: 'string'
+                    },
+                    map: {
+                        title: 'Map',
+                        type: 'string'
                     }
                 }
             };

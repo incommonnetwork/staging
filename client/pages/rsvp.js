@@ -20,7 +20,7 @@ const Rsvp = () => {
     return (
         <Protected redirect="/sign_in">
             <NarrowColumn>
-                <Card>
+                <Card title={'RSVP for Dinner'}>
                     <Form context={context} id={'rsvp'} />
                 </Card>
             </NarrowColumn>
