@@ -70,7 +70,7 @@ if (!isProdStaging) {
             };
 
             this.user = await this.app.service('users').create(this.user_creds);
-            this.user_creds.strategy = 'local'
+            this.user_creds.strategy = 'local';
 
             await this.app.authenticate({
                 strategy: 'local',
@@ -164,13 +164,13 @@ if (!isProdStaging) {
                     registrations: [this.registration.id]
                 });
 
-                await this.app.authenticate(this.user_creds)
+                await this.app.authenticate(this.user_creds);
 
                 this.rsvp = await this.app.service('rsvps').create({
                     inviteId: this.invite.id,
                     accepted: true,
                     total: 1,
-                })
+                });
             });
 
 
