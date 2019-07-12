@@ -10,7 +10,7 @@ module.exports = {
           return queryInterface.createTable('users', { id: Sequelize.INTEGER });
         */
 
-        const reservations = queryInterface.sequelize.define('reservations', {
+        const reservations = await queryInterface.sequelize.define('reservations', {
             date: {
                 type: Sequelize.DATE,
                 allowNull: false
@@ -69,6 +69,6 @@ module.exports = {
 
         await queryInterface.removeColumn('rsvps', 'reservationId')
 
-        await queryInterface.dropTable('reservations', 'map')
+        await queryInterface.dropTable('reservations')
     }
 };
