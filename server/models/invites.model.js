@@ -23,6 +23,7 @@ module.exports = function (app) {
         models.invites.belongsTo(models.restaurants);
         models.invites.hasMany(models.registrations);
         models.invites.hasMany(models.rsvps);
+        models.invites.belongsTo(models.reservations);
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
     };

@@ -49,6 +49,14 @@ const addDate = async (context) => {
     context.data.date = invite.get('date');
 };
 
+const addReservationToInvite = async (context) => {
+    const { app } = context;
+    const sequelizeClient = app.get('sequelizeClient');
+    const invite = await sequelizeClient.model('invites').findByPk(context.data.inviteId);
+    const reservation = await sequelizeClient.model('reservations').findByPk(context.result.id);
+    await invite.setReservation(reservation);
+};
+
 module.exports = {
     before: {
         all: [authenticate('jwt'), isAdmin],
@@ -64,7 +72,7 @@ module.exports = {
         all: [],
         find: [],
         get: [],
-        create: [],
+        create: [addReservationToInvite],
         update: [],
         patch: [],
         remove: []
