@@ -184,5 +184,53 @@ if (!isProdStaging) {
                 expect(sent_email).toBe('noreply@bots.incommon.dev');
             });
         });
+
+
+        describe('reservations', () => {
+            beforeEach(async () => {
+                this.registration = await this.app.service('registrations').create({
+                    codeId: this.code.id,
+                    neighborhoodId: this.neighborhood.id,
+                    dates: this.code.dates
+                });
+
+                await this.app.authenticate(this.admin_creds);
+
+                this.invite = await this.app.service('invites').create({
+                    date: this.code.dates[0],
+                    restaurantId: this.restaurant.id,
+                    registrations: [this.registration.id]
+                });
+
+                await this.app.authenticate(this.user_creds);
+
+                this.rsvp = await this.app.service('rsvps').create({
+                    inviteId: this.invite.id,
+                    accepted: true,
+                    total: 1,
+                });
+
+                await this.app.authenticate(this.admin_creds)
+
+                this.reservation = await this.app.service('reservations').create({
+                    inviteId: this.invite.id,
+                    restaurantId: this.restaurant.id,
+                    date: this.code.dates[0]
+                })
+            });
+
+
+            it('has email confirmation', async () => {
+                expect.assertions(2);
+                expect(this.reservation.email_confirmations).toBeTruthy();
+
+                for (const confirmation of this.reservation.email_confirmations) {
+                    await this.page.goto(confirmation);
+                    await this.page.waitFor('.mp_address_email');
+                    const sent_email = await this.page.$eval('.mp_address_email', (el) => el.getAttribute('title'));
+                    expect(sent_email).toBe('noreply@bots.incommon.dev');
+                }
+            });
+        });
     });
 }

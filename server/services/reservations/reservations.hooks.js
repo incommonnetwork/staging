@@ -1,5 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { NotAuthorized } = require('@feathersjs/errors');
+const nodemailer = require('nodemailer');
+const mailer = require('../../mailer');
 
 const isAdmin = async (context) => {
     const { app, params: { user } } = context;
@@ -57,6 +59,37 @@ const addReservationToInvite = async (context) => {
     await invite.setReservation(reservation);
 };
 
+
+const emailConfirmations = async (context) => {
+    const app = context.app;
+    const sequelizeClient = await app.get('sequelizeClient');
+    const reservation = await sequelizeClient.models.reservations.findByPk(context.result.id);
+    const invite = await reservation.getInvite();
+    const rsvps = await invite.getRsvps();
+
+    context.result.email_confirmations = [];
+
+    for (const rsvp of rsvps) {
+        const user = await rsvp.getUser();
+        const email = user.get('email');
+
+
+        const info = await mailer.sendMail({
+            from: 'InCommon <noreply@bots.incommon.dev>',
+            to: email,
+            subject: 'InCommon: You\'re all Set!',
+            text: `
+            You're group is reserved at the restaurant and time.
+        `
+        });
+
+        context.result.email_confirmations.push(nodemailer.getTestMessageUrl(info));
+    }
+
+
+};
+
+
 module.exports = {
     before: {
         all: [authenticate('jwt'), isAdmin],
@@ -72,7 +105,7 @@ module.exports = {
         all: [],
         find: [],
         get: [],
-        create: [addReservationToInvite],
+        create: [addReservationToInvite, emailConfirmations],
         update: [],
         patch: [],
         remove: []
