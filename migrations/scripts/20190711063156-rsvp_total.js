@@ -26,6 +26,6 @@ module.exports = {
           return queryInterface.dropTable('users');
         */
 
-        await queryInterface.removeColumn('rsvps', 'plus')
+        await queryInterface.removeColumn('rsvps', 'total')
     }
 };

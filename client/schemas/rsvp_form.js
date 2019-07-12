@@ -1,5 +1,7 @@
 /* global window */
 import getApp from '../utils/feathers';
+import RestaurantLocation from '../components/restaurant_location';
+import moment from 'moment';
 
 export default {
     redirect: '/home',
@@ -12,12 +14,14 @@ export default {
         }
     },
     uiSchema: {
-        'city': {
+        'address': {
+            'ui:widget': RestaurantLocation
         },
         'dates': {
             'ui:widget': 'checkboxes'
         },
     },
+    form_submit_label: 'RSVP',
     validate: (formData, errors) => {
         return errors;
     },
@@ -39,23 +43,29 @@ export default {
         const app = await getApp();
         const query = Object.fromEntries(new URLSearchParams(window.location.search));
         const invite = await app.service('invites').get(query.invite);
+        const restaurant = await app.service('restaurants').get(invite.restaurantId);
+
 
         const schema = {
+            title: `RSVP for Dinner: ${moment(invite.date).format('dddd, MMMM Do')}`,
             type: 'object',
             required: ['total'],
             properties: {
                 code: {
-                    title: 'Invite',
-                    description: invite.code,
+                    title: invite.code,
                     type: 'null'
                 },
                 restaurant: {
-                    title: 'Restaurant',
                     description: invite.restaurant,
                     type: 'null'
                 },
+                address: {
+                    title: restaurant.address,
+                    default: restaurant.map,
+                    type: 'string'
+                },
                 total: {
-                    title: 'Plus',
+                    title: 'Additional Guests',
                     type: 'number',
                     default: 1,
                     enum: [
