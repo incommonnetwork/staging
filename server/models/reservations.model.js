@@ -6,8 +6,8 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
     const sequelizeClient = app.get('sequelizeClient');
     const reservations = sequelizeClient.define('reservations', {
-        text: {
-            type: DataTypes.STRING,
+        date: {
+            type: DataTypes.DATE,
             allowNull: false
         }
     }, {
