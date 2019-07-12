@@ -1,5 +1,10 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+const nodemailer = require('nodemailer');
+
+const mailer = require('../../mailer');
+
+
 const isAdmin = async (context) => {
     const { app, params: { user } } = context;
     const sequelizeClient = app.get('sequelizeClient');
@@ -53,6 +58,25 @@ const handleNullQueries = hook => {
     hook.params.query = transformQuery(where);
 };
 
+const email_confirm = async (context) => {
+    const app = context.app;
+    const code = await app.get('sequelizeClient').models.codes.findByPk(context.result.codeId);
+
+    const email = context.params.user.email;
+
+    const info = await mailer.sendMail({
+        from: 'InCommon <noreply@bots.incommon.dev>',
+        to: email,
+        subject: 'Welcome to InCommon',
+        text: `
+            Thanks for registering with code ${code.text},
+            You'll receive an invite shortly to RSVP with your fellow attendees.
+        `
+    });
+
+    context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
+};
+
 module.exports = {
     before: {
         all: [authenticate('jwt')],
@@ -68,7 +92,7 @@ module.exports = {
         all: [],
         find: [populateFieldsFind],
         get: [],
-        create: [],
+        create: [email_confirm],
         update: [],
         patch: [],
         remove: []
