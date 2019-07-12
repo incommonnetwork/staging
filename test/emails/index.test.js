@@ -9,7 +9,7 @@ if (!isProdStaging) {
     describe('email hooks', () => {
         beforeAll(async () => {
             await env.before();
-            this.browser = await puppeteer.launch({ headless: false });
+            this.browser = await puppeteer.launch();
         });
 
         afterAll(async () => {
@@ -144,7 +144,16 @@ if (!isProdStaging) {
                     const sent_email = await this.page.$eval('.mp_address_email', (el) => el.getAttribute('title'));
                     expect(sent_email).toBe('noreply@bots.incommon.dev');
                 }
+            });
 
+            it.only('contains link to rsvp', async () => {
+                for (const confirmation of this.invite.email_confirmations) {
+                    await this.page.goto(confirmation);
+                    await this.page.waitFor('.mp_address_email');
+                    const frameHandle = await this.page.waitFor('iframe');
+                    const frame = await frameHandle.contentFrame();
+                    await frame.waitFor(`a[href="http://localhost:3030/rsvp?invite=${this.invite.id}"]`);
+                }
             });
         });
 
