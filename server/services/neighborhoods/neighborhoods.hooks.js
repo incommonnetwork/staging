@@ -37,6 +37,13 @@ const addCity = async (context) => {
     }
 };
 
+const addCityGet = async (context) => {
+
+    const sequelizeClient = context.app.get('sequelizeClient');
+    const city = await sequelizeClient.models.cities.findByPk(context.result.id);
+    context.result.city = city.get('city');
+};
+
 module.exports = {
     before: {
         all: [authenticate('jwt')],
@@ -51,7 +58,7 @@ module.exports = {
     after: {
         all: [],
         find: [addCity],
-        get: [],
+        get: [addCityGet],
         create: [],
         update: [],
         patch: [],
