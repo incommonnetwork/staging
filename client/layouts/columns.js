@@ -53,13 +53,13 @@ const WideColumn = ({ children }) => (
             size: 'three-quarters',
         },
         desktop: {
-            size: 'two-thirds',
+            size: 'three-quarters',
         },
         widescreen: {
-            size: 'half',
+            size: 'three-quarters',
         },
         fullhd: {
-            size: 'half',
+            size: 'three-quarters',
         }
     }}>
         {children}
