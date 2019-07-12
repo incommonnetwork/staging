@@ -25,6 +25,7 @@ export default Machine({
                         if (codes.total) {
                             const code = codes.data[0];
                             Router.push(`/register?code=${code.id}`);
+                            // don't progress to next state, avoid UI jitter while browser is navigating
                             while (true) { // eslint-disable-line no-constant-condition
                                 await wait();
                             }
