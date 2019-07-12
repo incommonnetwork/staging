@@ -9,7 +9,7 @@ if (!isProdStaging) {
     describe('email hooks', () => {
         beforeAll(async () => {
             await env.before();
-            this.browser = await puppeteer.launch({ headless: false });
+            this.browser = await puppeteer.launch();
         });
 
         afterAll(async () => {
@@ -42,6 +42,14 @@ if (!isProdStaging) {
                 latitude: 10,
                 longitude: 10,
                 cityId: this.city.id
+            });
+
+            this.restaurant = await this.app.service('restaurants').create({
+                name: this.rand,
+                neighborhoodId: this.neighborhood.id,
+                address: `123 ${this.rand}`,
+                url: this.rand,
+                map: this.rand
             });
 
             this.code = await this.app.service('codes').create({
@@ -103,6 +111,38 @@ if (!isProdStaging) {
                 await this.page.waitFor('.mp_address_email');
                 const sent_email = await this.page.$eval('.mp_address_email', (el) => el.getAttribute('title'));
                 expect(sent_email).toBe('noreply@bots.incommon.dev');
+            });
+        });
+
+        describe('invite', () => {
+            beforeEach(async () => {
+                this.registration = await this.app.service('registrations').create({
+                    codeId: this.code.id,
+                    neighborhoodId: this.neighborhood.id,
+                    dates: this.code.dates
+                });
+
+                await this.app.authenticate(this.admin_creds);
+
+                this.invite = await this.app.service('invites').create({
+                    date: this.code.dates[0],
+                    restaurantId: this.restaurant.id,
+                    registrations: [this.registration.id]
+                });
+            });
+
+
+            it('has email confirmation', async () => {
+                expect.assertions(2);
+                expect(this.invite.email_confirmations).toBeTruthy();
+
+                for (const confirmation of this.invite.email_confirmations) {
+                    await this.page.goto(confirmation);
+                    await this.page.waitFor('.mp_address_email');
+                    const sent_email = await this.page.$eval('.mp_address_email', (el) => el.getAttribute('title'));
+                    expect(sent_email).toBe('noreply@bots.incommon.dev');
+                }
+
             });
         });
     });
