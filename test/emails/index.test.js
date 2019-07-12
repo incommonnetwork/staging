@@ -210,13 +210,13 @@ if (!isProdStaging) {
                     total: 1,
                 });
 
-                await this.app.authenticate(this.admin_creds)
+                await this.app.authenticate(this.admin_creds);
 
                 this.reservation = await this.app.service('reservations').create({
                     inviteId: this.invite.id,
                     restaurantId: this.restaurant.id,
                     date: this.code.dates[0]
-                })
+                });
             });
 
 
