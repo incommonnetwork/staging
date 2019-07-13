@@ -172,7 +172,7 @@ if (!isProdStaging) {
                     const submit_button = await this.page.$('button.is-primary');
                     await submit_button.click();
                     await this.page.waitFor((expected) => location.pathname === expected, {}, env.getPathname('/rsvp'));
-                })
+                });
             });
         });
 
