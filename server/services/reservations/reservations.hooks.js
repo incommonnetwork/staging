@@ -65,6 +65,7 @@ const emailConfirmations = async (context) => {
     const sequelizeClient = await app.get('sequelizeClient');
     const reservation = await sequelizeClient.models.reservations.findByPk(context.result.id);
     const invite = await reservation.getInvite();
+    const restaurant = await invite.getRestaurant();
     const rsvps = await invite.getRsvps();
 
     context.result.email_confirmations = [];
@@ -79,7 +80,9 @@ const emailConfirmations = async (context) => {
             to: email,
             subject: 'InCommon: You\'re all Set!',
             text: `
-            You're group is reserved at the restaurant and time.
+            You're group is reserved at ${restaurant.name} at ${invite.date}, 7:30 PM, tell the host you're reservations is under "common"
+            Haver Fun! Here's a map to the restaurant if you need it: ${restaurant.map}
+
         `
         });
 
