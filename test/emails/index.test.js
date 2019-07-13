@@ -271,4 +271,8 @@ if (!isProdStaging) {
             });
         });
     });
+} else {
+    describe('skip test', () => {
+        it('skipped', () => { });
+    });
 }
