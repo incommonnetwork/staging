@@ -110,9 +110,9 @@ describe('/sign_in', () => {
             await this.page.waitFor(pathname => location.pathname === pathname, { timeout: 60000 }, getPathname('/'));
         });
 
-        it.only('respects redirects', async () => {
+        it('respects redirects', async () => {
             await this.form.dispose();
-            const url = `${getPage('/sign_in')}?redirect=${getPathname('/states')}`;
+            const url = `${getPage('/sign_in')}?redirect=/states`;
             await this.page.goto(url);
             await this.page.waitFor('#sign_in_form');
             this.form = await this.page.$('#sign_in_form');

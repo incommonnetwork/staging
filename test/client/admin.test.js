@@ -6,7 +6,7 @@ const { getPage, getPathname } = env;
 
 describe('/admin', () => {
     beforeAll(async () => {
-        this.browser = await puppeteer.launch({});
+        this.browser = await puppeteer.launch();
         await env.before();
     });
 
@@ -41,7 +41,7 @@ describe('/admin', () => {
     it('redirects to home if not admin', async () => {
 
         await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 60000 }, getPathname('/sign_in'));
-        const form = await this.page.$('#sign_in_form');
+        const form = await this.page.waitFor('#sign_in_form');
         const rand = `${Math.random()}`;
         const good_input = {
             email: `${rand}@test.com`,
@@ -64,7 +64,7 @@ describe('/admin', () => {
 
         beforeEach(async () => {
             await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 5000 }, getPathname('/sign_in'));
-            const form = await this.page.$('#sign_in_form');
+            const form = await this.page.waitFor('#sign_in_form');
             const good_input = {
                 email: 'admin@mock.admin',
                 password: 'admin123',
