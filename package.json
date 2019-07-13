@@ -45,7 +45,7 @@
         "staging:test": "export TEST_ENV=staging; jest test/",
         "production:deploy": "npm run production:deploy:api; npm run production:deploy:client",
         "production:deploy:client": "export NODE_ENV=production; next build ./client; next export ./client -o ./docs;",
-        "production:deploy:api": "ansible-playbook -i ./api/inventory ./api/playbook.yml --extra-vars \"incommon_host=api.incommon.dev incommon_NODE_ENV=production incommon_POSTGRES_CONNECTION=$INCOMMON_PRODUCTION_DB\"",
+        "production:deploy:api": "ansible-playbook -i ./api/inventory ./api/playbook.yml --key-file ~/.ssh/id_incommon_droplet --extra-vars \"incommon_host=api.incommon.dev incommon_NODE_ENV=production incommon_POSTGRES_CONNECTION=$INCOMMON_PRODUCTION_DB incommon_FASTMAIL_PASSWORD=$FASTMAIL_PASSWORD\"",
         "production:test": "export TEST_ENV=production; jest test/",
         "server:start:prod": "NODE_ENV=production node server/",
         "server:start": "node server/",
