@@ -158,13 +158,8 @@ export default {
         const { restaurantId, registrations } = formData;
         const date = context.maps.registrationMap.get(registrations[0]);
         const app = await getApp();
-        const invite = await app.service('invites').create({ date, restaurantId });
+        const invite = await app.service('invites').create({ date, restaurantId, registrations });
 
-        for (const id of registrations) {
-            await app.service('registrations').patch(id, {
-                inviteId: invite.id
-            });
-        }
         return invite;
     },
     form_init: async () => {

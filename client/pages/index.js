@@ -6,6 +6,7 @@ import Card from '../layouts/card';
 
 import Form from '../components/form';
 import formContext from '../schemas/code_lookup_form';
+import HashCode from '../components/hashcode';
 
 import Router from '../utils/router';
 
@@ -23,7 +24,9 @@ const Register = () => {
         <Main>
             <NarrowColumn>
                 <Card>
-                    <Form context={context} id={'code_lookup'} />
+                    <HashCode>
+                        <Form context={context} id={'code_lookup'} />
+                    </HashCode>
                 </Card>
             </NarrowColumn>
         </Main>

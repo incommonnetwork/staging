@@ -6,6 +6,7 @@ import registrationTable from './registration_table';
 import inviteTable from './invite_table';
 import restaurantTable from './restaurant_table';
 import rsvpTable from './rsvps_table';
+import reservationTable from './reservation_table';
 
 export default [
     userTable,
@@ -15,5 +16,6 @@ export default [
     registrationTable,
     inviteTable,
     restaurantTable,
-    rsvpTable
+    rsvpTable,
+    reservationTable
 ];
