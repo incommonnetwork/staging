@@ -1,4 +1,4 @@
-
+/* global location */
 const env = require('../setup.env.js')(5555);
 const puppeteer = require('puppeteer');
 const moment = require('moment');
@@ -146,7 +146,7 @@ if (!isProdStaging) {
                 }
             });
 
-            it.only('contains link to rsvp', async () => {
+            it('contains link to rsvp', async () => {
                 for (const confirmation of this.invite.email_confirmations) {
                     await this.page.goto(confirmation);
                     await this.page.waitFor('.mp_address_email');
@@ -154,6 +154,16 @@ if (!isProdStaging) {
                     const frame = await frameHandle.contentFrame();
                     await frame.waitFor(`a[href="http://localhost:3030/rsvp?invite=${this.invite.id}"]`);
                 }
+            });
+
+            describe('link to rsvp', async () => {
+                beforeEach(async () => {
+                    await this.page.goto(`http://localhost:3030/rsvp?invite=${this.invite.id}`);
+                });
+
+                it('forces log in', async () => {
+                    await this.page.waitFor((expected) => location.pathname === expected, {}, env.getPathname('/sign_in'));
+                });
             });
         });
 
