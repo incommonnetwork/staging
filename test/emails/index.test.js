@@ -152,18 +152,27 @@ if (!isProdStaging) {
                     await this.page.waitFor('.mp_address_email');
                     const frameHandle = await this.page.waitFor('iframe');
                     const frame = await frameHandle.contentFrame();
-                    await frame.waitFor(`a[href="http://localhost:3030/rsvp?invite=${this.invite.id}"]`);
+                    await frame.waitFor(`a[href="${env.getPage('/rsvp')}?invite=${this.invite.id}"]`);
                 }
             });
 
             describe('link to rsvp', async () => {
                 beforeEach(async () => {
-                    await this.page.goto(`http://localhost:3030/rsvp?invite=${this.invite.id}`);
+                    await this.page.goto(`${env.getPage('/rsvp')}?invite=${this.invite.id}`);
                 });
 
                 it('forces log in', async () => {
                     await this.page.waitFor((expected) => location.pathname === expected, {}, env.getPathname('/sign_in'));
                 });
+
+                it('redirects after login to rsvp', async () => {
+                    await this.page.waitFor((expected) => location.pathname === expected, {}, env.getPathname('/sign_in'));
+                    await this.page.type('#root_email', this.user_creds.email);
+                    await this.page.type('#root_password', this.user_creds.password);
+                    const submit_button = await this.page.$('button.is-primary');
+                    await submit_button.click();
+                    await this.page.waitFor((expected) => location.pathname === expected, {}, env.getPathname('/rsvp'));
+                })
             });
         });
 
