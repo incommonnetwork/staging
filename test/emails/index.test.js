@@ -49,7 +49,7 @@ if (!isProdStaging) {
                 neighborhoodId: this.neighborhood.id,
                 address: `123 ${this.rand}`,
                 url: this.rand,
-                map: this.rand
+                map: `https://${this.rand}.com`
             });
 
             this.code = await this.app.service('codes').create({
@@ -257,6 +257,16 @@ if (!isProdStaging) {
                     await this.page.waitFor('.mp_address_email');
                     const sent_email = await this.page.$eval('.mp_address_email', (el) => el.getAttribute('title'));
                     expect(sent_email).toBe('noreply@bots.incommon.dev');
+                }
+            });
+
+            it('contains a link to map', async () => {
+                for (const confirmation of this.reservation.email_confirmations) {
+                    await this.page.goto(confirmation);
+                    await this.page.waitFor('.mp_address_email');
+                    const frameHandle = await this.page.waitFor('iframe');
+                    const frame = await frameHandle.contentFrame();
+                    await frame.waitFor(`a[href="${this.restaurant.map}"]`);
                 }
             });
         });
