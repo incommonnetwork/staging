@@ -8,7 +8,7 @@ const getPage = pathname => {
     /* eslint-disable no-fallthrough */
     switch (process.env.NODE_ENV) {
         case 'staging':
-            opts.pathname = `/staging${opts.pathname}`;
+            opts.pathname = `/staging${opts.pathname}/`;
         case 'production':
             opts.hostname = 'www.incommon.dev';
             opts.protocol = 'https';
