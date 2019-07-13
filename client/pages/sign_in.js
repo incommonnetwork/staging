@@ -63,7 +63,7 @@ const context = {
     },
     submit_service_done: (context, { data: { id } }) => {
         const query = Object.fromEntries(new URLSearchParams(window.location.search));
-        const path = Router.query.redirect || context.redirect;
+        const path = query.redirect || context.redirect;
         delete query.redirect;
         const queryParams = Object.keys(query).map(k => `${k}=${query[k]}`).join('&');
 
