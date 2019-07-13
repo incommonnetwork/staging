@@ -41,7 +41,7 @@ describe('/home', () => {
     describe('tabs', () => {
         beforeEach(async () => {
             await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 60000 }, getPathname('/sign_in'));
-            const form = await this.page.$('#sign_in_form');
+            const form = await this.page.waitFor('#sign_in_form');
             const rand = `${Math.random()}`;
             const good_input = {
                 email: `${rand}@test.com`,

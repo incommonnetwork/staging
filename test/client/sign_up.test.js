@@ -189,7 +189,7 @@ describe('/sign_up', () => {
             describe('registration', () => {
                 beforeEach(async () => {
                     await this.page.goto(this.signup_url);
-                    this.form = await this.page.$('#sign_up_form');
+                    this.form = await this.page.waitFor('#sign_up_form');
 
                     await this.page.type('#root_email', this.good_input.email);
                     await this.page.type('#root_password', this.good_input.password);
