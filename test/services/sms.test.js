@@ -137,7 +137,7 @@ describe('\'sms\' service', () => {
 
             it('responds with signup link', async () => {
                 expect.assertions(1);
-                expect(this.message.indexOf('/sign_up')).toBeGreaterThan(-1);
+                expect(this.message.indexOf('/register')).toBeGreaterThan(-1);
             });
         });
 
@@ -262,7 +262,7 @@ describe('\'sms\' service', () => {
 
             it('responds with success', async () => {
                 expect.assertions(1);
-                expect(this.message.indexOf('Successfully')).toBeGreaterThan(-1);
+                expect(this.message.indexOf('Thanks')).toBeGreaterThan(-1);
             });
 
             it('populates code field of user', async () => {

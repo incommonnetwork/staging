@@ -1,6 +1,10 @@
 /* global window */
 import getApp from '../utils/feathers';
 import RestaurantLocation from '../components/restaurant_location';
+import Router from '../utils/router';
+
+const wait = async () => new Promise(r => setTimeout(r, 100));
+
 import moment from 'moment';
 
 export default {
@@ -42,7 +46,33 @@ export default {
 
         const app = await getApp();
         const query = Object.fromEntries(new URLSearchParams(window.location.search));
+
+
+        const existingRSVPs = await app.service('rsvps').find({
+            query: {
+                codeId: query.code
+            }
+        });
+
         const invite = await app.service('invites').get(query.invite);
+
+        if (existingRSVPs.total > 0) {
+            if (invite.reservationId) {
+                Router.push(`/reservation_confirmation?id=${invite.reservationId}`);
+            } else {
+                Router.push('/thank_you_rsvp');
+            }
+            // don't progress to next state, avoid UI jitter while browser is navigating
+            while (true) { // eslint-disable-line no-constant-condition
+                await wait();
+            }
+        } else if (invite.reservationId || moment(invite.date).isAfter(moment(), 'day')) {
+            Router.push('/invite_expired');
+            while (true) { // eslint-disable-line no-constant-condition
+                await wait();
+            }
+        }
+
         const restaurant = await app.service('restaurants').get(invite.restaurantId);
         const neighborhood = await app.service('neighborhoods').get(restaurant.neighborhoodId);
 

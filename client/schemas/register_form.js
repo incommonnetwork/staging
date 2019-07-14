@@ -1,6 +1,10 @@
 /* global window */
 import getApp from '../utils/feathers';
+import Router from '../utils/router';
 import moment from 'moment';
+
+const wait = async () => new Promise(r => setTimeout(r, 100));
+
 
 const getCityNeighborhoodSchema = async () => {
     const app = await getApp();
@@ -13,14 +17,14 @@ const getCityNeighborhoodSchema = async () => {
     const schema = {
         title: 'City',
         type: 'object',
-        oneOf: [{
+        anyOf: [{
             title: 'Select City...'
         }]
     };
 
     for (const city of cities.data) {
         const neighborhoodSchema = await getNeighborhoodSchema(city.id);
-        schema.oneOf.push({
+        schema.anyOf.push({
             title: city.city,
             properties: {
                 neighborhood: neighborhoodSchema
@@ -103,6 +107,21 @@ export default {
         const schema = context.schema;
         const app = await getApp();
         const query = Object.fromEntries(new URLSearchParams(window.location.search));
+
+        const existingRegistrations = await app.service('registrations').find({
+            query: {
+                codeId: query.code
+            }
+        });
+
+        if (existingRegistrations.total > 0) {
+            Router.push('/thank_you_register');
+            // don't progress to next state, avoid UI jitter while browser is navigating
+            while (true) { // eslint-disable-line no-constant-condition
+                await wait();
+            }
+        }
+
         const code = await app.service('codes').get(query.code);
 
         if (!code.cityId) {

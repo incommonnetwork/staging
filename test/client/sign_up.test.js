@@ -163,27 +163,7 @@ describe('/sign_up', () => {
                 expect.assertions(1);
 
                 const url_no_query = this.signup_url.split('?')[0];
-                expect(url_no_query).toBe(env.getPage('/sign_up'));
-            });
-
-            it('has code and phone query', async () => {
-                expect.assertions(2);
-
-                function parseQuery(queryString) {
-                    var query = {};
-                    var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
-                    for (var i = 0; i < pairs.length; i++) {
-                        var pair = pairs[i].split('=');
-                        query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
-                    }
-                    return query;
-                }
-
-                const queryString = this.signup_url.split('?').pop();
-                const query = parseQuery(queryString);
-
-                expect(query.p).toBeTruthy();
-                expect(query.c).toBeTruthy();
+                expect(url_no_query).toBe(env.getPage('/register'));
             });
 
             describe('registration', () => {
@@ -197,7 +177,7 @@ describe('/sign_up', () => {
 
                     const submit_button = await this.form.$('button.is-primary');
                     await submit_button.click();
-                    await this.page.waitFor((expected) => location.pathname === expected, {}, getPathname('/home'));
+                    await this.page.waitFor((expected) => location.pathname === expected, {}, getPathname('/register'));
                 });
 
                 it('has user', async () => {
@@ -218,26 +198,6 @@ describe('/sign_up', () => {
                     expect(user).toBeTruthy();
                 });
 
-                it('has associated interest', async () => {
-                    expect.assertions(4);
-
-                    this.api = await env.initApi();
-                    await this.api.authenticate({
-                        strategy: 'local',
-                        ...this.good_input
-                    });
-
-                    const { data: [{ id }] } = await this.api.service('users').find({
-                        email: this.good_input.email
-                    });
-
-                    const user = await this.api.service('users').get(id);
-
-                    expect(user).toBeTruthy();
-                    expect(user.interests).toBeTruthy();
-                    expect(user.interests.length).toBe(1);
-                    expect(user.interests[0].text).toBe(this.run);
-                });
 
                 it('has associated phone number', async () => {
                     expect.assertions(3);

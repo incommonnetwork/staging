@@ -39,7 +39,7 @@ class InnerForm extends Component {
     }
 
     render() {
-        const { id, current: { value, context: { schema, uiSchema, validate, onSubmit, onChange = () => { }, form_submit_label } }, send } = this.props;
+        const { id, current: { value, context: { noSubmit, schema, uiSchema, validate, onSubmit, onChange = () => { }, form_submit_label } }, send } = this.props;
 
         return (<div id={id + '_form'}>
             <JsonSchemaForm
@@ -50,13 +50,13 @@ class InnerForm extends Component {
                 onChange={onChange(send)}
                 onSubmit={onSubmit(send)}
             >
-                <Button
+                {noSubmit ? '' : <Button
                     className="is-primary"
                     fullwidth
                     loading={value === 'form_submit'}
                     type="submit">
                     {form_submit_label || 'Submit'}
-                </Button>
+                </Button>}
             </JsonSchemaForm>
         </div>);
     }

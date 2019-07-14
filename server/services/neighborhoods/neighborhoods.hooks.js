@@ -32,16 +32,16 @@ const addCity = async (context) => {
 
     for (const neighborhoodData of context.result.data) {
         const neighborhood = await sequelizeClient.models.neighborhoods.findByPk(neighborhoodData.id);
-        const city = await sequelizeClient.models.cities.findByPk(neighborhood.get('cityId'));
-        neighborhoodData.city = city.get('city');
+        const city = await sequelizeClient.model('cities').findByPk(neighborhood.get('cityId'));
+        neighborhoodData.city = city ? city.get('city') : null;
     }
 };
 
 const addCityGet = async (context) => {
 
     const sequelizeClient = context.app.get('sequelizeClient');
-    const city = await sequelizeClient.models.cities.findByPk(context.result.id);
-    context.result.city = city.get('city');
+    const city = await sequelizeClient.model('cities').findByPk(context.result.id);
+    context.result.city = city ? city.get('city') : null;
 };
 
 module.exports = {

@@ -36,11 +36,15 @@ const populateFieldsFind = async (context) => {
     const sequelizeClient = context.app.get('sequelizeClient');
 
     for (const registrationData of context.result.data) {
-        registrationData.user = (await sequelizeClient.models.users.findByPk(registrationData.userId)).email;
-        registrationData.code = (await sequelizeClient.models.codes.findByPk(registrationData.codeId)).text;
-        registrationData.neighborhood = (await sequelizeClient.models.neighborhoods.findByPk(registrationData.neighborhoodId)).neighborhood;
+        const user = await sequelizeClient.models.users.findByPk(registrationData.userId);
+        registrationData.user = user ? user.get('email') : null;
+        const code = await sequelizeClient.models.codes.findByPk(registrationData.codeId);
+        registrationData.code = code ? code.get('code') : null;
+        const neighborhood = await sequelizeClient.models.neighborhoods.findByPk(registrationData.neighborhoodId);
+        registrationData.neighborhood = neighborhood ? neighborhood.get('neighborhood') : null;
     }
 };
+
 const handleNullQueries = hook => {
     let where = Object.assign({}, hook.params.query);
 
@@ -77,6 +81,14 @@ const email_confirm = async (context) => {
     context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
 };
 
+const populateUserField = async (context) => {
+
+    const _admin = await isAdmin(context);
+    if (!_admin) {
+        context.params.query.userId = context.params.user.id;
+    }
+};
+
 module.exports = {
     before: {
         all: [authenticate('jwt')],
@@ -90,7 +102,7 @@ module.exports = {
 
     after: {
         all: [],
-        find: [populateFieldsFind],
+        find: [populateFieldsFind, populateUserField],
         get: [],
         create: [email_confirm],
         update: [],
