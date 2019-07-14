@@ -24,35 +24,4 @@ describe('cities service', () => {
         });
     });
 
-
-    describe('user', () => {
-
-        beforeEach(async () => {
-            this.run = `${Math.random()}`;
-            const strategy = 'local';
-            const email = `${this.run}@example.com`;
-            const password = `${this.run}`;
-            this.creds = { strategy, email, password };
-            await this.api.service('users').create({
-                email,
-                password
-            });
-            await this.api.authenticate(this.creds);
-        });
-
-
-        it('rejects create', async () => {
-            expect.assertions(1);
-
-            await this.service.create({
-                city: this.run,
-                country: this.run,
-                latitude: 10,
-                longitude: 10
-            }).catch(e => {
-                expect(e.code).toBe(401);
-            });
-        });
-
-    });
 });
