@@ -166,26 +166,6 @@ describe('/sign_up', () => {
                 expect(url_no_query).toBe(env.getPage('/register'));
             });
 
-            it('has code and phone query', async () => {
-                expect.assertions(2);
-
-                function parseQuery(queryString) {
-                    var query = {};
-                    var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
-                    for (var i = 0; i < pairs.length; i++) {
-                        var pair = pairs[i].split('=');
-                        query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
-                    }
-                    return query;
-                }
-
-                const queryString = this.signup_url.split('?').pop();
-                const query = parseQuery(queryString);
-
-                expect(query.p).toBeTruthy();
-                expect(query.c).toBeTruthy();
-            });
-
             describe('registration', () => {
                 beforeEach(async () => {
                     await this.page.goto(this.signup_url);
