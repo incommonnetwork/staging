@@ -70,10 +70,20 @@ const emailConfirmations = async (context) => {
     context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
 };
 
+
+const populateUserField = async (context) => {
+
+    const _admin = await isAdmin(context);
+    if (!_admin) {
+        context.params.query.userId = context.params.user.id;
+    }
+};
+
+
 module.exports = {
     before: {
         all: [authenticate('jwt')],
-        find: [isAdmin],
+        find: [populateUserField],
         get: [isAdmin],
         create: [addUser],
         update: [isAdmin],

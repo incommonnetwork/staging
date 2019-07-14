@@ -44,6 +44,7 @@ const populateFieldsFind = async (context) => {
         registrationData.neighborhood = neighborhood ? neighborhood.get('neighborhood') : null;
     }
 };
+
 const handleNullQueries = hook => {
     let where = Object.assign({}, hook.params.query);
 
@@ -80,6 +81,14 @@ const email_confirm = async (context) => {
     context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
 };
 
+const populateUserField = async (context) => {
+
+    const _admin = await isAdmin(context);
+    if (!_admin) {
+        context.params.query.userId = context.params.user.id;
+    }
+};
+
 module.exports = {
     before: {
         all: [authenticate('jwt')],
@@ -93,7 +102,7 @@ module.exports = {
 
     after: {
         all: [],
-        find: [populateFieldsFind],
+        find: [populateFieldsFind, populateUserField],
         get: [],
         create: [email_confirm],
         update: [],
