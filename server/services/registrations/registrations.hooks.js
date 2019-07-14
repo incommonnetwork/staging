@@ -36,11 +36,11 @@ const populateFieldsFind = async (context) => {
     const sequelizeClient = context.app.get('sequelizeClient');
 
     for (const registrationData of context.result.data) {
-        const user = await sequelizeClient.models.users.findByPk(registrationData.userId)
+        const user = await sequelizeClient.models.users.findByPk(registrationData.userId);
         registrationData.user = user ? user.get('email') : null;
-        const code = await sequelizeClient.models.codes.findByPk(registrationData.codeId)
+        const code = await sequelizeClient.models.codes.findByPk(registrationData.codeId);
         registrationData.code = code ? code.get('code') : null;
-        const neighborhood = await sequelizeClient.models.neighborhoods.findByPk(registrationData.neighborhoodId)
+        const neighborhood = await sequelizeClient.models.neighborhoods.findByPk(registrationData.neighborhoodId);
         registrationData.neighborhood = neighborhood ? neighborhood.get('neighborhood') : null;
     }
 };
