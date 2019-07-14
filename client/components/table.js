@@ -11,6 +11,7 @@ import Button from 'react-bulma-components/src/components/button';
 
 import Modal from './modal';
 import Form from './form';
+import Remove from './remove';
 
 import { useMachine } from '@xstate/react';
 import tableMachine from '../state/table.js';
@@ -23,6 +24,9 @@ const TableHeader = ({ columns }) => (
                     {abbr ? (<abbr title={label}>{abbr}</abbr>) : label}
                 </th>
             ))}
+            <th key="remove">
+                Remove
+            </th>
         </tr>
     </thead>
 );
@@ -62,6 +66,9 @@ const TableBody = ({ columns, page, id }) => (
                         {data[label]}
                     </td>
                 ))}
+                <td key={'remove'}>
+                    <Remove id={data.id} service={id} />
+                </td>
             </tr>
         ))}
     </tbody>
