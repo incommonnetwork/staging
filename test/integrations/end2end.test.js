@@ -10,7 +10,7 @@ if (!isProdStaging) {
     describe('create users', () => {
         beforeAll(async () => {
             await env.before();
-            this.browser = await puppeteer.launch({ headless: false });
+            this.browser = await puppeteer.launch();
 
         });
 
