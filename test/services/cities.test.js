@@ -33,6 +33,10 @@ describe('cities service', () => {
             const email = `${this.run}@example.com`;
             const password = `${this.run}`;
             this.creds = { strategy, email, password };
+            await this.api.service('users').create({
+                email,
+                password
+            });
             await this.api.authenticate(this.creds);
         });
 
