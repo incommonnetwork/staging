@@ -3,7 +3,7 @@ import getApp from '../utils/feathers';
 import Router from '../utils/router';
 import moment from 'moment';
 
-const wait = async () => new Promise(r => setTimeout(r, 100))
+const wait = async () => new Promise(r => setTimeout(r, 100));
 
 
 const getCityNeighborhoodSchema = async () => {
