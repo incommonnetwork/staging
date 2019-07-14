@@ -1,6 +1,6 @@
 /* global location */
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import Modal from './modal';
 import Form from './form';
@@ -22,6 +22,6 @@ const Remove = ({ service, id }) => (
 Remove.propTypes = {
     service: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired
-}
+};
 
 export default Remove;
