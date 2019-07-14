@@ -137,7 +137,7 @@ describe('\'sms\' service', () => {
 
             it('responds with signup link', async () => {
                 expect.assertions(1);
-                expect(this.message.indexOf('/sign_up')).toBeGreaterThan(-1);
+                expect(this.message.indexOf('/register')).toBeGreaterThan(-1);
             });
         });
 
