@@ -27,6 +27,12 @@ describe('registration service', () => {
 
     describe('regstration', () => {
         beforeEach(async () => {
+            await this.api.authenticate({
+                strategy: 'local',
+                email: 'admin@mock.admin',
+                password: 'admin123'
+            });
+
             this.dates = [moment().add(1, 'days').format('YYYY[/]MM[/]D')];
             this.city = await this.api.service('cities').create({
                 city: this.rand,
@@ -66,7 +72,7 @@ describe('registration service', () => {
             const registration = await this.api.service('registrations').create({
                 neighborhoodId: this.neighborhood.id,
                 codeId: this.code.id,
-                dates: this.dates[0]
+                dates: this.dates
             });
 
             expect(registration.userId).toBe(this.user.id);
