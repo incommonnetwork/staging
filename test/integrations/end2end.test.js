@@ -10,7 +10,7 @@ if (!isProdStaging) {
     describe('create users', () => {
         beforeAll(async () => {
             await env.before();
-            this.browser = await puppeteer.launch({ headless: false });
+            this.browser = await puppeteer.launch();
 
         });
 
@@ -191,17 +191,17 @@ if (!isProdStaging) {
                     await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/admin'));
                 });
 
-                it.only('renders invite create form', async () => {
-                    const inviteTab = await this.page.waitFor('#invites_tab');
-                    await inviteTab.click();
-                    const createButton = await this.page.waitFor('#invites_modal');
-                    await createButton.click();
-                    const openModal = await this.page.waitFor('#invites_modal_open');
-                    await openModal.click();
+                // it.only('renders invite create form', async () => {
+                //     const inviteTab = await this.page.waitFor('#invites_tab');
+                //     await inviteTab.click();
+                //     const createButton = await this.page.waitFor('#invites_modal');
+                //     await createButton.click();
+                //     const openModal = await this.page.waitFor('#invites_modal_open');
+                //     await openModal.click();
 
-                    //TODO: invites generator is super inneficient with test data
-                    await this.page.waitFor('#root_anyof_select', { timeout: 300000 });
-                });
+                //     //TODO: invites generator is super inneficient with test data
+                //     await this.page.waitFor('#root_anyof_select', { timeout: 300000 });
+                // });
 
                 describe('rsvp', () => {
                     beforeEach(async () => {
