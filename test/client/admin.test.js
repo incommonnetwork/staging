@@ -35,7 +35,7 @@ describe('/admin', () => {
     });
 
     it('redirects to sign in', async () => {
-        await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 5000 }, getPathname('/sign_in'));
+        await this.page.waitFor((pathname) => pathname === location.pathname, {}, getPathname('/sign_in'));
     });
 
     it('redirects to home if not admin', async () => {
@@ -57,13 +57,13 @@ describe('/admin', () => {
         const submit_button = await form.$('button.is-primary');
         await submit_button.click();
 
-        await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 5000 }, getPathname('/home'));
+        await this.page.waitFor((pathname) => pathname === location.pathname, {}, getPathname('/home'));
     });
 
     describe('tabs', () => {
 
         beforeEach(async () => {
-            await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 5000 }, getPathname('/sign_in'));
+            await this.page.waitFor((pathname) => pathname === location.pathname, {}, getPathname('/sign_in'));
             const form = await this.page.waitFor('#sign_in_form');
             const good_input = {
                 email: 'admin@mock.admin',
@@ -76,7 +76,7 @@ describe('/admin', () => {
             const submit_button = await form.$('button.is-primary');
             await submit_button.click();
 
-            await this.page.waitFor((pathname) => pathname === location.pathname, { timeout: 5000 }, getPathname('/admin'));
+            await this.page.waitFor((pathname) => pathname === location.pathname, {}, getPathname('/admin'));
         });
 
         it('has tabs', async () => {
