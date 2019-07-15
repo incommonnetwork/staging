@@ -243,6 +243,22 @@ if (!isProdStaging) {
                         await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
                         await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_register'));
                     });
+
+                    describe('reservation', () => {
+                        beforeEach(async () => {
+                            await this.app.authenticate(this.admin_creds);
+                            this.reservation = await this.app.service('reservation').create({
+                                inviteId: this.invite.id,
+                                restaurantId: this.restaurant.id,
+                                date: this.code.dates[0]
+                            })
+                        })
+
+                        it('has confirmation screen', async () => {
+                            await this.page.goto(`${env.getPage('/reservation_confirmation')}'?id=${this.reservation.id}`)
+                            await this.page.waitFor(expected => location.pathname === expected, env.getPathname('/reservation_confirmation'))
+                        })
+                    })
                 });
             });
         });
