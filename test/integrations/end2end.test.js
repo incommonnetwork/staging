@@ -251,14 +251,14 @@ if (!isProdStaging) {
                                 inviteId: this.invite.id,
                                 restaurantId: this.restaurant.id,
                                 date: this.code.dates[0]
-                            })
-                        })
+                            });
+                        });
 
                         it('has confirmation screen', async () => {
-                            await this.page.goto(`${env.getPage('/reservation_confirmation')}'?id=${this.reservation.id}`)
-                            await this.page.waitFor(expected => location.pathname === expected, env.getPathname('/reservation_confirmation'))
-                        })
-                    })
+                            await this.page.goto(`${env.getPage('/reservation_confirmation')}'?id=${this.reservation.id}`);
+                            await this.page.waitFor(expected => location.pathname === expected, env.getPathname('/reservation_confirmation'));
+                        });
+                    });
                 });
             });
         });
