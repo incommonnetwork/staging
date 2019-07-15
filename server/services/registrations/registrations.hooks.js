@@ -72,10 +72,13 @@ const email_confirm = async (context) => {
         from: 'InCommon <noreply@bots.incommon.dev>',
         to: email,
         subject: 'InCommon: Registration confirmation',
-        text: `
-            Thanks for registering with code ${code.text},
-            You'll receive an invite shortly to RSVP with your fellow attendees.
-        `
+        text: [
+            `Thanks for registering with code "${code.text}",`,
+            `Look out for an email with your exclusive invitation to dinner with a small group of fellow attendees from ${code.description || 'the event.'}`,
+            '\n',
+            'Regards,',
+            'The InCommon Team'
+        ].join('\n')
     });
 
     context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
