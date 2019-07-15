@@ -45,7 +45,7 @@
         "staging:deploy:api": "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./api/inventory ./api/playbook.yml --key-file ~/.ssh/id_travis --extra-vars \"incommon_host=staging.incommon.dev incommon_NODE_ENV=staging incommon_POSTGRES_CONNECTION=$POSTGRES_CONNECTION incommon_FASTMAIL_PASSWORD=$FASTMAIL_PASSWORD\"",
         "staging:test": "export TEST_ENV=staging; jest test/",
         "production:deploy": "npm run production:deploy:api; npm run production:deploy:client",
-        "production:deploy:client": "git checkout gh-pages && export NODE_ENV=production; next build ./client && next export ./client -o ./docs && cp -rT staging/ . && git add . && git commit . -m 'prod' && git push production gh-pages:master",
+        "production:deploy:client": "git checkout gh-pages && git merge master && export NODE_ENV=production; next build ./client && next export ./client -o ./docs && cp -rT staging/ . && git add . && git commit . -m 'prod' && git push production gh-pages:master",
         "production:deploy:api": "ansible-playbook -i ./api/inventory ./api/playbook.yml --key-file ~/.ssh/id_incommon_droplet --extra-vars \"incommon_host=api.incommon.dev incommon_NODE_ENV=production incommon_POSTGRES_CONNECTION=$INCOMMON_PRODUCTION_DB incommon_FASTMAIL_PASSWORD=$FASTMAIL_PASSWORD\"",
         "production:test": "export TEST_ENV=production; jest test/",
         "server:start:prod": "NODE_ENV=production node server/",
