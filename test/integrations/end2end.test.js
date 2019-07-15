@@ -105,7 +105,7 @@ if (!isProdStaging) {
             }
             this.context = await this.browser.createIncognitoBrowserContext();
             this.page = await this.context.newPage();
-            this.page.setDefaultTimeout(10000);
+            // this.page.setDefaultTimeout(10000);
         });
 
         afterEach(async () => {
