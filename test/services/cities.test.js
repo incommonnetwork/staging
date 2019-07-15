@@ -24,4 +24,20 @@ describe('cities service', () => {
         });
     });
 
+    describe('admin', () => {
+        beforeEach(async () => {
+            await this.api.authenticate({
+                strategy: 'local',
+                email: 'admin@mock.admin',
+                password: 'admin123'
+            });
+        });
+
+
+        it('allows find', async () => {
+            await this.api.service('cities').find();
+        });
+    });
+
+
 });
