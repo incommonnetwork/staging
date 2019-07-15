@@ -1,5 +1,5 @@
 const env = require('../setup.env.js')(4531);
-const moment = require('moment')
+const moment = require('moment');
 
 describe('registration service', () => {
     beforeAll(env.before);
@@ -28,7 +28,7 @@ describe('registration service', () => {
     describe('regstration', () => {
         beforeEach(async () => {
             this.dates = [moment().add(1, 'days').format('YYYY[/]MM[/]D')];
-            this.city = await this.api.service('city').create({
+            this.city = await this.api.service('cities').create({
                 city: this.rand,
                 state: this.rand,
                 country: this.rand,
