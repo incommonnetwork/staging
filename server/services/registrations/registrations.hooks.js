@@ -92,7 +92,7 @@ const populateUserField = async (context) => {
 module.exports = {
     before: {
         all: [authenticate('jwt')],
-        find: [handleNullQueries],
+        find: [handleNullQueries, populateUserField],
         get: [],
         create: [addUser],
         update: [],
@@ -102,7 +102,7 @@ module.exports = {
 
     after: {
         all: [],
-        find: [populateFieldsFind, populateUserField],
+        find: [populateFieldsFind],
         get: [],
         create: [email_confirm],
         update: [],

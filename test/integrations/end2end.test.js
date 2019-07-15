@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer');
 const moment = require('moment');
 const fetch = require('node-fetch');
 // const wait = () => new Promise(res => setTimeout(res, 100));
-const isDev = process.env.TEST_ENV === 'dev'
+const isDev = process.env.TEST_ENV === 'dev';
 
 if (isDev) {
     describe('create users', () => {
