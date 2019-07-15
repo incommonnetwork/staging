@@ -106,7 +106,35 @@ export default {
 
         const schema = context.schema;
         const app = await getApp();
+
         const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const code = await app.service('codes').get(query.code);
+
+
+        const dateMap = new Map();
+        const dateEnum = [];
+        code.dates = code.dates || [moment(), moment().add(1, 'day')];
+
+        schema.properties.dates = {
+            title: 'Dates',
+            description: 'Select the dates you are most likely to be free for dinner',
+            type: 'array',
+            items: {
+                type: 'string',
+            },
+            uniqueItems: true
+        };
+
+
+        for (const date of (code.dates || [Date.now()])) {
+            const m = moment(date);
+            const key = `${m.format('dddd, MMMM Do')} (7:30 PM)`;
+            dateMap.set(key, date);
+            dateEnum.push(key);
+        }
+
+        schema.properties.dates.items.enum = code.dates.map(d => `${moment(d).format('dddd, MMMM Do')} (7:30 PM)`) || [];
+
 
         const existingRegistrations = await app.service('registrations').find({
             query: {
@@ -122,7 +150,6 @@ export default {
             }
         }
 
-        const code = await app.service('codes').get(query.code);
 
         if (!code.cityId) {
             schema.required.push('city');
@@ -134,34 +161,11 @@ export default {
             schema.required.push('neighborhood');
         }
 
-        const dateMap = new Map();
-        const dateEnum = [];
-        code.dates = code.dates || [Date.now()];
 
         schema.title = code.text.toUpperCase();
         if (code.description) {
             schema.description = code.description;
         }
-
-        schema.properties.dates = {
-            title: 'Dates',
-            description: 'select the dates you are most likely to be free for dinner',
-            type: 'array',
-            items: {
-                type: 'string',
-            },
-            uniqueItems: true
-        };
-
-        for (const date of (code.dates || [Date.now()])) {
-            const m = moment(date);
-            const key = m.format('dddd, MMMM Do');
-            dateMap.set(key, date);
-            dateEnum.push(key);
-        }
-
-        schema.properties.dates.items.enum = code.dates.map(d => moment(d).format('dddd, MMMM Do')) || [];
-
         const maps = { dateMap };
         return { schema, maps };
     },

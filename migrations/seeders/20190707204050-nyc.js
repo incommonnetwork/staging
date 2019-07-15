@@ -25,25 +25,31 @@ const burroughs = {
         "Upper East Side",
         "Greenwich Village",
         "Upper West Side",
+        "Harlem",
+        "East Village",
+        "Financial District",
+        "Lower East Side"
     ],
     "Brooklyn": [
         "Williamsburg",
         "Park Slope",
-        "Prospect Heights"
-    ],
-    "Bronx": [
-        "Fordham",
-        "Riverdale",
-        "South Bronx"
-    ],
-    "Staten Island": [
-        "Great Kills",
-        "Greater St. George",
+        "Prospect Heights",
+        "Green Point",
+        "Fort Green",
+        "Bushwick",
+        "Red Hook"
     ],
     "Queens": [
         "Astoria",
         "Jackson Heights",
         "Sunnyside",
+        "Long Island City"
+    ],
+    "Bronx": [
+        "Hunt's Point"
+    ],
+    "Staten Island": [
+        "Great Kills"
     ]
 
 }
