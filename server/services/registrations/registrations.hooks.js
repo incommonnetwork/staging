@@ -71,7 +71,7 @@ const email_confirm = async (context) => {
     const info = await mailer.sendMail({
         from: 'InCommon <noreply@bots.incommon.dev>',
         to: email,
-        subject: 'Welcome to InCommon',
+        subject: 'InCommon: Registration confirmation',
         text: `
             Thanks for registering with code ${code.text},
             You'll receive an invite shortly to RSVP with your fellow attendees.
