@@ -105,11 +105,8 @@ if (!isProdStaging) {
             }
             this.context = await this.browser.createIncognitoBrowserContext();
             this.page = await this.context.newPage();
-            if (process.env.TEST_ENV === 'staging') {
-                //need to optimize, but sparse trees are generated here
-                this.page.setDefaultTimtout(300000);
-            }
-            //this.page.setDefaultTimeout(3000);
+            // ridiculous timeout, must fix, but testing adds artifacts that are non realistic
+            this.page.setDefaultTimeout(3000000);
         });
 
         afterEach(async () => {
