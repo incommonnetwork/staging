@@ -167,6 +167,7 @@ if (!isProdStaging) {
 
                 it('redirects after login to rsvp', async () => {
                     await this.page.waitFor((expected) => location.pathname === expected, {}, env.getPathname('/sign_in'));
+                    await this.page.waitFor('#root_email');
                     await this.page.type('#root_email', this.user_creds.email);
                     await this.page.type('#root_password', this.user_creds.password);
                     const submit_button = await this.page.$('button.is-primary');

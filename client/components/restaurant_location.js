@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import Modal from './modal';
 
 const RestaurantLocation = ({ value }) => {
-    const { address, neighborhood, city, map } = JSON.parse(value);
+    const { id, address, neighborhood, city, map } = JSON.parse(value);
     return (
         <div>
             {`${address}, ${neighborhood}, ${city}`}
             <div style={{ padding: 10 }} />
-            <Modal button="Show Map" naked={true}>
+            <Modal id={id} button="Show Map" naked={true}>
                 <iframe src={map} />
             </Modal>
         </div>

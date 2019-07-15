@@ -59,22 +59,14 @@ export default {
     }),
     submit_service: async ({ formData }, context) => {
         const cityKey = formData.city;
+        const city = context.maps.cityMap.get(cityKey);
         delete formData.city;
-        formData.cityId = context.maps.cityMap.get(cityKey).id;
+        formData.cityId = city.id;
+        formData.longitude = city.longitude;
+        formData.latitude = city.latitude;
         const app = await getApp();
         const created = await app.service('neighborhoods').create(formData);
         return created;
-    },
-    form_should_update: (context, event) => context.schema.properties.city.default != event.formData.city,
-    form_update: async (context, event) => {
-        const schema = context.schema;
-        schema.changed = true;
-        schema.properties.city.default = event.formData.city;
-        const city = context.maps.cityMap.get(event.formData.city);
-
-        schema.properties.latitude.default = Number.parseFloat(city.latitude);
-        schema.properties.longitude.default = Number.parseFloat(city.longitude);
-        return { schema };
     },
     form_init: async (context) => {
         const app = await getApp();

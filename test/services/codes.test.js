@@ -117,9 +117,6 @@ describe('\'codes\' service', () => {
                 });
             });
 
-            describe('should allow', async () => {
-
-            });
         });
 
         describe('admin', () => {

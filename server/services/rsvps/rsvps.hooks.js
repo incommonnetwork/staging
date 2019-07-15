@@ -61,7 +61,7 @@ const emailConfirmations = async (context) => {
     const info = await mailer.sendMail({
         from: 'InCommon <noreply@bots.incommon.dev>',
         to: email,
-        subject: 'InCommon: RSVP Recieved',
+        subject: 'InCommon: RSVP Received',
         text: `
             Your RSVP has been received, we're waiting for others now, please await a confirmation.
         `
@@ -73,7 +73,7 @@ const emailConfirmations = async (context) => {
 
 const populateUserField = async (context) => {
 
-    const _admin = await isAdmin(context);
+    const _admin = await isAdmin(context).catch(() => null);
     if (!_admin) {
         context.params.query.userId = context.params.user.id;
     }

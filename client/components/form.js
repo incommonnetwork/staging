@@ -32,12 +32,6 @@ Form.propTypes = {
 };
 
 class InnerForm extends Component {
-    shouldComponentUpdate() {
-        const update = this.props.current.context.schema.changed;
-        this.props.current.context.schema.changed = false;
-        return update || false;
-    }
-
     render() {
         const { id, current: { value, context: { noSubmit, schema, uiSchema, validate, onSubmit, onChange = () => { }, form_submit_label } }, send } = this.props;
 
@@ -50,13 +44,15 @@ class InnerForm extends Component {
                 onChange={onChange(send)}
                 onSubmit={onSubmit(send)}
             >
-                {noSubmit ? '' : <Button
-                    className="is-primary"
-                    fullwidth
-                    loading={value === 'form_submit'}
-                    type="submit">
-                    {form_submit_label || 'Submit'}
-                </Button>}
+                <div style={noSubmit ? { display: 'none' } : {}}>
+                    <Button
+                        className="is-primary"
+                        fullwidth
+                        loading={value === 'form_submit'}
+                        type="submit">
+                        {form_submit_label || 'Submit'}
+                    </Button>
+                </div>
             </JsonSchemaForm>
         </div>);
     }

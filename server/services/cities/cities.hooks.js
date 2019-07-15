@@ -19,7 +19,7 @@ const isAdmin = async (context) => {
             roleId: adminRole.dataValues.id
         }
     });
-
+    
     return !!user_roles;
 };
 
