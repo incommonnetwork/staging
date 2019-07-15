@@ -39,7 +39,7 @@
         "ci:test": "npm run ci:test:prepare && npm run sequelize:migrate && NODE_ENV=test TEST_ENV=ci pm2 start server && sleep 20 && npm run ci:test:jest",
         "ci:test:local": "pm2 kill && npm run ci:test:prepare && npm run sequelize:migrate && NODE_ENV=test TEST_ENV=ci pm2 start server && sleep 20 && export TEST_ENV=ci; jest test/integrations/end2end.test.js",
         "ci:test:prepare": "npm run eslint; npm run ci:client:build;",
-        "ci:test:jest": "export TEST_ENV=ci; jest test/",
+        "ci:test:jest": "export TEST_ENV=ci; jest -i test/",
         "ci:client:build": "NODE_ENV=travis next build ./client",
         "staging:deploy:client": "export NODE_ENV=staging; next build ./client; next export ./client -o ./staging; cp -rT staging/ .",
         "staging:deploy:api": "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./api/inventory ./api/playbook.yml --key-file ~/.ssh/id_travis --extra-vars \"incommon_host=staging.incommon.dev incommon_NODE_ENV=staging incommon_POSTGRES_CONNECTION=$POSTGRES_CONNECTION incommon_FASTMAIL_PASSWORD=$FASTMAIL_PASSWORD\"",
