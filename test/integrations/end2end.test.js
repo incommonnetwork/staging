@@ -4,9 +4,9 @@ const puppeteer = require('puppeteer');
 const moment = require('moment');
 const fetch = require('node-fetch');
 // const wait = () => new Promise(res => setTimeout(res, 100));
-const isProdStaging = ['production', 'staging'].indexOf(process.env.TEST_ENV) !== -1;
+const isDev = process.env.TEST_ENV === 'dev'
 
-if (!isProdStaging) {
+if (isDev) {
     describe('create users', () => {
         beforeAll(async () => {
             await env.before();
