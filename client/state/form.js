@@ -29,32 +29,8 @@ export default Machine({
         },
         form_input: {
             on: {
-                SUBMIT: 'form_submit',
-                CHANGE: {
-                    target: 'form_update',
-                    cond: (context, event) => context.form_should_update && context.form_should_update(context, event)
-                }
+                SUBMIT: 'form_submit'
             },
-        },
-        form_update: {
-            invoke: {
-                id: 'updating',
-                src: async (context, event) => context.form_update(context, event),
-                onDone: {
-                    target: 'form_input',
-                    actions: assign({
-                        schema: (context, event) => event.data.schema || context.schema,
-                        maps: (context, event) => event.data.maps || context.maps,
-                        uiSchema: (context, event) => event.data.uiSchema || context.uiSchema
-                    })
-                },
-                onError: {
-                    target: 'error',
-                    actions: assign({
-                        error: (context, event) => event.data
-                    })
-                }
-            }
         },
         form_submit: {
             invoke: {

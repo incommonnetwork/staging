@@ -204,7 +204,7 @@ if (!isProdStaging) {
                 describe('rsvp', () => {
                     beforeEach(async () => {
                         await this.app.authenticate(this.admin_creds);
-                        const registrations = await this.app.registrations.find({
+                        const registrations = await this.app.service('registrations').find({
                             query: {
                                 codeId: this.code.id
                             }
@@ -213,13 +213,35 @@ if (!isProdStaging) {
                         this.invite = await this.app.service('invites').create({
                             date: this.code.dates[0],
                             restaurantId: this.restaurant.id,
-                            registrations: registrations.map(({ id }) => id)
+                            registrations: registrations.data.map(({ id }) => id)
                         });
                     });
 
-                    it.only('allows rsvp', async () => {
-                        await this.page.goto(env.getPathname('/rsvp') + `?invite=${this.invite.id}`);
+                    it('shows rsvp', async () => {
+                        await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
                         await this.page.waitFor('#root_total');
+                    });
+
+                    it('has map modal', async () => {
+                        await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
+                        await this.page.waitFor(`#${this.restaurant.id}_modal`);
+                    });
+
+                    it('accepts rsvp and redirects to thankyou', async () => {
+                        await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
+                        const button = await this.page.waitFor('button.is-primary');
+                        await button.click();
+                        await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_register'));
+                    });
+
+                    it('redirects to thankyou after duplicate rsvp', async () => {
+                        await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
+                        const button = await this.page.waitFor('button.is-primary');
+                        await button.click();
+                        await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_register'));
+
+                        await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
+                        await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_register'));
                     });
                 });
             });

@@ -32,12 +32,6 @@ Form.propTypes = {
 };
 
 class InnerForm extends Component {
-    shouldComponentUpdate() {
-        const update = this.props.current.context.schema.changed;
-        this.props.current.context.schema.changed = false;
-        return update || false;
-    }
-
     render() {
         const { id, current: { value, context: { noSubmit, schema, uiSchema, validate, onSubmit, onChange = () => { }, form_submit_label } }, send } = this.props;
 
