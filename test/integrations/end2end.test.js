@@ -32,7 +32,7 @@ if (!isProdStaging) {
             await this.app.authenticate(this.admin_creds);
 
             this.users = [];
-            for (const id of [1, 2, 3, 4, 5]) {
+            for (const id of [1]) {
                 const user = await this.app.service('users').create({
                     email: `${id}${this.rand}@e2e.test`,
                     password: this.rand
@@ -105,6 +105,7 @@ if (!isProdStaging) {
             }
             this.context = await this.browser.createIncognitoBrowserContext();
             this.page = await this.context.newPage();
+            this.page.setDefaultTimeout(10000);
         });
 
         afterEach(async () => {
@@ -118,7 +119,7 @@ if (!isProdStaging) {
         });
 
         it('navigates to register after sign up', async () => {
-            await this.page.goto(env.getPage('sign_up'));
+            await this.page.goto(this.sms_url);
             await this.page.waitFor('#root_email');
 
             await this.page.type('#root_email', `create${this.users[0].email}`);
@@ -127,7 +128,7 @@ if (!isProdStaging) {
 
             const submit_button = await this.page.waitFor('button.is-primary');
             await submit_button.click();
-            await this.page.waitFor(expected => location.href === expected, {}, this.sms_url);
+            await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/register'));
         });
 
         it('navigates to register if logged in', async () => {
@@ -159,7 +160,7 @@ if (!isProdStaging) {
 
             it('accepts registration', async () => {
                 await this.page.waitFor('#root_neighborhood');
-                await this.page.select('#root_neighborhood', `${this.code.id}`);
+                await this.page.select('#root_neighborhood', `${this.neighborhood.id}`);
                 const firstDate = await this.page.waitFor('#root_dates_0');
                 await firstDate.click();
                 const submit_button = await this.page.waitFor('button.is-primary');
@@ -170,7 +171,7 @@ if (!isProdStaging) {
             describe('invite', () => {
                 beforeEach(async () => {
                     await this.page.waitFor('#root_neighborhood');
-                    await this.page.select('#root_neighborhood', `${this.code.id}`);
+                    await this.page.select('#root_neighborhood', `${this.neighborhood.id}`);
                     const firstDate = await this.page.waitFor('#root_dates_0');
                     await firstDate.click();
                     const submit_button = await this.page.waitFor('button.is-primary');
@@ -203,6 +204,15 @@ if (!isProdStaging) {
 
                 describe('rsvp', () => {
                     beforeEach(async () => {
+
+                        await this.page.goto(env.getPage('sign_in'));
+                        await this.page.waitFor('#root_email');
+                        await this.page.type('#root_email', this.users[0].email);
+                        await this.page.type('#root_password', this.users[0].password);
+                        const submit_button = await this.page.waitFor('button.is-primary');
+                        await submit_button.click();
+                        await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/home'));
+
                         await this.app.authenticate(this.admin_creds);
                         const registrations = await this.app.service('registrations').find({
                             query: {
@@ -224,30 +234,34 @@ if (!isProdStaging) {
 
                     it('has map modal', async () => {
                         await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
-                        await this.page.waitFor(`#${this.restaurant.id}_modal`);
+                        await this.page.waitFor('#restaurant_map_modal');
                     });
 
                     it('accepts rsvp and redirects to thankyou', async () => {
                         await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
                         const button = await this.page.waitFor('button.is-primary');
                         await button.click();
-                        await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_register'));
+                        await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_rsvp'));
                     });
 
                     it('redirects to thankyou after duplicate rsvp', async () => {
                         await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
                         const button = await this.page.waitFor('button.is-primary');
                         await button.click();
-                        await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_register'));
+                        await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_rsvp'));
 
                         await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
-                        await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_register'));
+                        await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_rsvp'));
                     });
 
                     describe('reservation', () => {
                         beforeEach(async () => {
+                            await this.page.goto(env.getPage('/rsvp') + `?invite=${this.invite.id}`);
+                            const button = await this.page.waitFor('button.is-primary');
+                            await button.click();
+                            await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/thank_you_rsvp'));
                             await this.app.authenticate(this.admin_creds);
-                            this.reservation = await this.app.service('reservation').create({
+                            this.reservation = await this.app.service('reservations').create({
                                 inviteId: this.invite.id,
                                 restaurantId: this.restaurant.id,
                                 date: this.code.dates[0]
@@ -255,8 +269,8 @@ if (!isProdStaging) {
                         });
 
                         it('has confirmation screen', async () => {
-                            await this.page.goto(`${env.getPage('/reservation_confirmation')}'?id=${this.reservation.id}`);
-                            await this.page.waitFor(expected => location.pathname === expected, env.getPathname('/reservation_confirmation'));
+                            await this.page.goto(`${env.getPage('/reservation_confirmation')}?id=${this.reservation.id}`);
+                            await this.page.waitFor(expected => location.pathname === expected, {}, env.getPathname('/reservation_confirmation'));
                         });
                     });
                 });

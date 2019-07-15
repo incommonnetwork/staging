@@ -76,7 +76,8 @@ export default {
         const neighborhood = await app.service('neighborhoods').get(restaurant.neighborhoodId);
 
         const location = {
-            id: restaurant.id,
+            id: 'restaurant_map',
+            restaurantId: restaurant.id,
             name: restaurant.name,
             address: restaurant.address,
             neighborhood: neighborhood.neighborhood,

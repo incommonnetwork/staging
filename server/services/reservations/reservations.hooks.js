@@ -1,5 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { NotAuthorized } = require('@feathersjs/errors');
+const { NotAuthenticated } = require('@feathersjs/errors');
 const nodemailer = require('nodemailer');
 const mailer = require('../../mailer');
 
@@ -23,7 +23,7 @@ const isAdmin = async (context) => {
     });
 
     if (!user_roles) {
-        throw new NotAuthorized();
+        throw new NotAuthenticated();
     }
 };
 
@@ -63,7 +63,7 @@ const addReservationToInvite = async (context) => {
 const emailConfirmations = async (context) => {
     const app = context.app;
     const sequelizeClient = await app.get('sequelizeClient');
-    const reservation = await sequelizeClient.models.reservations.findByPk(context.result.id);
+    const reservation = await sequelizeClient.model('reservations').findByPk(context.result.id);
     const invite = await reservation.getInvite();
     const restaurant = await invite.getRestaurant();
     const rsvps = await invite.getRsvps();
@@ -88,26 +88,37 @@ const emailConfirmations = async (context) => {
 
         context.result.email_confirmations.push(nodemailer.getTestMessageUrl(info));
     }
+};
 
+const addTotal = async (context) => {
+    const sequelizeClient = await context.app.get('sequelizeClient');
+    const reservation = await sequelizeClient.model('reservations').findByPk(context.result.id);
+    const invite = await reservation.getInvite();
+    const rsvps = await invite.getRsvps();
 
+    let total = 0;
+    for (const rsvp of rsvps) {
+        total += rsvp.get('total');
+    }
+    context.result.total = total;
 };
 
 
 module.exports = {
     before: {
-        all: [authenticate('jwt'), isAdmin],
-        find: [handleNullQueries],
+        all: [authenticate('jwt')],
+        find: [handleNullQueries, isAdmin],
         get: [],
-        create: [addDate],
-        update: [],
-        patch: [],
-        remove: []
+        create: [addDate, isAdmin],
+        update: [isAdmin],
+        patch: [isAdmin],
+        remove: [isAdmin]
     },
 
     after: {
         all: [],
         find: [],
-        get: [],
+        get: [addTotal],
         create: [addReservationToInvite, emailConfirmations],
         update: [],
         patch: [],

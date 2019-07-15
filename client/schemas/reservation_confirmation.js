@@ -32,12 +32,10 @@ export default {
         formData
     }),
     form_init: async () => {
-
         const app = await getApp();
         const query = Object.fromEntries(new URLSearchParams(window.location.search));
 
         const reservation = await app.service('reservations').get(query.id);
-
         const invite = await app.service('invites').get(reservation.inviteId);
         const restaurant = await app.service('restaurants').get(invite.restaurantId);
         const neighborhood = await app.service('neighborhoods').get(restaurant.neighborhoodId);
@@ -50,11 +48,10 @@ export default {
             map: restaurant.map
         };
 
-
         const schema = {
             title: `Confirmation for Dinner: ${moment(reservation.date).format('dddd, MMMM Do')}`,
             type: 'object',
-            required: ['total'],
+            required: [],
             properties: {
                 time: {
                     title: '7:30 PM',
@@ -73,6 +70,7 @@ export default {
         };
         return { schema };
     },
+    submit_service: () => { },
     submit_service_done: () => {
         throw new Error('submit_service_done() NOT IMPLEMENTED');
     }
