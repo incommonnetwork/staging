@@ -47,10 +47,9 @@ export default {
         const app = await getApp();
         const query = Object.fromEntries(new URLSearchParams(window.location.search));
 
-
         const existingRSVPs = await app.service('rsvps').find({
             query: {
-                codeId: query.code
+                inviteId: query.invite
             }
         });
 

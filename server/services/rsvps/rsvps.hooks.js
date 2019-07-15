@@ -73,7 +73,7 @@ const emailConfirmations = async (context) => {
 
 const populateUserField = async (context) => {
 
-    const _admin = await isAdmin(context);
+    const _admin = await isAdmin(context).catch(() => null);
     if (!_admin) {
         context.params.query.userId = context.params.user.id;
     }
