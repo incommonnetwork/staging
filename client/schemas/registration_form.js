@@ -173,7 +173,7 @@ export default {
         formData
     }),
     submit_service: async ({ formData }, context) => {
-        const neighborhoodParts = formData.code.city.neighborhood.split(':');
+        const neighborhoodParts = formData.code.city ? formData.code.city.neighborhood.split(':') : formData.code.neighborhood.split(':');
         const [codeId, neighborhoodId] = neighborhoodParts.map((s) => Number.parseInt(s));
         const { userId } = formData;
 
