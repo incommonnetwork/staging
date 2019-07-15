@@ -39,8 +39,15 @@ const getSchema = async () => {
         }]
     };
 
+    const codes = new Map();
+    const cities = new Map();
+    const neighborhoods = new Map();
+    const users = new Map();
+    const restaurantsMap = new Map();
+
     for (const [id, cityNeighborhoods] of codeCities) {
-        const code = await app.service('codes').get(id);
+        const code = codes.has(id) ? codes.get(id) : await app.service('codes').get(id);
+        codes.set(id, code);
 
         const codeSchema = {
             title: code.text,
@@ -50,7 +57,8 @@ const getSchema = async () => {
         };
 
         for (const [id, neighborhoodDates] of cityNeighborhoods) {
-            const city = await app.service('cities').get(id);
+            const city = cities.has(id) ? cities.get(id) : await app.service('cities').get(id);
+            cities.set(id, city);
 
             const citySchema = {
                 title: city.city,
@@ -60,12 +68,16 @@ const getSchema = async () => {
             };
 
             for (const [id, dateRegistration] of neighborhoodDates) {
-                const neighborhood = await app.service('neighborhoods').get(id);
-                const restaurants = await app.service('restaurants').find({
+                const neighborhood = neighborhoods.has(id) ? neighborhoods.get(id) : await app.service('neighborhoods').get(id);
+                neighborhoods.set(id, neighborhood);
+
+                const restaurants = restaurantsMap.has(neighborhood.id) ? restaurantsMap.get(neighborhood.id) : await app.service('restaurants').find({
                     query: {
                         neighborhoodId: neighborhood.id
                     }
                 });
+
+                restaurantsMap.set(neighborhood.id, restaurants);
 
                 if (!restaurants.total) continue;
 
@@ -110,7 +122,8 @@ const getSchema = async () => {
 
                     for (const registration of Array.from(registrationSet)) {
                         const id = registration.id;
-                        const user = await app.service('users').get(registration.userId);
+                        const user = users.has(registration.userId) ? users.get(registration.userId) : await app.service('users').get(registration.userId);
+                        users.set(registration.userId, user);
                         dateSchema.properties.registrations.items.enum.push(id);
                         dateSchema.properties.registrations.items.enumNames.push(user.email);
                     }
