@@ -10,6 +10,7 @@ import Form from '../components/form';
 import Router from '../utils/router';
 import getApp from '../utils/feathers';
 import rfc822 from '../utils/rfc822';
+import 'url-search-params-polyfill';
 
 const SignUp = () => {
     return (

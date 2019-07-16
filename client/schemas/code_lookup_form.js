@@ -28,8 +28,9 @@ export default {
     }),
     submit_service: async ({ formData }) => {
         const app = await getApp();
+        const text = formData.text.toLowerCase();
         const result = await app.service('codes').find({
-            query: formData
+            query: { text }
         });
         if (!result.total) throw new Error('Code Not Found');
         return result.data[0];
