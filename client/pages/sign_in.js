@@ -10,6 +10,8 @@ import Router from '../utils/router';
 import getApp from '../utils/feathers';
 import rfc822 from '../utils/rfc822';
 
+import fromEntries from 'fromentries';
+
 import 'url-search-params-polyfill';
 
 const SignIn = () => {
@@ -64,7 +66,7 @@ const context = {
         return { id };
     },
     submit_service_done: (context, { data: { id } }) => {
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const query = fromEntries(new URLSearchParams(window.location.search));
         const path = query.redirect || context.redirect;
         delete query.redirect;
         const queryParams = Object.keys(query).map(k => `${k}=${query[k]}`).join('&');

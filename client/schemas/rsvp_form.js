@@ -6,6 +6,7 @@ import 'url-search-params-polyfill';
 const wait = async () => new Promise(r => setTimeout(r, 100));
 
 import moment from 'moment';
+import fromEntries from 'fromentries';
 
 export default {
     redirect: '/home',
@@ -36,7 +37,7 @@ export default {
     submit_service: async ({ formData }) => {
         const total = formData.total;
         const app = await getApp();
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const query = fromEntries(new URLSearchParams(window.location.search));
         const inviteId = Number.parseInt(query.invite);
         const accepted = true;
         const created = await app.service('rsvps').create({ inviteId, accepted, total });
@@ -45,7 +46,7 @@ export default {
     form_init: async () => {
 
         const app = await getApp();
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const query = fromEntries(new URLSearchParams(window.location.search));
 
         const existingRSVPs = await app.service('rsvps').find({
             query: {
