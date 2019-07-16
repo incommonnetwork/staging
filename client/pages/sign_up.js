@@ -11,6 +11,7 @@ import Router from '../utils/router';
 import getApp from '../utils/feathers';
 import rfc822 from '../utils/rfc822';
 import 'url-search-params-polyfill';
+import fromEntries from 'fromentries';
 
 const SignUp = () => {
     return (
@@ -61,7 +62,7 @@ const context = {
         formData
     }),
     submit_service: async ({ formData }) => {
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const query = fromEntries(new URLSearchParams(window.location.search));
 
         const app = await getApp();
         const created = await app.service('users').create(formData, {
@@ -75,7 +76,7 @@ const context = {
     },
     submit_service_done: (context, { data: { id } }) => {
 
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const query = fromEntries(new URLSearchParams(window.location.search));
         const path = Router.query.redirect || context.redirect;
         delete query.redirect;
         const queryParams = Object.keys(query).map(k => `${k}=${query[k]}`).join('&');

@@ -2,6 +2,7 @@
 import getApp from '../utils/feathers';
 import RestaurantLocation from '../components/restaurant_location';
 import 'url-search-params-polyfill';
+import fromEntries from 'fromentries';
 
 import moment from 'moment';
 
@@ -34,7 +35,7 @@ export default {
     }),
     form_init: async () => {
         const app = await getApp();
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const query = fromEntries(new URLSearchParams(window.location.search));
 
         const reservation = await app.service('reservations').get(query.id);
         const invite = await app.service('invites').get(reservation.inviteId);

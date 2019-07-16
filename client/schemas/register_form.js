@@ -4,6 +4,7 @@ import Router from '../utils/router';
 import moment from 'moment';
 
 import 'url-search-params-polyfill';
+import fromEntries from 'fromentries';
 
 const wait = async () => new Promise(r => setTimeout(r, 100));
 
@@ -89,7 +90,7 @@ export default {
         formData
     }),
     submit_service: async ({ formData }, context) => {
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const query = fromEntries(new URLSearchParams(window.location.search));
 
         const neighborhoodId = formData.city ? formData.city.neighborhood : formData.neighborhood;
         const dates = formData.dates.map(k => context.maps.dateMap.get(k));
@@ -109,7 +110,7 @@ export default {
         const schema = context.schema;
         const app = await getApp();
 
-        const query = Object.fromEntries(new URLSearchParams(window.location.search));
+        const query = fromEntries(new URLSearchParams(window.location.search));
         const code = await app.service('codes').get(query.code);
 
 
