@@ -13,6 +13,8 @@ import rfc822 from '../utils/rfc822';
 import 'url-search-params-polyfill';
 import fromEntries from 'fromentries';
 
+const wait = () => new Promise(r => setTimeout(r, 100))
+
 const SignUp = () => {
     return (
         <Main>
@@ -65,9 +67,25 @@ const context = {
         const query = fromEntries(new URLSearchParams(window.location.search));
 
         const app = await getApp();
+
         const created = await app.service('users').create(formData, {
             query
+        }).catch(async e => {
+            if (e.errors[0].type === 'unique violation' && e.errors[0].path === 'email') {
+                Router.push('/sign_in');
+                return null
+            } else {
+                throw e;
+            }
         });
+
+        if (!created) {
+            // don't progress to next state, avoid UI jitter while browser is navigating
+            while (true) { // eslint-disable-line no-constant-condition
+                await wait();
+            }
+        }
+
         await app.authenticate({
             strategy: 'local',
             ...formData
