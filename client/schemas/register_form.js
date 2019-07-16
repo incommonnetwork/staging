@@ -3,6 +3,8 @@ import getApp from '../utils/feathers';
 import Router from '../utils/router';
 import moment from 'moment';
 
+import 'url-search-params-polyfill';
+
 const wait = async () => new Promise(r => setTimeout(r, 100));
 
 

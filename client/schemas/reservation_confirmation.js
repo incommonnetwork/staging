@@ -1,6 +1,7 @@
 /* global window */
 import getApp from '../utils/feathers';
 import RestaurantLocation from '../components/restaurant_location';
+import 'url-search-params-polyfill';
 
 import moment from 'moment';
 

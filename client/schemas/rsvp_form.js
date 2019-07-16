@@ -2,7 +2,7 @@
 import getApp from '../utils/feathers';
 import RestaurantLocation from '../components/restaurant_location';
 import Router from '../utils/router';
-
+import 'url-search-params-polyfill';
 const wait = async () => new Promise(r => setTimeout(r, 100));
 
 import moment from 'moment';
