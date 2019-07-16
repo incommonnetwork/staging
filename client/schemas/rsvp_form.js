@@ -66,7 +66,7 @@ export default {
             while (true) { // eslint-disable-line no-constant-condition
                 await wait();
             }
-        } else if (invite.reservationId || moment(invite.date).isAfter(moment(), 'day')) {
+        } else if (invite.reservationId || moment().isAfter(moment(invite.date), 'day')) {
             Router.push('/invite_expired');
             while (true) { // eslint-disable-line no-constant-condition
                 await wait();

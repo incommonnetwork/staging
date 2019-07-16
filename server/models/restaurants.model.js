@@ -33,6 +33,7 @@ module.exports = function (app) {
     // eslint-disable-next-line no-unused-vars
     restaurants.associate = function (models) {
         models.restaurants.belongsTo(models.neighborhoods);
+        models.restaurants.belongsTo(models.cities);
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
     };
