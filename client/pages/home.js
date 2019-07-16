@@ -4,7 +4,7 @@
 // import { NarrowColumn } from '../layouts/columns';
 // import Card from '../layouts/card';
 
-import Index from './index'
+import Index from './index';
 
 // const Home = () => {
 //     return (
