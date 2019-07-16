@@ -15,11 +15,11 @@ const getSchema = async () => {
     for (const registration of registrationsWithoutInvite.data) {
         const registrationCityId = (await app.service('neighborhoods').get(registration.neighborhoodId)).cityId;
 
-        const cityDates = codeCities.get(registrationCityId) || new Map();
-        codeCities.set(registrationCityId, cityDates);
+        const cityDates = codeCities.get(registration.codeId) || new Map();
+        codeCities.set(registration.codeId, cityDates);
 
-        const dateRegistration = cityDates.get(registration.neighborhoodId) || new Map();
-        cityDates.set(registration.neighborhoodId, dateRegistration);
+        const dateRegistration = cityDates.get(registrationCityId) || new Map();
+        cityDates.set(registrationCityId, dateRegistration);
 
         const registrationSet = dateRegistration.get(registration.dates[0]) || new Set();
         dateRegistration.set(registration.dates[0], registrationSet);

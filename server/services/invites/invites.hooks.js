@@ -26,8 +26,8 @@ const addCodeAndUsers = async (context) => {
         const invite = await sequelizeClient.models.invites.findByPk(inviteData.id);
         const registrations = await invite.getRegistrations();
         const firstRegistration = registrations[0];
-        const code = await firstRegistration.getCode();
-        inviteData.code = code.get('text');
+        const code = firstRegistration ? await firstRegistration.getCode() : null;
+        inviteData.code = code ? code.get('text') : null;
         inviteData.users = registrations.length;
     }
 };
