@@ -13,7 +13,7 @@ import rfc822 from '../utils/rfc822';
 import 'url-search-params-polyfill';
 import fromEntries from 'fromentries';
 
-const wait = () => new Promise(r => setTimeout(r, 100))
+const wait = () => new Promise(r => setTimeout(r, 100));
 
 const SignUp = () => {
     return (
@@ -73,7 +73,7 @@ const context = {
         }).catch(async e => {
             if (e.errors[0].type === 'unique violation' && e.errors[0].path === 'email') {
                 Router.push('/sign_in');
-                return null
+                return null;
             } else {
                 throw e;
             }
