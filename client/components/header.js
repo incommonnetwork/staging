@@ -9,15 +9,22 @@ const Header = () => (
     <Navbar color='primary'>
 
         <Navbar.Brand>
-            <Link href='/about' id='nav_'>
-                <Navbar.Item>
+            <Navbar.Item>
+                <Link href='/about' id='nav_about'>
                     InCommon
-                </Navbar.Item>
-            </Link>
+                </Link>
+            </Navbar.Item>
+
         </Navbar.Brand>
 
         <Navbar.Container
             position="end">
+
+            <Navbar.Item>
+                <Link href='/' id='nav_'>
+                    Enter Code
+                </Link>
+            </Navbar.Item>
             <Auth />
         </Navbar.Container>
 
