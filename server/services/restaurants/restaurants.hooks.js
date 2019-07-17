@@ -11,8 +11,8 @@ const addCityNeighborhoodGet = async (context) => {
 
 const addCityCreate = async (context) => {
     const sequelizeClient = context.app.get('sequelizeClient');
-    const city = await sequelizeClient.model('neighborhoods').findByPk(context.data.neighborhoodId);
-    context.data.cityId = city ? city.get('id') : null;
+    const neighborhood = await sequelizeClient.model('neighborhoods').findByPk(context.data.neighborhoodId);
+    context.data.cityId = neighborhood ? neighborhood.get('cityId') : null;
 };
 
 const addCityNeighborhoodFind = async (context) => {
