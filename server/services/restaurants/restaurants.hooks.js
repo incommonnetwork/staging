@@ -5,14 +5,14 @@ const addCityNeighborhoodGet = async (context) => {
     const sequelizeClient = context.app.get('sequelizeClient');
     const city = await sequelizeClient.model('cities').findByPk(context.result.cityId);
     const neighborhood = await sequelizeClient.model('neighborhoods').findByPk(context.result.neighborhoodId);
-    context.result.city = city.get('city');
-    context.result.neighborhood = neighborhood.get('neighborhood');
+    context.result.city = city ? city.get('city') : null;
+    context.result.neighborhood = neighborhood ? neighborhood.get('neighborhood') : neighborhood;
 };
 
 const addCityCreate = async (context) => {
     const sequelizeClient = context.app.get('sequelizeClient');
     const city = await sequelizeClient.model('neighborhoods').findByPk(context.data.neighborhoodId);
-    context.data.cityId = city.get('id');
+    context.data.cityId = city ? city.get('id') : null;
 };
 
 const addCityNeighborhoodFind = async (context) => {
@@ -21,8 +21,8 @@ const addCityNeighborhoodFind = async (context) => {
     for (const restaurant of context.result.data) {
         const city = await sequelizeClient.model('cities').findByPk(restaurant.cityId);
         const neighborhood = await sequelizeClient.model('neighborhoods').findByPk(restaurant.neighborhoodId);
-        restaurant.city = city.get('city');
-        restaurant.neighborhood = neighborhood.get('neighborhood');
+        restaurant.city = city ? city.get('city') : null;
+        restaurant.neighborhood = neighborhood ? neighborhood.get('neighborhood') : null;
     }
 };
 
