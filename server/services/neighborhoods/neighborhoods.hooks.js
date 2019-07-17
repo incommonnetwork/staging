@@ -40,7 +40,7 @@ const addCity = async (context) => {
 const addCityGet = async (context) => {
 
     const sequelizeClient = context.app.get('sequelizeClient');
-    const city = await sequelizeClient.model('cities').findByPk(context.result.id);
+    const city = await sequelizeClient.model('cities').findByPk(context.result.cityId);
     context.result.city = city ? city.get('city') : null;
 };
 
