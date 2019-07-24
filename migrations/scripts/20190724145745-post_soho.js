@@ -158,6 +158,21 @@ const MIGRATION = module.exports = {
             }
         })
 
+        await queryInterface.addColumn('rsvps', 'inviteId', {
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'invites',
+                key: 'id'
+            }
+        })
+
+        await queryInterface.addColumn('reservations', 'inviteId', {
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'invites',
+                key: 'id'
+            }
+        })
     }
 
 };
