@@ -1,55 +1,30 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 
-import Hero, { SideKick } from '../layouts/hero';
-
-import Tile from 'react-bulma-components/src/components/tile';
-import Card from 'react-bulma-components/src/components/card';
-import Title from '../components/title';
-import Spark from '../components/spark';
-
-const HeroCard = ({ children }) => (
-    <Card style={{
-        backgroundColor: '#2f28289c',
-        margin: '6rem',
-        padding: '.5rem'
-    }} >
-        {children}
-    </Card>
-);
-
-HeroCard.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
-    ])
-};
+import Hero, { SideKick, HeroTile } from '../layouts/hero';
 
 const Index = () => (
     <Fragment>
         <Hero title="InCommon" subtitle="Dinner parties for the Digital Age" textColor="white" image={'/static/main-background.jpg'} >
-            <Tile kind="parent">
-                <Tile kind="child" renderAs="article" >
-                    <HeroCard>
-                        <Title size={3} title="For People" color="white" />
-                        <Spark url="https://spark.adobe.com/video/NnfAON46L5sTa/embed" />
-                    </HeroCard>
-                </Tile>
-                <Tile kind="child" renderAs="article">
-                    <HeroCard>
-                        <Title size={3} title="For Events" color="white" />
-                        <Spark url="https://spark.adobe.com/video/gwkQg1WKcpTqW/embed" />
-                    </HeroCard>
-                </Tile>
-                <Tile kind="child" renderAs="article" >
-                    <HeroCard>
-                        <Title size={3} title="For Venues" color="white" />
-                    </HeroCard>
-                </Tile>
-            </Tile>
+            <HeroTile
+                title="For People"
+                subtitle="Inviting you back into the real world."
+                sidekick="people"
+            />
+            <HeroTile
+                title="For Events"
+                subtitle="The curtain closes, the conversation begins."
+                sidekick="events"
+            />
+            <HeroTile
+                title="For Restaurants"
+                subtitle="Split the check, fill the table."
+                sidekick="restaurants"
+            />
         </Hero>
-        <SideKick image={'/static/Placeholder.png'} />
-    </Fragment>
+        <SideKick name="people" image={'/static/Placeholder.png'} />
+        <SideKick name="events" justify="right" image={'/static/Placeholder.png'} />
+        <SideKick name="restaurants" image={'/static/Placeholder.png'} />
+    </Fragment >
 );
 
 export default Index;
