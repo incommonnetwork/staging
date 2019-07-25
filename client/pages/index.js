@@ -23,7 +23,7 @@ HeroCard.propTypes = {
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ])
-}
+};
 
 const Index = () => (
     <Fragment>
