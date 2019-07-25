@@ -32,11 +32,11 @@ Hero.propTypes = {
 
 const SideKickImage = ({ src }) => (
     <Image style={{ flex: 'auto', alignSelf: 'center' }} size={'square'} src={src} />
-)
+);
 
 SideKickImage.propTypes = {
     src: PropTypes.string.isRequired
-}
+};
 
 const SideKick = ({ children, image, justify = 'left' }) => (
     <BulmaHero size="fullheight" color="info" gradient style={{ maxHeight: '100vh' }}>
@@ -58,7 +58,7 @@ SideKick.propTypes = {
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ])
-}
+};
 
 export { SideKick };
 
