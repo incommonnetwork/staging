@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import BulmaButton from 'react-bulma-components/src/components/button'
+import BulmaButton from 'react-bulma-components/src/components/button';
 
 const Button = ({ children, onClick = () => { } }) => (
     <BulmaButton
@@ -13,7 +13,7 @@ const Button = ({ children, onClick = () => { } }) => (
         onClick={onClick}>
         {children}
     </BulmaButton>
-)
+);
 
 
 Button.propTypes = {
@@ -22,6 +22,6 @@ Button.propTypes = {
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ])
-}
+};
 
-export default Button
+export default Button;

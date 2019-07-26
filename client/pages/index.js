@@ -3,10 +3,10 @@ import React, { Fragment } from 'react';
 import Hero, { SideKick, HeroTile } from '../layouts/hero';
 import lede from '../copy/lede';
 import Header from '../components/header';
-import Container from '../layouts/container'
-import Title from '../components/title'
-import Button from '../components/button'
-import Link from '../components/link'
+import Container from '../layouts/container';
+import Title from '../components/title';
+import Button from '../components/button';
+import Link from '../components/link';
 
 const Index = () => (
     <Fragment>
@@ -18,14 +18,14 @@ const Index = () => (
                 sidekick="people"
             />
             <HeroTile
-                title="For Events"
-                subtitle="Build community after the curtain closes."
-                sidekick="events"
-            />
-            <HeroTile
                 title="For Restaurants"
                 subtitle="Split the check, fill the table."
                 sidekick="restaurants"
+            />
+            <HeroTile
+                title="For Organizers"
+                subtitle="Foster your community."
+                sidekick="organizers"
             />
         </Hero>
         <SideKick name="people" image={'/static/table-conversation.jpg'}>
@@ -38,8 +38,8 @@ const Index = () => (
                 </Link>
             </Container>
         </SideKick>
-        <SideKick name="events" justify="right" image={'/static/stage.jpg'} />
-        <SideKick name="restaurants" image={'/static/reservation.jpg'} />
+        <SideKick name="restaurants" justify="right" image={'/static/reservation.jpg'} />
+        <SideKick name="organizers" image={'/static/stage.jpg'} />
     </Fragment >
 );
 

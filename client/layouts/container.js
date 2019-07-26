@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import BulmaContainer from 'react-bulma-components/src/components/container'
+import BulmaContainer from 'react-bulma-components/src/components/container';
 
 const Container = ({ children }) => (
     <BulmaContainer
@@ -17,13 +17,13 @@ const Container = ({ children }) => (
         {children}
 
     </BulmaContainer>
-)
+);
 
 Container.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ])
-}
+};
 
-export default Container
+export default Container;

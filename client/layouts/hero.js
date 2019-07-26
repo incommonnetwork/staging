@@ -96,7 +96,10 @@ const SideKick = ({ children, image, justify = 'left', name, backgroundColor = '
         <Navbar color='primary' />
         <Tile >
             {justify !== 'left' ? <SideKickImage src={image} /> : null}
-            <Tile>
+            <Tile style={{
+                minHeight: '100%',
+                display: 'flex'
+            }}>
                 {children || 'CONTENT'}
             </Tile>
             {justify === 'left' ? <SideKickImage src={image} /> : null}
