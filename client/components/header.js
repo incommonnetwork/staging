@@ -14,7 +14,7 @@ class Header extends Component {
         return (
             <Navbar
                 color={'primary'}
-
+                fixed={'top'}
                 active={this.state.open}
             >
                 <Navbar.Brand>
