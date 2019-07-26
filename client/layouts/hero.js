@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import BulmaHero from 'react-bulma-components/src/components/hero';
 import Container from 'react-bulma-components/src/components/container';
 import Tile from 'react-bulma-components/src/components/tile';
-import Button from 'react-bulma-components/src/components/button';
 import Navbar from 'react-bulma-components/src/components/navbar';
 
 import Title from '../components/title';
+import Button from '../components/button';
 
 const Hero = ({ title, subtitle, children, image, lede, textColor }) => (
     <BulmaHero size="fullheight" style={{
@@ -57,11 +57,6 @@ const HeroTile = ({ title, subtitle, sidekick, textColor = 'white' }) => (
         <br />
         <div style={{ textAlign: 'center' }}>
             <Button
-                style={{
-                    margin: '1rem',
-                    backgroundColor: '#fffefeb0',
-                    borderWidth: '2px'
-                }}
                 onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
