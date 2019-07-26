@@ -1,34 +1,43 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import Navbar from 'react-bulma-components/src/components/navbar';
 
-import Link from './link';
-import Auth from './auth';
+class Header extends Component {
+    constructor() {
+        super();
+        this.state = {
+            open: false
+        };
+    }
 
-const Header = () => (
-    <Navbar color='primary'>
+    render() {
+        return (
+            <Navbar
+                color={'primary'}
 
-        <Navbar.Brand>
-            <Navbar.Item>
-                <Link href='/about' id='nav_about'>
-                    InCommon
-                </Link>
-            </Navbar.Item>
-
-        </Navbar.Brand>
-
-        <Navbar.Container
-            position="end">
-
-            <Navbar.Item>
-                <Link href='/' id='nav_'>
-                    Enter Code
-                </Link>
-            </Navbar.Item>
-            <Auth />
-        </Navbar.Container>
-
-    </Navbar>
-);
-
+                active={this.state.open}
+            >
+                <Navbar.Brand>
+                    <Navbar.Item renderAs="a" href="#">
+                        InCommon
+                    </Navbar.Item>
+                    <Navbar.Burger
+                        active={`${this.state.open}`}
+                        onClick={() => this.setState({
+                            open: !this.state.open
+                        })}
+                    />
+                </Navbar.Brand>
+                <Navbar.Menu active={`${this.state.open}`}>
+                    <Navbar.Container>
+                        <Navbar.Item href="#">Second</Navbar.Item>
+                    </Navbar.Container>
+                    <Navbar.Container position="end">
+                        <Navbar.Item href="#">At the end</Navbar.Item>
+                    </Navbar.Container>
+                </Navbar.Menu>
+            </Navbar>
+        );
+    }
+}
 export default Header;

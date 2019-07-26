@@ -5,26 +5,32 @@ import PropTypes from 'prop-types';
 import BulmaHero from 'react-bulma-components/src/components/hero';
 import Container from 'react-bulma-components/src/components/container';
 import Tile from 'react-bulma-components/src/components/tile';
-import Image from 'react-bulma-components/src/components/image';
 import Button from 'react-bulma-components/src/components/button';
 
 import Title from '../components/title';
+import Header from '../components/header';
 
-const Hero = ({ title, subtitle, children, image, textColor }) => (
+const Hero = ({ title, subtitle, children, image, lede, textColor }) => (
     <BulmaHero size="fullheight" style={{
         backgroundImage: `url(${process.env.ASSET_PREFIX}${image})`,
         backgroundPosition: 'center',
         backgroundSize: 'cover'
     }}>
+        <Header />
         <Tile vertical style={{ justifyContent: 'space-around' }}>
-            <BulmaHero style={{ backgroundColor: '#2f28289c', paddingBottom: '2rem' }}>
+            <BulmaHero style={{ backgroundColor: 'rgba(0, 0, 0, 0.69)', padding: '2rem' }}>
                 <Title size={1} title={title} subtitle={subtitle} color={textColor} />
+                <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+                    <p style={{ maxWidth: '20rem', color: 'white' }}>
+                        {lede}
+                    </p>
+                </div>
+                <Container fluid>
+                    <Tile kind="parent">
+                        {children}
+                    </Tile>
+                </Container>
             </BulmaHero>
-            <Container fluid>
-                <Tile kind="parent">
-                    {children}
-                </Tile>
-            </Container>
         </Tile>
     </BulmaHero >
 );
@@ -34,6 +40,7 @@ Hero.propTypes = {
     subtitle: PropTypes.string.isRequired,
     image: PropTypes.string,
     textColor: PropTypes.string,
+    lede: PropTypes.string.isRequired,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
@@ -42,7 +49,6 @@ Hero.propTypes = {
 
 const HeroTile = ({ title, subtitle, sidekick, textColor = 'white' }) => (
     <Tile kind="child" renderAs="article" style={{
-        backgroundColor: '#2f28289c',
         margin: '6rem',
         padding: '.5rem'
     }} >
@@ -77,31 +83,39 @@ HeroTile.propTypes = {
 
 
 const SideKickImage = ({ src }) => (
-    <Image style={{ flex: 'auto', alignSelf: 'center' }} size={'square'} src={src} />
+    <Tile style={{
+        backgroundImage: `url(${process.env.ASSET_PREFIX}${src})`,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover'
+    }} />
 );
 
 SideKickImage.propTypes = {
     src: PropTypes.string.isRequired
 };
 
-const SideKick = ({ children, image, justify = 'left', name }) => (
-    <BulmaHero size="fullheight" color="info" gradient style={{ maxHeight: '100vh' }}>
+const SideKick = ({ title, children, image, justify = 'left', name, backgroundColor = 'white' }) => (
+    <BulmaHero size="fullheight" style={{ backgroundColor, maxHeight: '100vh' }}>
         <a id={name} />
-        <Tile style={{ maxHeight: 'inherit', overflowY: 'hidden' }}>
-            <Tile >
-                {justify !== 'left' ? <SideKickImage src={`${process.env.ASSET_PREFIX}${image}`} /> : children}
-            </Tile>
+        <BulmaHero style={{ paddingBottom: '2rem' }}>
+            <Title size={1} title={title} />
+        </BulmaHero>
+        <Tile >
+            {justify !== 'left' ? <SideKickImage src={image} /> : null}
             <Tile>
-                {justify === 'left' ? <SideKickImage src={`${process.env.ASSET_PREFIX}${image}`} /> : children}
+                {children || 'CONTENT'}
             </Tile>
+            {justify === 'left' ? <SideKickImage src={image} /> : null}
         </Tile>
     </BulmaHero>
 );
 
 SideKick.propTypes = {
+    title: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
     justify: PropTypes.string,
+    backgroundColor: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node

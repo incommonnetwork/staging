@@ -5,8 +5,8 @@ import Heading from 'react-bulma-components/src/components/heading';
 
 
 const Title = ({ size = 2, title, subtitle, color }) => (
-    <div style={{ textAlign: 'center' }}>
-        <Heading size={size} spaced={true} renderAs="p" style={{ color }}>
+    <div style={{ paddingBottom: '1rem', textAlign: 'center' }}>
+        <Heading size={size} renderAs="p" style={{ marginTop: '0rem', color }}>
             {title}
         </Heading>
         <Heading subtitle renderAs="i" style={{ color }}>

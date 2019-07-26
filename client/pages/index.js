@@ -1,18 +1,19 @@
 import React, { Fragment } from 'react';
 
 import Hero, { SideKick, HeroTile } from '../layouts/hero';
+import lede from '../copy/lede';
 
 const Index = () => (
     <Fragment>
-        <Hero title="InCommon" subtitle="Dinner parties for the Digital Age" textColor="white" image={'/static/main-background.jpg'} >
+        <Hero title="InCommon" subtitle="Dinner parties for the Digital Age" lede={lede} textColor="white" image={'/static/main-background.jpg'}  >
             <HeroTile
                 title="For People"
-                subtitle="Inviting you back into the real world."
+                subtitle="Get invited back into the real world."
                 sidekick="people"
             />
             <HeroTile
                 title="For Events"
-                subtitle="The curtain closes, the conversation begins."
+                subtitle="Build community after the curtain closes."
                 sidekick="events"
             />
             <HeroTile
@@ -21,7 +22,7 @@ const Index = () => (
                 sidekick="restaurants"
             />
         </Hero>
-        <SideKick name="people" image={'/static/Placeholder.png'} />
+        <SideKick title="For People" name="people" image={'/static/Placeholder.png'} />
         <SideKick name="events" justify="right" image={'/static/Placeholder.png'} />
         <SideKick name="restaurants" image={'/static/Placeholder.png'} />
     </Fragment >
