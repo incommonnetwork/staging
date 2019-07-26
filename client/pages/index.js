@@ -2,9 +2,11 @@ import React, { Fragment } from 'react';
 
 import Hero, { SideKick, HeroTile } from '../layouts/hero';
 import lede from '../copy/lede';
+import Header from '../components/header';
 
 const Index = () => (
     <Fragment>
+        <Header />
         <Hero title="InCommon" subtitle="Dinner parties for the Digital Age" lede={lede} textColor="white" image={'/static/main-background.jpg'}  >
             <HeroTile
                 title="For People"

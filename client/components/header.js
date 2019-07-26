@@ -1,6 +1,8 @@
+/* global document */
 import React, { Component } from 'react';
 
 import Navbar from 'react-bulma-components/src/components/navbar';
+import Link from './link';
 
 class Header extends Component {
     constructor() {
@@ -14,12 +16,29 @@ class Header extends Component {
         return (
             <Navbar
                 color={'primary'}
-                fixed={'top'}
+                style={{
+                    left: 0,
+                    position: 'fixed',
+                    right: 0,
+                    zIndex: 30
+                }}
                 active={this.state.open}
             >
                 <Navbar.Brand>
-                    <Navbar.Item renderAs="a" href="#">
-                        InCommon
+                    <Navbar.Item>
+                        <div onClick={e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const top = document.getElementById('top');
+                            if (top) top.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }}>
+                            <Link href="/">
+                                InCommon
+                            </Link>
+                        </div>
                     </Navbar.Item>
                     <Navbar.Burger
                         active={`${this.state.open}`}
@@ -36,7 +55,7 @@ class Header extends Component {
                         <Navbar.Item href="#">At the end</Navbar.Item>
                     </Navbar.Container>
                 </Navbar.Menu>
-            </Navbar>
+            </Navbar >
         );
     }
 }

@@ -6,9 +6,9 @@ import BulmaHero from 'react-bulma-components/src/components/hero';
 import Container from 'react-bulma-components/src/components/container';
 import Tile from 'react-bulma-components/src/components/tile';
 import Button from 'react-bulma-components/src/components/button';
+import Navbar from 'react-bulma-components/src/components/navbar';
 
 import Title from '../components/title';
-import Header from '../components/header';
 
 const Hero = ({ title, subtitle, children, image, lede, textColor }) => (
     <BulmaHero size="fullheight" style={{
@@ -16,7 +16,8 @@ const Hero = ({ title, subtitle, children, image, lede, textColor }) => (
         backgroundPosition: 'center',
         backgroundSize: 'cover'
     }}>
-        <Header />
+        <a id={'top'} />
+        <Navbar />
         <Tile vertical style={{ justifyContent: 'space-around' }}>
             <BulmaHero style={{ backgroundColor: 'rgba(0, 0, 0, 0.69)', padding: '2rem' }}>
                 <Title size={1} title={title} subtitle={subtitle} color={textColor} />
@@ -97,6 +98,7 @@ SideKickImage.propTypes = {
 const SideKick = ({ title, children, image, justify = 'left', name, backgroundColor = 'white' }) => (
     <BulmaHero size="fullheight" style={{ backgroundColor, maxHeight: '100vh' }}>
         <a id={name} />
+        <Navbar />
         <BulmaHero style={{ paddingBottom: '2rem' }}>
             <Title size={1} title={title} />
         </BulmaHero>
