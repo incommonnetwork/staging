@@ -24,9 +24,9 @@ const Index = () => (
                 sidekick="restaurants"
             />
         </Hero>
-        <SideKick title="For People" name="people" image={'/static/Placeholder.png'} />
-        <SideKick name="events" justify="right" image={'/static/Placeholder.png'} />
-        <SideKick name="restaurants" image={'/static/Placeholder.png'} />
+        <SideKick name="people" image={'/static/table-conversation.jpg'} />
+        <SideKick name="events" justify="right" image={'/static/stage.jpg'} />
+        <SideKick name="restaurants" image={'/static/reservation.jpg'} />
     </Fragment >
 );
 

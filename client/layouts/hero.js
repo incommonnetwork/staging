@@ -17,7 +17,7 @@ const Hero = ({ title, subtitle, children, image, lede, textColor }) => (
         backgroundSize: 'cover'
     }}>
         <a id={'top'} />
-        <Navbar />
+        <Navbar color='primary' />
         <Tile vertical style={{ justifyContent: 'space-around' }}>
             <BulmaHero style={{ backgroundColor: 'rgba(0, 0, 0, 0.69)', padding: '2rem' }}>
                 <Title size={1} title={title} subtitle={subtitle} color={textColor} />
@@ -95,13 +95,10 @@ SideKickImage.propTypes = {
     src: PropTypes.string.isRequired
 };
 
-const SideKick = ({ title, children, image, justify = 'left', name, backgroundColor = 'white' }) => (
+const SideKick = ({ children, image, justify = 'left', name, backgroundColor = 'white' }) => (
     <BulmaHero size="fullheight" style={{ backgroundColor, maxHeight: '100vh' }}>
         <a id={name} />
-        <Navbar />
-        <BulmaHero style={{ paddingBottom: '2rem' }}>
-            <Title size={1} title={title} />
-        </BulmaHero>
+        <Navbar color='primary' />
         <Tile >
             {justify !== 'left' ? <SideKickImage src={image} /> : null}
             <Tile>
@@ -113,7 +110,6 @@ const SideKick = ({ title, children, image, justify = 'left', name, backgroundCo
 );
 
 SideKick.propTypes = {
-    title: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
     justify: PropTypes.string,
