@@ -64,7 +64,7 @@ class Header extends Component {
                             }}>
                                 <Link href="/about">
                                     About
-                            </Link>
+                                </Link>
                             </div>
                         </Navbar.Item>
                     </Navbar.Container>

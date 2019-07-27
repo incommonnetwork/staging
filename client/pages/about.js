@@ -1,7 +1,7 @@
 import React from 'react';
 
-import CopyPage from '../layouts/copypage'
-import Copy from '../copy/about'
+import CopyPage from '../layouts/copypage';
+import Copy from '../copy/about';
 
 const About = () => (
     <CopyPage copy={Copy} />
