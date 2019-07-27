@@ -3,16 +3,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import BulmaHero from 'react-bulma-components/src/components/hero';
-import Container from 'react-bulma-components/src/components/container';
+import BulmaContainer from 'react-bulma-components/src/components/container';
 import Tile from 'react-bulma-components/src/components/tile';
 import Navbar from 'react-bulma-components/src/components/navbar';
 
 import Title from '../components/title';
 import Button from '../components/button';
+import Link from '../components/link';
+import Container from '../layouts/container';
 
-const Hero = ({ title, subtitle, children, image, lede, textColor }) => (
+const Hero = ({ copy, children, textColor }) => (
     <BulmaHero size="fullheight" style={{
-        backgroundImage: `url(${process.env.ASSET_PREFIX}${image})`,
+        backgroundImage: `url(${process.env.ASSET_PREFIX}${copy.image})`,
         backgroundPosition: 'center',
         backgroundSize: 'cover'
     }}>
@@ -20,40 +22,37 @@ const Hero = ({ title, subtitle, children, image, lede, textColor }) => (
         <Navbar color='primary' />
         <Tile vertical style={{ justifyContent: 'space-around' }}>
             <BulmaHero style={{ backgroundColor: 'rgba(0, 0, 0, 0.69)', padding: '2rem' }}>
-                <Title size={1} title={title} subtitle={subtitle} color={textColor} />
+                <Title size={1} title={copy.title} subtitle={copy.subtitle} color={textColor} />
                 <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
                     <p style={{ maxWidth: '20rem', color: 'white' }}>
-                        {lede}
+                        {copy.lede}
                     </p>
                 </div>
-                <Container fluid>
+                <BulmaContainer fluid>
                     <Tile kind="parent">
                         {children}
                     </Tile>
-                </Container>
+                </BulmaContainer>
             </BulmaHero>
         </Tile>
     </BulmaHero >
 );
 
 Hero.propTypes = {
-    title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
-    image: PropTypes.string,
+    copy: PropTypes.object.isRequired,
     textColor: PropTypes.string,
-    lede: PropTypes.string.isRequired,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ])
 };
 
-const HeroTile = ({ title, subtitle, sidekick, textColor = 'white' }) => (
+const HeroTile = ({ copy, sidekick, textColor = 'white' }) => (
     <Tile kind="child" renderAs="article" style={{
         margin: '6rem',
         padding: '.5rem'
     }} >
-        <Title size={3} title={title} subtitle={subtitle} color={textColor} />
+        <Title size={3} title={copy.title} subtitle={copy.subtitle} color={textColor} />
         <br />
         <div style={{ textAlign: 'center' }}>
             <Button
@@ -70,8 +69,7 @@ const HeroTile = ({ title, subtitle, sidekick, textColor = 'white' }) => (
 );
 
 HeroTile.propTypes = {
-    title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
+    copy: PropTypes.object.isRequired,
     sidekick: PropTypes.string.isRequired,
     textColor: PropTypes.string
 };
@@ -90,26 +88,33 @@ SideKickImage.propTypes = {
     src: PropTypes.string.isRequired
 };
 
-const SideKick = ({ children, image, justify = 'left', name, backgroundColor = 'white' }) => (
+const SideKick = ({ copy, justify = 'left', name, backgroundColor = 'white' }) => (
     <BulmaHero size="fullheight" style={{ backgroundColor, maxHeight: '100vh' }}>
         <a id={name} />
         <Navbar color='primary' />
         <Tile >
-            {justify !== 'left' ? <SideKickImage src={image} /> : null}
+            {justify !== 'left' ? <SideKickImage src={copy.image} /> : null}
             <Tile style={{
                 minHeight: '100%',
                 display: 'flex'
             }}>
-                {children || 'CONTENT'}
+                <Container>
+                    <Title title={copy.title} subtitle={copy.lede} />
+                    <Link href={copy.href}>
+                        <Button>
+                            {copy.button}
+                        </Button>
+                    </Link>
+                </Container>
             </Tile>
-            {justify === 'left' ? <SideKickImage src={image} /> : null}
+            {justify === 'left' ? <SideKickImage src={copy.image} /> : null}
         </Tile>
     </BulmaHero>
 );
 
 SideKick.propTypes = {
+    copy: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
     justify: PropTypes.string,
     backgroundColor: PropTypes.string,
     children: PropTypes.oneOfType([
