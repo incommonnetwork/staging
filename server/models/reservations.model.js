@@ -20,9 +20,7 @@ module.exports = function (app) {
 
     // eslint-disable-next-line no-unused-vars
     reservations.associate = function (models) {
-        models.reservations.belongsTo(models.invites);
         models.reservations.belongsTo(models.restaurants);
-        models.reservations.hasOne(models.invites);
         models.reservations.hasMany(models.rsvps);
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/

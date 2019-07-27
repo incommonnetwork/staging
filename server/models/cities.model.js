@@ -31,18 +31,17 @@ module.exports = function (app) {
             allowNull: true
         }
     }, {
-        hooks: {
-            beforeCount(options) {
-                options.raw = true;
+            hooks: {
+                beforeCount(options) {
+                    options.raw = true;
+                }
             }
-        }
-    });
+        });
 
     // eslint-disable-next-line no-unused-vars
     cities.associate = function (models) {
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
-        models.cities.hasMany(models.neighborhoods);
     };
 
     return cities;
