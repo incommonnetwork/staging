@@ -1,5 +1,5 @@
-/* global document */
-import React from 'react';
+/* global window, document */
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import BulmaHero from 'react-bulma-components/src/components/hero';
@@ -76,13 +76,32 @@ HeroTile.propTypes = {
 
 
 
-const SideKickImage = ({ src }) => (
-    <Tile style={{
-        backgroundImage: `url(${process.env.ASSET_PREFIX}${src})`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover'
-    }} />
-);
+class SideKickImage extends Component {
+    constructor() {
+        super();
+        this.state = {
+            backgroundImage: 'none'
+        };
+    }
+
+    componentDidMount() {
+        if ((window.innerWidth || document.body.clientWidth) > 700) {
+            this.setState({
+                backgroundImage: `url(${process.env.ASSET_PREFIX}${this.props.src})`
+            });
+        }
+    }
+
+    render() {
+        return (
+            <Tile style={{
+                backgroundImage: this.state.backgroundImage,
+                backgroundPosition: 'center',
+                backgroundSize: 'cover'
+            }} />
+        );
+    }
+}
 
 SideKickImage.propTypes = {
     src: PropTypes.string.isRequired
