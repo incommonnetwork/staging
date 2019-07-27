@@ -53,9 +53,19 @@ class Header extends Component {
                 <Navbar.Menu active={`${this.state.open}`}>
                     <Navbar.Container>
                         <Navbar.Item>
-                            <Link href="/about">
-                                About
+                            <div onClick={e => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                const top = document.getElementById('top');
+                                if (top) top.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }}>
+                                <Link href="/about">
+                                    About
                             </Link>
+                            </div>
                         </Navbar.Item>
                     </Navbar.Container>
                     <Navbar.Container position="end">
