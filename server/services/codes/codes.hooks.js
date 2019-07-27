@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { Forbidden } = require('@feathersjs/errors');
+const addRefs = require('../../hooks/refs');
 
 const isAdmin = async (context) => {
     const { app, params: { user } } = context;
@@ -31,16 +32,6 @@ const assignedBy = async (context) => {
     context.data.assignedById = context.params.user.id;
 };
 
-const addAssignedBy = async (context) => {
-
-    const sequelizeClient = context.app.get('sequelizeClient');
-
-    for (const codeData of context.result.data) {
-        const code = await sequelizeClient.models.codes.findByPk(codeData.id);
-        const assignedByUser = await sequelizeClient.models.users.findByPk(code.get('assignedById'));
-        codeData.assignedBy = assignedByUser.get('email');
-    }
-};
 
 module.exports = {
     before: {
@@ -55,8 +46,8 @@ module.exports = {
 
     after: {
         all: [],
-        find: [addAssignedBy],
-        get: [],
+        find: [addRefs()],
+        get: [addRefs()],
         create: [],
         update: [],
         patch: [],

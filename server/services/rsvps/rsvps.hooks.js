@@ -40,13 +40,8 @@ const addCodeAndUser = async (context) => {
     for (const rsvpData of context.result.data) {
         const rsvp = await sequelizeClient.models.rsvps.findByPk(rsvpData.id);
         const user = await rsvp.getUser();
-        const invite = await sequelizeClient.models.invites.findByPk(rsvpData.inviteId);
-        const registrations = await invite.getRegistrations();
-        const firstRegistration = registrations[0];
-        const code = await firstRegistration.getCode();
 
         rsvpData.user = user.get('email');
-        rsvpData.code = code.get('text');
     }
 };
 

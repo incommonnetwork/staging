@@ -12,7 +12,11 @@ const OpenModal = ({ id, button = 'Open', title = 'Modal', modal = {}, children,
 
     return (
         <div id={`${id}_modal`}>
-            <Button onClick={() => send('OPEN')}>
+            <Button onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                send('OPEN');
+            }}>
                 {button}
             </Button>
             <Modal show={current.matches('modal_opened')} onClose={() => send('CLOSE')} closeOnBlur={true} {...modal}>
