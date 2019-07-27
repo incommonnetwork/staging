@@ -11,7 +11,10 @@ const Container = ({ children }) => (
             flexDirection: 'column',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            minHeight: '100%',
+            height: '-webkit-fill-available',
+            padding: '1rem'
         }}>
 
         {children}
