@@ -31,12 +31,12 @@ module.exports = function (app) {
             allowNull: true
         }
     }, {
-            hooks: {
-                beforeCount(options) {
-                    options.raw = true;
-                }
+        hooks: {
+            beforeCount(options) {
+                options.raw = true;
             }
-        });
+        }
+    });
 
     // eslint-disable-next-line no-unused-vars
     cities.associate = function (models) {
