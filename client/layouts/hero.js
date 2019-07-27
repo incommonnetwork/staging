@@ -91,7 +91,7 @@ SideKickImage.propTypes = {
 const SideKick = ({ copy, justify = 'left', name, backgroundColor = 'white' }) => (
     <BulmaHero size="fullheight" style={{ backgroundColor, maxHeight: '100vh' }}>
         <a id={name} />
-        <Navbar color='primary' />
+        <Navbar color='primary' style={{ backgroundColor: 'black' }} />
         <Tile >
             {justify !== 'left' ? <SideKickImage src={copy.image} /> : null}
             <Tile style={{
