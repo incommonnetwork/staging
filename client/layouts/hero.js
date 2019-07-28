@@ -9,7 +9,6 @@ import Navbar from 'react-bulma-components/src/components/navbar';
 
 import Title from '../components/title';
 import Button from '../components/button';
-import Link from '../components/link';
 import Container from '../layouts/container';
 import ScrollArrow from '../components/scroll_arrow';
 
@@ -111,35 +110,31 @@ SideKickImage.propTypes = {
     src: PropTypes.string.isRequired
 };
 
-const SideKick = ({ arrow, copy, justify = 'left', name, backgroundColor = 'white' }) => (
+const SideKick = ({ arrow, image, children, justify = 'left', name, backgroundColor = 'white' }) => (
     <BulmaHero size="fullheight" style={{ backgroundColor, maxHeight: '100vh' }}>
         <a id={name} />
         <Navbar color='primary' style={{ backgroundColor: 'black' }} />
         <Tile >
-            {justify !== 'left' ? <SideKickImage src={copy.image} /> : null}
+            {justify !== 'left' ? <SideKickImage src={image} /> : null}
             <Tile style={{
                 minHeight: '100%',
                 display: 'flex'
             }}>
-                <div style={{ position: 'relative' }}>
+                <div style={{ position: 'relative', minWidth: '100%' }}>
                     <Container>
-                        <Title title={copy.title} subtitle={copy.lede} />
-                        <Link href={copy.href}>
-                            <Button>
-                                {copy.button}
-                            </Button>
-                        </Link>
+                        {children}
                     </Container>
                     {arrow ? <ScrollArrow /> : null}
                 </div>
             </Tile>
-            {justify === 'left' ? <SideKickImage src={copy.image} /> : null}
+            {justify === 'left' ? <SideKickImage src={image} /> : null}
         </Tile>
     </BulmaHero>
 );
 
 SideKick.propTypes = {
     copy: PropTypes.object.isRequired,
+    image: PropTypes.string.isRequired,
     arrow: PropTypes.bool,
     name: PropTypes.string.isRequired,
     justify: PropTypes.string,
