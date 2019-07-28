@@ -11,31 +11,35 @@ import Title from '../components/title';
 import Button from '../components/button';
 import Link from '../components/link';
 import Container from '../layouts/container';
+import ScrollArrow from '../components/scroll_arrow';
 
 const Hero = ({ copy, children, textColor }) => (
-    <BulmaHero size="fullheight" style={{
-        backgroundImage: `url(${process.env.ASSET_PREFIX}${copy.image})`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover'
-    }}>
-        <a id={'top'} />
-        <Navbar color='primary' />
-        <Tile vertical style={{ justifyContent: 'space-around' }}>
-            <BulmaHero style={{ backgroundColor: 'rgba(0, 0, 0, 0.69)', padding: '2rem' }}>
-                <Title size={1} title={copy.title} subtitle={copy.subtitle} color={textColor} />
-                <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
-                    <p style={{ maxWidth: '20rem', color: 'white' }}>
-                        {copy.lede}
-                    </p>
-                </div>
-                <BulmaContainer fluid>
-                    <Tile kind="parent">
-                        {children}
-                    </Tile>
-                </BulmaContainer>
-            </BulmaHero>
-        </Tile>
-    </BulmaHero >
+    <div style={{ position: 'relative' }}>
+        <BulmaHero size="fullheight" style={{
+            backgroundImage: `url(${process.env.ASSET_PREFIX}${copy.image})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover'
+        }}>
+            <a id={'top'} />
+            <Navbar color='primary' />
+            <Tile vertical style={{ justifyContent: 'space-around' }}>
+                <BulmaHero style={{ backgroundColor: 'rgba(0, 0, 0, 0.69)', padding: '2rem' }}>
+                    <Title size={1} title={copy.title} subtitle={copy.subtitle} color={textColor} />
+                    <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+                        <p style={{ maxWidth: '20rem', color: 'white' }}>
+                            {copy.lede}
+                        </p>
+                    </div>
+                    <BulmaContainer fluid>
+                        <Tile kind="parent">
+                            {children}
+                        </Tile>
+                    </BulmaContainer>
+                </BulmaHero>
+            </Tile>
+        </BulmaHero >
+        <ScrollArrow />
+    </div>
 );
 
 Hero.propTypes = {
@@ -107,7 +111,7 @@ SideKickImage.propTypes = {
     src: PropTypes.string.isRequired
 };
 
-const SideKick = ({ copy, justify = 'left', name, backgroundColor = 'white' }) => (
+const SideKick = ({ arrow, copy, justify = 'left', name, backgroundColor = 'white' }) => (
     <BulmaHero size="fullheight" style={{ backgroundColor, maxHeight: '100vh' }}>
         <a id={name} />
         <Navbar color='primary' style={{ backgroundColor: 'black' }} />
@@ -117,14 +121,17 @@ const SideKick = ({ copy, justify = 'left', name, backgroundColor = 'white' }) =
                 minHeight: '100%',
                 display: 'flex'
             }}>
-                <Container>
-                    <Title title={copy.title} subtitle={copy.lede} />
-                    <Link href={copy.href}>
-                        <Button>
-                            {copy.button}
-                        </Button>
-                    </Link>
-                </Container>
+                <div style={{ position: 'relative' }}>
+                    <Container>
+                        <Title title={copy.title} subtitle={copy.lede} />
+                        <Link href={copy.href}>
+                            <Button>
+                                {copy.button}
+                            </Button>
+                        </Link>
+                    </Container>
+                    {arrow ? <ScrollArrow /> : null}
+                </div>
             </Tile>
             {justify === 'left' ? <SideKickImage src={copy.image} /> : null}
         </Tile>
@@ -133,6 +140,7 @@ const SideKick = ({ copy, justify = 'left', name, backgroundColor = 'white' }) =
 
 SideKick.propTypes = {
     copy: PropTypes.object.isRequired,
+    arrow: PropTypes.bool,
     name: PropTypes.string.isRequired,
     justify: PropTypes.string,
     backgroundColor: PropTypes.string,

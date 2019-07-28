@@ -52,6 +52,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 .img {
   object-fit: contain; }
 
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
+
 @keyframes spinAround {
   from {
     transform: rotate(0deg); }
@@ -631,6 +665,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 .img {
   object-fit: contain; }
 
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
+
 @keyframes spinAround {
   from {
     transform: rotate(0deg); }
@@ -718,6 +786,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 
 .img {
   object-fit: contain; }
+
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
 
 @keyframes spinAround {
   from {
@@ -841,6 +943,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 .img {
   object-fit: contain; }
 
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
+
 @keyframes spinAround {
   from {
     transform: rotate(0deg); }
@@ -916,6 +1052,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 
 .img {
   object-fit: contain; }
+
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
 
 @keyframes spinAround {
   from {
@@ -1091,6 +1261,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 
 .img {
   object-fit: contain; }
+
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
 
 @keyframes spinAround {
   from {
@@ -1281,6 +1485,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 
 .img {
   object-fit: contain; }
+
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
 
 @keyframes spinAround {
   from {
@@ -1515,6 +1753,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 .img {
   object-fit: contain; }
 
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
+
 @keyframes spinAround {
   from {
     transform: rotate(0deg); }
@@ -1646,6 +1918,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 .img {
   object-fit: contain; }
 
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
+
 @keyframes spinAround {
   from {
     transform: rotate(0deg); }
@@ -1748,6 +2054,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 
 .img {
   object-fit: contain; }
+
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
 
 @keyframes spinAround {
   from {
@@ -1880,6 +2220,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 
 .img {
   object-fit: contain; }
+
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
 
 @keyframes spinAround {
   from {
@@ -2920,6 +3294,40 @@ div.form-group:nth-child(3) > fieldset:nth-child(1) > legend:nth-child(1) {
 
 .img {
   object-fit: contain; }
+
+.arrow {
+  position: absolute;
+  align-self: baseline;
+  left: 50%;
+  bottom: 5%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 1rem; }
+
+.arrow span {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-bottom: 3px solid #06A8FF;
+  border-right: 3px solid #06A8FF;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate 2s infinite; }
+
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s; }
+
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s; }
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px); } }
 
 @keyframes spinAround {
   from {
