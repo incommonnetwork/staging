@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useMachine } from '@xstate/react';
 import formMachine from '../state/form';
 
-//import '../vendor/bootstrap.css';
+import '../vendor/bootstrap.css';
 import JsonSchemaForm from 'react-jsonschema-form';
 import Button from 'react-bulma-components/src/components/button';
 import ErrorElement from '../components/error';

@@ -18,9 +18,10 @@ class Header extends Component {
             <Navbar
                 color={'primary'}
                 style={{
-                    left: 0,
                     position: 'fixed',
+                    left: 0,
                     right: 0,
+                    top: 0,
                     zIndex: 40
                 }}
                 active={this.state.open}
