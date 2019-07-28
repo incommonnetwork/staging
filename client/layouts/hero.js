@@ -11,7 +11,7 @@ import Title from '../components/title';
 import Button from '../components/button';
 import Link from '../components/link';
 import Container from '../layouts/container';
-import ScrollArrow from '../components/scroll_arrow'
+import ScrollArrow from '../components/scroll_arrow';
 
 const Hero = ({ copy, children, textColor }) => (
     <div style={{ position: 'relative' }}>
