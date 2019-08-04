@@ -110,10 +110,12 @@ SideKickImage.propTypes = {
     src: PropTypes.string.isRequired
 };
 
-const SideKick = ({ arrow, image, children, justify = 'left', name, backgroundColor = 'white' }) => (
+const SideKick = ({ arrow, title, image, children, justify = 'left', name, backgroundColor = 'white' }) => (
     <BulmaHero size="fullheight" style={{ backgroundColor, maxHeight: '100vh' }}>
         <a id={name} />
-        <Navbar color='primary' style={{ backgroundColor: 'black' }} />
+        <Navbar color='primary' style={{ backgroundColor: 'black' }}>
+            <Title display="mobile" title={title} size={4} color={'white'} style={{ paddingBottom: '0rem', paddingTop: '1rem' }} />
+        </Navbar>
         <Tile >
             {justify !== 'left' ? <SideKickImage src={image} /> : null}
             <Tile style={{
@@ -122,6 +124,7 @@ const SideKick = ({ arrow, image, children, justify = 'left', name, backgroundCo
             }}>
                 <div style={{ position: 'relative', minWidth: '100%' }}>
                     <Container>
+                        <Title display="desktop" title={title} />
                         {children}
                     </Container>
                     {arrow ? <ScrollArrow /> : null}
@@ -133,6 +136,7 @@ const SideKick = ({ arrow, image, children, justify = 'left', name, backgroundCo
 );
 
 SideKick.propTypes = {
+    title: PropTypes.string,
     copy: PropTypes.object.isRequired,
     image: PropTypes.string.isRequired,
     arrow: PropTypes.bool,
