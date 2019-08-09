@@ -7,7 +7,7 @@ const lede =
 
 Ryan Bennett is a software engineer based in Denver, CO.
 
-They met online in the crisis following a canceled event. And found out they had quite a bit in common. `
+They met online in the crisis following a canceled event. And found out they had quite a bit in common. `;
 
 const image = '/static/founders.jpg';
 
