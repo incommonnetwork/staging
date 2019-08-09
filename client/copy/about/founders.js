@@ -2,7 +2,12 @@ const title = 'Our Founders';
 
 const subtitle = 'Who we are.';
 
-const lede = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+const lede =
+    `Jay Shapiro is a film maker and philosopher based in Brooklyn, NYC. 
+
+Ryan Bennett is a software engineer based in Denver, CO.
+
+They met online in the crisis following a canceled event. And found out they had quite a bit in common. `
 
 const image = '/static/founders.jpg';
 
