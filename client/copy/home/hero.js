@@ -6,9 +6,9 @@ const lede = `Grab a bite before the concert
 
 Discuss your favorite podcast
 
-Debate the our local ballot
+Debate your local ballot
 
-In person`
+In person`;
 
 const image = '/static/main-background.jpg';
 

@@ -10,7 +10,7 @@ Discuss your favorite book or podcast
 
 Debate the measures on your local ballot.
 
-In person.`
+In person.`;
 
 const image = '/static/stage.jpg';
 

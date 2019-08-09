@@ -11,7 +11,7 @@ Instead of lectures and panels, we had conversations.
 
 Instead of being spectators, we were participants.
 
-InCommon was born out of the beauty created by crisis. But immediately afterward, we realized there’s no reason we can’t bring people together every day.`
+InCommon was born out of the beauty created by crisis. But immediately afterward, we realized there’s no reason we can’t bring people together every day.`;
 
 const image = '/static/refugees-narrow.jpg';
 
