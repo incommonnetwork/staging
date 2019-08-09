@@ -2,7 +2,15 @@ const title = 'For Organizers';
 
 const subtitle = 'Foster your community.';
 
-const lede = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+const lede = `InCommon brings people with common interests together for meals at local restaurants. 
+
+Grab a bite before your favorite band plays. 
+
+Discuss your favorite book or podcast
+
+Debate the measures on your local ballot.
+
+In person.`
 
 const image = '/static/stage.jpg';
 
