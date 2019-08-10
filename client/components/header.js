@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 
 import Navbar from 'react-bulma-components/src/components/navbar';
 import Link from './link';
-import Auth from './auth';
 
 class Header extends Component {
     constructor() {
@@ -70,7 +69,11 @@ class Header extends Component {
                         </Navbar.Item>
                     </Navbar.Container>
                     <Navbar.Container position="end">
-                        <Auth />
+                        <Navbar.Item>
+                            <Link href="/learn_more">
+                                Learn More
+                            </Link>
+                        </Navbar.Item>
                     </Navbar.Container>
                 </Navbar.Menu>
             </Navbar >
