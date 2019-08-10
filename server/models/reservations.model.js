@@ -9,6 +9,10 @@ module.exports = function (app) {
         date: {
             type: DataTypes.DATE,
             allowNull: false
+        },
+        capacity: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     }, {
         hooks: {
@@ -21,7 +25,7 @@ module.exports = function (app) {
     // eslint-disable-next-line no-unused-vars
     reservations.associate = function (models) {
         models.reservations.belongsTo(models.restaurants);
-        models.reservations.hasMany(models.rsvps);
+        models.reservations.belongsTo(models.codes);
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
     };

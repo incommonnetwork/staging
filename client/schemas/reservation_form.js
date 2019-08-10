@@ -1,44 +1,62 @@
 import getApp from '../utils/feathers';
+
 const getSchema = async () => {
     const app = await getApp();
-    const invitesWithoutReservation = await app.service('invites').find({
+    const restaurants = await app.service('restaurants').find({
         query: {
-            reservationId: 'NULL',
+            $limit: 50
+        }
+    });
+
+    const codes = await app.service('codes').find({
+        query: {
             $limit: 50
         }
     });
 
     const schema = {
         properties: {
-            inviteId: {
-                title: 'Invite',
+            codeId: {
+                title: 'Code',
                 type: 'number',
-                enum: [],
-                enumNames: []
+                enum: codes.data.map(({ id }) => id),
+                enumNames: codes.data.map(({ text }) => text)
+            },
+            restaurantId: {
+                title: 'Restaurant',
+                type: 'number',
+                enum: restaurants.data.map(({ id }) => id),
+                enumNames: restaurants.data.map(({ name, city }) => `${name} - ${city}`)
+            },
+            date: {
+                title: 'Date',
+                type: 'string'
+            },
+            time: {
+                title: 'Time',
+                type: 'string',
+                enum: [
+                    '6:00',
+                    '6:30',
+                    '7:00',
+                    '7:30',
+                    '8:00'
+                ]
+            },
+            capacity: {
+                title: 'Capacity',
+                type: 'number',
+                enum: [
+                    4,
+                    5,
+                    6,
+                    7,
+                    8
+                ]
             }
         },
     };
 
-    for (const invite of invitesWithoutReservation.data) {
-        const rsvps = await app.service('rsvps').find({
-            query: {
-                inviteId: invite.id
-            }
-        });
-
-        const registrations = await app.service('registrations').find({
-            query: {
-                inviteId: invite.id
-            }
-        });
-
-        const restaurant = await app.service('restaurants').get(invite.restaurantId);
-
-        const name = `${invite.id} - ${rsvps.total}/${registrations.total} - ${restaurant.city} - ${restaurant.name}`;
-
-        schema.properties.inviteId.enum.push(invite.id);
-        schema.properties.inviteId.enumNames.push(name);
-    }
 
     return { schema, maps: {} };
 };
@@ -49,18 +67,15 @@ export default {
     maps: {},
     schema: {
         type: 'object',
-        required: ['dates'],
+        required: ['restaurantId', 'codeId', 'date'],
         properties: {
         }
     },
     uiSchema: {
-        'restaurantId': {
-            'ui:widget': 'hidden'
-        },
         'date': {
-            'ui:widget': 'hidden'
+            'ui:widget': 'date'
         },
-        'invite': {
+        'code': {
             'ui:widget': 'checkboxes'
         },
     },
@@ -72,6 +87,9 @@ export default {
         formData
     }),
     submit_service: async ({ formData }) => {
+        const hour = Number.parseInt(formData.time.split(':')[0]) + 12;
+        const minute = formData.time.split(':')[1];
+        formData.date += ` ${hour}:${minute}:00 +00`;
         const app = await getApp();
         return app.service('reservations').create(formData);
     },

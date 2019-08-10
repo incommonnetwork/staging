@@ -21,6 +21,18 @@ module.exports = function (app) {
         map: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        city: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        state: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        country: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     }, {
         hooks: {
@@ -32,7 +44,6 @@ module.exports = function (app) {
 
     // eslint-disable-next-line no-unused-vars
     restaurants.associate = function (models) {
-        models.restaurants.belongsTo(models.cities);
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
     };
