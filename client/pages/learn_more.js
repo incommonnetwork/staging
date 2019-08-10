@@ -13,7 +13,6 @@ import rfc822 from '../utils/rfc822';
 import 'url-search-params-polyfill';
 import fromEntries from 'fromentries';
 
-const wait = () => new Promise(r => setTimeout(r, 100));
 
 const SignUp = () => {
     return (
@@ -69,23 +68,9 @@ const context = {
             }
         }
     },
-    uiSchema: {
-        password: {
-            'ui:widget': 'password'
-        },
-        confirm_password: {
-            'ui:widget': 'password'
-        }
-    },
     validate: (formData, errors) => {
         if (!rfc822(formData.email)) {
             errors.email.addError('Email address is not valid');
-        }
-        if (!(8 <= formData.password.length && formData.password.length <= 32)) {
-            errors.password.addError('Password must be between 8 and 32 characters');
-        }
-        if (formData.password !== formData.confirm_password) {
-            errors.confirm_password.addError('Passwords don\'t match');
         }
         return errors;
     },
@@ -94,32 +79,11 @@ const context = {
         formData
     }),
     submit_service: async ({ formData }) => {
-        const query = fromEntries(new URLSearchParams(window.location.search));
 
         const app = await getApp();
 
-        const created = await app.service('users').create(formData, {
-            query
-        }).catch(async e => {
-            if (e.errors[0].type === 'unique violation' && e.errors[0].path === 'email') {
-                Router.push('/sign_in');
-                return null;
-            } else {
-                throw e;
-            }
-        });
+        const created = await app.service('leads').create(formData);
 
-        if (!created) {
-            // don't progress to next state, avoid UI jitter while browser is navigating
-            while (true) { // eslint-disable-line no-constant-condition
-                await wait();
-            }
-        }
-
-        await app.authenticate({
-            strategy: 'local',
-            ...formData
-        });
         return created;
     },
     submit_service_done: (context, { data: { id } }) => {

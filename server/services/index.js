@@ -6,6 +6,7 @@ const cities = require('./cities/cities.service.js');
 const rsvps = require('./rsvps/rsvps.service.js');
 const restaurants = require('./restaurants/restaurants.service.js');
 const reservations = require('./reservations/reservations.service.js');
+const leads = require('./leads/leads.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
     app.configure(users);
@@ -16,4 +17,5 @@ module.exports = function (app) {
     app.configure(rsvps);
     app.configure(restaurants);
     app.configure(reservations);
+    app.configure(leads);
 };
