@@ -34,29 +34,24 @@ export default {
         type: 'SUBMIT',
         formData
     }),
-    submit_service: async ({ formData }) => {
+    submit_service: async ({ formData }, context) => {
         const app = await getApp();
         const query = fromEntries(new URLSearchParams(window.location.search));
 
         const created = await app.service('rsvps').create({
-            reservationId: query.reservation,
-            phoneId: query.phone,
+            reservationId: context.reservation.id,
+            phoneId: query.p,
             ...formData
         });
         return created;
     },
-    form_init: async () => {
-
-        const app = await getApp();
+    form_init: async (context) => {
         const query = fromEntries(new URLSearchParams(window.location.search));
-        if (!(query.reservation && query.phone)) {
+        if (!(query.p)) {
             Router.push('/');
         }
 
-
-        const reservation = await app.service('reservations').get(query.reservation).catch(() => {
-            return null;
-        });
+        const reservation = context.reservation;
 
         if (!reservation) {
             Router.push('/');
@@ -74,7 +69,8 @@ export default {
         };
 
         const schema = {
-            title: `RSVP: \n${moment(reservation.date.split('.')[0]).format('dddd, MMMM Do h:mmA')}`,
+            title: restaurant.name,
+            description: `${moment(reservation.date.split('.')[0]).format('dddd, MMMM Do h:mmA')}`,
             type: 'object',
             required: ['total'],
             properties: {

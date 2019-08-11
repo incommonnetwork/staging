@@ -1,7 +1,7 @@
 const env = require('../setup.env.js')(4431);
 const fetch = require('node-fetch');
 const url = require('url');
-
+const moment = require('moment');
 describe('\'sms\' service', () => {
     beforeAll(env.before);
     afterAll(env.after);
@@ -110,10 +110,31 @@ describe('\'sms\' service', () => {
 
                 await this.api.authenticate(this.creds);
 
-                await this.api.service('codes').create({
+                const code = this.code = await this.api.service('codes').create({
                     text: this.run,
                     dates: [Date.now()]
                 });
+
+                const restaurant = await this.api.service('restaurants').create({
+                    name: this.run,
+                    address: this.run,
+                    city: this.run,
+                    state: this.run,
+                    country: this.run,
+                    url: this.run,
+                    map: this.run
+                });
+
+                for (const offset of [0, 1, 2]) {
+                    await this.api.service('reservations').create({
+                        restaurantId: restaurant.id,
+                        date: moment().add(offset, 'hours').format(),
+                        codeId: code.id,
+                        capacity: 8
+                    });
+                }
+
+
 
                 this.result = await fetch(`${env.getApi('/sms')}`, {
                     method: 'POST',
@@ -135,9 +156,9 @@ describe('\'sms\' service', () => {
 
             });
 
-            it('responds with signup link', async () => {
+            it.only('contains link to reservation list', async () => {
                 expect.assertions(1);
-                expect(this.message.indexOf('/register')).toBeGreaterThan(-1);
+                expect(this.message.indexOf(`/rsvp_select?c=${this.code.id}&p=`)).toBeGreaterThan(-1);
             });
         });
 

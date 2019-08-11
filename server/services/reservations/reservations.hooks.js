@@ -46,7 +46,7 @@ const handleNullQueries = hook => {
 module.exports = {
     before: {
         all: [authenticate('jwt')],
-        find: [handleNullQueries, isAdmin],
+        find: [handleNullQueries],
         get: [],
         create: [isAdmin],
         update: [isAdmin],
@@ -56,7 +56,7 @@ module.exports = {
 
     after: {
         all: [],
-        find: [],
+        find: [addRefs()],
         get: [addRefs()],
         create: [],
         update: [],
