@@ -27,7 +27,6 @@ const isAdmin = async (context) => {
     }
 };
 
-
 module.exports = {
     before: {
         all: [authenticate('jwt')],

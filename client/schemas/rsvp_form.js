@@ -37,6 +37,7 @@ export default {
     submit_service: async ({ formData }) => {
         const app = await getApp();
         const query = fromEntries(new URLSearchParams(window.location.search));
+
         const created = await app.service('rsvps').create({
             reservationId: query.reservation,
             phoneId: query.phone,

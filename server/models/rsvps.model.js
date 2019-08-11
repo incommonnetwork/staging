@@ -21,6 +21,7 @@ module.exports = function (app) {
     // eslint-disable-next-line no-unused-vars
     rsvps.associate = function (models) {
         models.rsvps.belongsTo(models.phones);
+        models.rsvps.belongsTo(models.reservations);
 
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
