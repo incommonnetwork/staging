@@ -2,9 +2,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { NotAuthenticated } = require('@feathersjs/errors');
 
-const nodemailer = require('nodemailer');
-
-const mailer = require('../../mailer');
 
 const isAdmin = async (context) => {
     const { app, params: { user } } = context;
@@ -30,57 +27,13 @@ const isAdmin = async (context) => {
     }
 };
 
-const addUser = async (context) => {
-    context.data.userId = context.params.user.id;
-};
-
-const addCodeAndUser = async (context) => {
-    const sequelizeClient = context.app.get('sequelizeClient');
-
-    for (const rsvpData of context.result.data) {
-        const rsvp = await sequelizeClient.models.rsvps.findByPk(rsvpData.id);
-        const user = await rsvp.getUser();
-
-        rsvpData.user = user.get('email');
-    }
-};
-
-const emailConfirmations = async (context) => {
-    const app = context.app;
-    const sequelizeClient = await app.get('sequelizeClient');
-    const rsvp = await sequelizeClient.models.rsvps.findByPk(context.result.id);
-
-    const user = await rsvp.getUser();
-    const email = user.get('email');
-
-    const info = await mailer.sendMail({
-        from: 'InCommon <noreply@bots.incommon.dev>',
-        to: email,
-        subject: 'InCommon: RSVP Received',
-        text: `
-            Your RSVP has been received, we're waiting for others now, please await a confirmation.
-        `
-    });
-
-    context.result.email_confirmation = nodemailer.getTestMessageUrl(info);
-};
-
-
-const populateUserField = async (context) => {
-
-    const _admin = await isAdmin(context).catch(() => null);
-    if (!_admin) {
-        context.params.query.userId = context.params.user.id;
-    }
-};
-
 
 module.exports = {
     before: {
         all: [authenticate('jwt')],
-        find: [populateUserField],
+        find: [],
         get: [isAdmin],
-        create: [addUser],
+        create: [],
         update: [isAdmin],
         patch: [isAdmin],
         remove: [isAdmin]
@@ -88,9 +41,9 @@ module.exports = {
 
     after: {
         all: [],
-        find: [addCodeAndUser],
+        find: [],
         get: [],
-        create: [emailConfirmations],
+        create: [],
         update: [],
         patch: [],
         remove: []
