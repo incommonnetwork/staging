@@ -18,7 +18,7 @@ const TileViewForm = ({ context }) => (
 
 TileViewForm.propTypes = {
     context: PropTypes.object.isRequired
-}
+};
 
 export { TileViewForm };
 
@@ -49,6 +49,6 @@ TileView.propTypes = {
     Component: PropTypes.func.isRequired,
     makeValues: PropTypes.func.isRequired
 
-}
+};
 
 export default TileView;
