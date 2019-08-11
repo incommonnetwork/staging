@@ -61,33 +61,7 @@ module.exports = function (app) {
         }
     });
 
-    sequelizeClient.define('phones', {
-        number: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        country: {
-            type: Sequelize.STRING,
-            allowNull: true
-        },
-        city: {
-            type: Sequelize.STRING,
-            allowNull: true
-        },
-        state: {
-            type: Sequelize.STRING,
-            allowNull: true
-        },
-        zip: {
-            type: Sequelize.STRING,
-            allowNull: true,
-        },
-        SEEDFILE: {
-            type: Sequelize.STRING,
-            allowNull: true
-        }
-    });
+
 
     // eslint-disable-next-line no-unused-vars
     users.associate = function (models) {

@@ -35,12 +35,13 @@ export default {
         formData
     }),
     submit_service: async ({ formData }) => {
-        const total = formData.total;
         const app = await getApp();
         const query = fromEntries(new URLSearchParams(window.location.search));
-        const inviteId = Number.parseInt(query.invite);
-        const accepted = true;
-        const created = await app.service('rsvps').create({ inviteId, accepted, total });
+        const created = await app.service('rsvps').create({
+            reservationId: query.reservation,
+            phoneId: query.phone,
+            ...formData
+        });
         return created;
     },
     form_init: async () => {
@@ -59,10 +60,6 @@ export default {
         if (!reservation) {
             Router.push('/');
         }
-
-        // if (!query.phone) {
-        //     Router.push('/')
-        // }
 
         const restaurant = reservation.restaurant;
 
