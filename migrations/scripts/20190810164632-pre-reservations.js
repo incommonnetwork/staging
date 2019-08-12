@@ -16,19 +16,19 @@ const MIGRATION = module.exports = {
         await queryInterface.addColumn('restaurants', 'city', {
             type: Sequelize.STRING,
             allowNull: false,
-            defaultValue: DataTypes.UUIDV4
+            defaultValue: Sequelize.UUIDV4
         })
 
         await queryInterface.addColumn('restaurants', 'state', {
             type: Sequelize.STRING,
             allowNull: false,
-            defaultValue: DataTypes.UUIDV4
+            defaultValue: Sequelize.UUIDV4
         })
 
         await queryInterface.addColumn('restaurants', 'country', {
             type: Sequelize.STRING,
             allowNull: false,
-            defaultValue: DataTypes.UUIDV4
+            defaultValue: Sequelize.UUIDV4
         })
 
         await queryInterface.addColumn('reservations', 'capacity', {
