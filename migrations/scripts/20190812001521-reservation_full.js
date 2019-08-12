@@ -12,8 +12,7 @@ const MIGRATION = module.exports = {
         */
 
         await queryInterface.addColumn('reservations', 'full', {
-            type: Sequelize.BOOLEAN,
-            allowNull: false
+            type: Sequelize.BOOLEAN
         })
 
 
