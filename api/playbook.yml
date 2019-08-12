@@ -37,6 +37,20 @@
         insertafter: \[Service\]
         line: Environment="NODE_ENV={{ incommon_NODE_ENV }}"
         path: "{{ incommon_service_file }}"
+    - name: service TWILIO_SID
+      become: yes
+      lineinfile:
+        state: present
+        insertafter: \[Service\]
+        line: Environment="TWILIO_SID={{ incommon_TWILIO_SID }}"
+        path: "{{ incommon_service_file }}"
+    - name: service TWILIO_AUTH
+      become: yes
+      lineinfile:
+        state: present
+        insertafter: \[Service\]
+        line: Environment="TWILIO_AUTH={{ incommon_TWILIO_AUTH }}"
+        path: "{{ incommon_service_file }}"
     - name: service POSTGRES_CONNECTION
       become: yes
       lineinfile:
