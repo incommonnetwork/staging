@@ -12,38 +12,6 @@ import getApp from '../utils/feathers';
 import rfc822 from '../utils/rfc822';
 import 'url-search-params-polyfill';
 
-import url from 'url';
-
-const getPage = pathname => {
-    const app = require('./../../app');
-    const port = app.get('port');
-    const opts = { pathname };
-    /* eslint-disable no-fallthrough */
-    switch (process.env.NODE_ENV) {
-        case 'staging':
-            opts.pathname = `/staging${opts.pathname}/`;
-        case 'production':
-            opts.hostname = 'www.incommon.dev';
-            opts.protocol = 'https';
-            break;
-        case 'development':
-        case 'test':
-            if (process.env.TEST_ENV === 'staging') {
-                opts.hostname = 'www.incommon.dev';
-                opts.protocol = 'https';
-                opts.pathname = `/staging${opts.pathname}`;
-                break;
-            }
-        default:
-            opts.hostname = 'localhost';
-            opts.protocol = 'http';
-            opts.port = port;
-    }
-    /* eslint-enable no-fallthrough */
-
-    return url.format(opts);
-};
-
 const SignUp = () => {
     return (
         <Main>
@@ -117,7 +85,7 @@ const context = {
         return created;
     },
     submit_service_done: () => {
-        Router.push(getPage('/thank_you_register'));
+        Router.push('/thank_you_register');
     }
 };
 

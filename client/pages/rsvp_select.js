@@ -18,6 +18,9 @@ const makeRSVPContext = (reservations) => reservations.data.map((reservation) =>
     reservation,
     submit_service_done: () => {
         Router.push('/thank_you_rsvp');
+    },
+    submit_service_error: () => {
+        Router.push('/rsvp_error');
     }
 }));
 

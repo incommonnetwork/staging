@@ -42,12 +42,15 @@ export default Machine({
                 onError: {
                     target: 'error',
                     actions: assign({
-                        error: (context, event) => event.data
+                        error: (context, event) => {
+                            return event.data;
+                        }
                     })
                 }
             }
         },
         error: {
+            entry: [(context) => context.submit_service_error ? context.submit_service_error() : null],
             on: {
                 CONTINUE: 'form_input'
             }
