@@ -46,7 +46,7 @@
         "staging:test": "export TEST_ENV=staging; jest test/",
         "production:deploy": "npm run production:deploy:db && npm run production:deploy:api && npm run production:deploy:client",
         "production:deploy:db": "export NODE_ENV=production && export POSTGRES_CONNECTION=$INCOMMON_PRODUCTION_DB && npm run sequelize:migrate",
-        "production:deploy:client": "git checkout gh-pages && git merge master && export NODE_ENV=production; next build ./client && next export ./client -o ./docs && cp -rT docs/ . && git add . && git commit . -m 'prod' && git push production gh-pages:master && git checkout master",
+        "production:deploy:client": "git checkout gh-pages && git merge master && export NODE_ENV=production; next build ./client && next export ./client -o ./docs && cp -rT docs/ . && git add . && git commit . -m 'prod' && git push production gh-pages:master --force && git checkout master",
         "production:deploy:api": "ansible-playbook -i ./api/inventory ./api/playbook.yml --key-file ~/.ssh/id_incommon_droplet --extra-vars \"incommon_host=api.incommon.dev incommon_NODE_ENV=production incommon_POSTGRES_CONNECTION=$INCOMMON_PRODUCTION_DB incommon_FASTMAIL_PASSWORD=$FASTMAIL_PASSWORD incommon_TWILIO_SID=$TWILIO_SID incommon_TWILIO_AUTH=$TWILIO_AUTH\"",
         "production:test": "export TEST_ENV=production; jest test/",
         "server:start:prod": "NODE_ENV=production node server/",

@@ -65,6 +65,7 @@ export default {
             name: restaurant.name,
             address: restaurant.address,
             city: restaurant.city,
+            state: restaurant.state,
             map: restaurant.map
         };
 
