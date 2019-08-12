@@ -43,12 +43,16 @@ const handleNullQueries = hook => {
     hook.params.query = transformQuery(where);
 };
 
+const addNotFull = hook => {
+    hook.data.full = false;
+};
+
 module.exports = {
     before: {
         all: [authenticate('jwt')],
         find: [handleNullQueries],
         get: [],
-        create: [isAdmin],
+        create: [isAdmin, addNotFull],
         update: [isAdmin],
         patch: [isAdmin],
         remove: [isAdmin]
