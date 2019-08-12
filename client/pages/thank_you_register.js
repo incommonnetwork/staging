@@ -9,7 +9,7 @@ const ThankYou = () => {
         <Main>
             <NarrowColumn>
                 <Card>
-                    {'Thank you for registering! you\'ll receive an email shortly to confirm, and another when an invite is ready for one of your chosen dates.'}
+                    {'Thank you for registering! we\'ll be in touch when InCommon is available in your area'}
                 </Card>
             </NarrowColumn>
         </Main>
