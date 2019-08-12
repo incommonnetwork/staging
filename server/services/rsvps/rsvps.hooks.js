@@ -101,13 +101,13 @@ const smsConfirm = async hook => {
 
 module.exports = {
     before: {
-        all: [authenticate('jwt')],
+        all: [],
         find: [],
-        get: [isAdmin],
+        get: [authenticate('jwt'), isAdmin],
         create: [checkCapacity],
-        update: [isAdmin],
-        patch: [isAdmin],
-        remove: [isAdmin]
+        update: [authenticate('jwt'), isAdmin],
+        patch: [authenticate('jwt'), isAdmin],
+        remove: [authenticate('jwt'), isAdmin]
     },
 
     after: {
