@@ -32,7 +32,7 @@ const MIGRATION = module.exports = {
         await queryInterface.addColumn('reservations', 'codeId', {
             type: Sequelize.INTEGER,
             references: {
-                model: 'cities',
+                model: 'codes',
                 key: 'id'
             }
         })
