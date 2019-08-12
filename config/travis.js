@@ -1,5 +1,5 @@
 module.exports = {
-    "port": "4040",
+    "port": "3030",
     "postgres": process.env.POSTGRES_CONNECTION,
     "cors": {}
 }
