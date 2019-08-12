@@ -29,8 +29,8 @@ const RsvpSelect = () => (
             getQuery={() => {
                 const raw = fromEntries(new URLSearchParams(window.location.search));
                 const query = {
-                    codeId: raw.c
-                    // full: false
+                    codeId: raw.c,
+                    full: false
                 };
                 return query;
             }}
