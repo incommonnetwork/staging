@@ -34,7 +34,7 @@ const checkCapacity = async (hook) => {
     const reservation = await app.service('reservations').get(rsvp.reservationId);
 
     if (reservation.full) {
-        throw new Forbidden('this reservation is full');
+        throw new Forbidden('We\'re sorry, this reservation is full, please try another.');
     }
 
     const existing_rsvps = await app.service('rsvps').find({
@@ -88,7 +88,7 @@ const getPage = pathname => {
 
 const smsConfirm = async hook => {
     const reservation = await hook.app.service('reservations').get(hook.data.reservationId);
-    const restaurant = await hook.app.service('restaurants').get(reservation.id);
+    const restaurant = await hook.app.service('restaurants').get(reservation.restaurantId);
     const phone = await hook.app.service('phones').get(hook.data.phoneId);
     await smsclient.messages.create({
         body: `Your RSVP for Dinner at ${restaurant.name} for ${hook.data.total} has been recieved. visit ${getPage('/view_reservation')}?r=${reservation.id} for time and map info.`,
