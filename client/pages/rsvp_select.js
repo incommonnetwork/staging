@@ -2,6 +2,7 @@
 import React from 'react';
 
 import Router from '../utils/router';
+import Main from '../layouts/main';
 
 import formContext from '../schemas/rsvp_form';
 
@@ -21,20 +22,22 @@ const makeRSVPContext = (reservations) => reservations.data.map((reservation) =>
 }));
 
 const RsvpSelect = () => (
-    <TileView
-        id={'rsvp_select'}
-        service={'reservations'}
-        getQuery={() => {
-            const raw = fromEntries(new URLSearchParams(window.location.search));
-            const query = {
-                codeId: raw.c
-                // full: false
-            };
-            return query;
-        }}
-        Component={TileViewForm}
-        makeValues={makeRSVPContext}
-    />
+    <Main>
+        <TileView
+            id={'rsvp_select'}
+            service={'reservations'}
+            getQuery={() => {
+                const raw = fromEntries(new URLSearchParams(window.location.search));
+                const query = {
+                    codeId: raw.c
+                    // full: false
+                };
+                return query;
+            }}
+            Component={TileViewForm}
+            makeValues={makeRSVPContext}
+        />
+    </Main>
 );
 
 export default RsvpSelect;
