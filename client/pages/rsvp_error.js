@@ -4,7 +4,7 @@ import React from 'react';
 import Main from '../layouts/main';
 import { NarrowColumn } from '../layouts/columns';
 import Card from '../layouts/card';
-import Button from 'react-bulma-components/src/components/button'
+import Button from 'react-bulma-components/src/components/button';
 
 const RsvpError = () => {
     return (
