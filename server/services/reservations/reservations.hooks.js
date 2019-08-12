@@ -54,7 +54,7 @@ module.exports = {
         get: [],
         create: [authenticate('jwt'), isAdmin, addNotFull],
         update: [authenticate('jwt'), isAdmin],
-        patch: [authenticate('jwt'), isAdmin],
+        patch: [authenticate('jwt')],
         remove: [authenticate('jwt'), isAdmin]
     },
 
