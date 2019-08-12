@@ -10,7 +10,7 @@ const MIGRATION = module.exports = {
           Example:
           return queryInterface.dropTable('users');
         */
-        await queryInterface.removeColumn('restaurants', 'cityId')
+        await queryInterface.removeColumn('restaurants', 'cityId').catch(() => { })
 
 
         await queryInterface.addColumn('restaurants', 'city', {
