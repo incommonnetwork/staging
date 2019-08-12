@@ -154,11 +154,13 @@ describe('\'sms\' service', () => {
                 this.result_text = await this.result.text();
                 this.message = this.result_text.split('<Message>').pop().split('</Message>')[0];
 
+
             });
 
             it.only('contains link to reservation list', async () => {
-                expect.assertions(1);
-                expect(this.message.indexOf(`/rsvp_select?c=${this.code.id}&p=`)).toBeGreaterThan(-1);
+                expect.assertions(2);
+                expect(this.message.indexOf('/rsvp_select')).toBeGreaterThan(-1);
+                expect(this.message.indexOf(`c=${this.code.id}`)).toBeGreaterThan(-1);
             });
         });
 

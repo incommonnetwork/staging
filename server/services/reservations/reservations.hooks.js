@@ -49,13 +49,13 @@ const addNotFull = hook => {
 
 module.exports = {
     before: {
-        all: [authenticate('jwt')],
+        all: [],
         find: [handleNullQueries],
         get: [],
-        create: [isAdmin, addNotFull],
-        update: [isAdmin],
-        patch: [isAdmin],
-        remove: [isAdmin]
+        create: [authenticate('jwt'), isAdmin, addNotFull],
+        update: [authenticate('jwt'), isAdmin],
+        patch: [authenticate('jwt'), isAdmin],
+        remove: [authenticate('jwt'), isAdmin]
     },
 
     after: {

@@ -94,6 +94,8 @@ const smsConfirm = async hook => {
         body: `Your RSVP for Dinner at ${restaurant.name} for ${hook.data.total} has been recieved. visit ${getPage('/view_reservation')}?r=${reservation.id} for time and map info.`,
         to: phone.number,
         from: '+16467605264'
+    }).catch(() => {
+        return null;
     });
 };
 

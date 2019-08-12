@@ -9,7 +9,7 @@ const ThankYou = () => {
         <Main>
             <NarrowColumn>
                 <Card>
-                    {'Thank you for your RSVP! you\'ll receive an email shortly to confirm when the reservation is made.'}
+                    {'Thank you for your RSVP! you\'ll receive a text message shortly with your confirmation.'}
                 </Card>
             </NarrowColumn>
         </Main>

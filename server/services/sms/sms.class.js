@@ -43,7 +43,7 @@ class Service {
         if (!params.code) {
             twiml.message('Unrecognized code, are you sure you typed it correctly? Please try again');
         } else {
-            twiml.message(`Welcome to InCommon! visit ${getPage('/rsvp_select')}?c=${params.code.id}&p=${params.phone.id} to select an available dinner to join.`);
+            twiml.message(`Welcome to InCommon! visit ${getPage('/rsvp_select')}?c=${params.code.get('id')}&p=${params.phone.get('id')} to select an available dinner to join.`);
         }
 
         return twiml.toString();
