@@ -13,14 +13,18 @@ module.exports = function (app) {
         capacity: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        full: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
         }
     }, {
-        hooks: {
-            beforeCount(options) {
-                options.raw = true;
+            hooks: {
+                beforeCount(options) {
+                    options.raw = true;
+                }
             }
-        }
-    });
+        });
 
     // eslint-disable-next-line no-unused-vars
     reservations.associate = function (models) {
