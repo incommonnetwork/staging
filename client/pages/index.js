@@ -38,7 +38,7 @@ const Index = () => (
                 subtitle="Tip your server"
             />
             <Spark url={'https://spark.adobe.com/video/NnfAON46L5sTa/embed'} />
-            <Link href='/sign_up?for=user'>
+            <Link href='/learn_more'>
                 <Button>
                     Learn More
                 </Button>
@@ -69,7 +69,7 @@ const Index = () => (
                 InCommon codes can relate to anything. From exclusive ticketed events to podcast interest groups, and everything in between.
             </p>
             <Spark url={'https://spark.adobe.com/video/gwkQg1WKcpTqW/embed'} />
-            <Link href='/sign_up?for=user'>
+            <Link href='/learn_more'>
                 <Button>
                     Learn More
                 </Button>
@@ -95,7 +95,7 @@ const Index = () => (
                 size={5}
                 subtitle="Split the check"
             />
-            <Link href='/sign_up?for=user'>
+            <Link href='/learn_more'>
                 <Button>
                     Learn More
                 </Button>
