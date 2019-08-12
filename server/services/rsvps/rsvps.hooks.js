@@ -34,7 +34,7 @@ const checkCapacity = async (hook) => {
     const reservation = await app.service('reservations').get(rsvp.reservationId);
 
     if (reservation.full) {
-        throw new Forbidden(`We're sorry, this reservation is full, please try another.`);
+        throw new Forbidden('We\'re sorry, this reservation is full, please try another.');
     }
 
     const existing_rsvps = await app.service('rsvps').find({
