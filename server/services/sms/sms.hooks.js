@@ -35,17 +35,12 @@ const getCode = async (context) => {
     context.params.code = code || false;
 };
 
-const addInterest = async (context) => {
-    if (!(context.params.code && context.params.user)) return;
-    await context.params.user.addInterest(context.params.code);
-};
-
 module.exports = {
     before: {
         all: [],
         find: [],
         get: [],
-        create: [getUser, getCode, addInterest],
+        create: [getUser, getCode],
         update: [],
         patch: [],
         remove: []

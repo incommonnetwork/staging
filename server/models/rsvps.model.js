@@ -6,10 +6,6 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
     const sequelizeClient = app.get('sequelizeClient');
     const rsvps = sequelizeClient.define('rsvps', {
-        accepted: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
-        },
         total: {
             type: DataTypes.INTEGER,
             allowNull: false
@@ -24,7 +20,8 @@ module.exports = function (app) {
 
     // eslint-disable-next-line no-unused-vars
     rsvps.associate = function (models) {
-        models.rsvps.belongsTo(models.users);
+        models.rsvps.belongsTo(models.phones);
+        models.rsvps.belongsTo(models.reservations);
 
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/

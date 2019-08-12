@@ -2,8 +2,43 @@ import getApp from '../utils/feathers';
 
 export default {
     redirect: '/home',
-    title: 'Create User',
+    title: 'Create Restaurant',
     schema: {
+        title: 'Restaurant',
+        type: 'object',
+        properties: {
+            name: {
+                title: 'Name',
+                type: 'string'
+            },
+            address: {
+                title: 'Address',
+                type: 'string'
+            },
+            city: {
+                title: 'City',
+                type: 'string'
+
+            },
+            state: {
+                title: 'State',
+                type: 'string'
+
+            },
+            country: {
+                title: 'Country',
+                type: 'string'
+
+            },
+            url: {
+                title: 'URL',
+                type: 'string'
+            },
+            map: {
+                title: 'Map',
+                type: 'string'
+            }
+        }
     },
     uiSchema: {
         password: {
@@ -15,75 +50,6 @@ export default {
     },
     validate: (formData, errors) => {
         return errors;
-    },
-    form_init: async () => {
-        const app = await getApp();
-        const neighborhoods = await app.service('neighborhoods').find({
-            query: {
-                $limit: 50
-            }
-        });
-
-        const cityNeighborhoods = new Map();
-
-        for (const neighborhood of neighborhoods.data) {
-            const neighborhoodSet = cityNeighborhoods.get(neighborhood.cityId) || new Set();
-            cityNeighborhoods.set(neighborhood.cityId, neighborhoodSet);
-            neighborhoodSet.add(neighborhood);
-        }
-
-        const schema = {
-            title: 'location',
-            type: 'object',
-
-            anyOf: [{
-                title: 'Select City...',
-            }]
-
-        };
-
-        for (const [id, neighborhoodSet] of cityNeighborhoods) {
-            const city = await app.service('cities').get(id);
-
-            const neighborhoodSchema = {
-                title: city.city,
-                type: 'object',
-
-                properties: {
-                    neighborhoodId: {
-                        title: 'Neighborhood',
-                        type: 'number',
-                        enum: [],
-                        enumNames: []
-                    },
-                    name: {
-                        title: 'Name',
-                        type: 'string'
-                    },
-                    address: {
-                        title: 'Address',
-                        type: 'string'
-                    },
-                    url: {
-                        title: 'URL',
-                        type: 'string'
-                    },
-                    map: {
-                        title: 'Map',
-                        type: 'string'
-                    }
-                }
-            };
-
-            for (const neighborhood of Array.from(neighborhoodSet)) {
-                neighborhoodSchema.properties.neighborhoodId.enum.push(neighborhood.id);
-                neighborhoodSchema.properties.neighborhoodId.enumNames.push(neighborhood.neighborhood);
-            }
-
-            schema.anyOf.push(neighborhoodSchema);
-        }
-
-        return { schema };
     },
     onSubmit: (send) => ({ formData }) => send({
         type: 'SUBMIT',

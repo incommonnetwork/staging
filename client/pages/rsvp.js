@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Protected from '../layouts/protected';
+import Main from '../layouts/main';
 import { NarrowColumn } from '../layouts/columns';
 import Card from '../layouts/card';
 import Router from '../utils/router';
@@ -19,13 +19,13 @@ const Rsvp = () => {
 
 
     return (
-        <Protected redirect="/sign_in">
+        <Main redirect="/sign_in">
             <NarrowColumn>
                 <Card title={'RSVP for Dinner'}>
                     <Form context={context} id={'rsvp'} />
                 </Card>
             </NarrowColumn>
-        </Protected>
+        </Main>
     );
 };
 
