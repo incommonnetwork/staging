@@ -19,7 +19,7 @@ const ViewReservation = () => {
         <Main redirect="/sign_in">
             <NarrowColumn>
                 <Card title={'View Reservation'}>
-                    <Form context={context} id={'view reservation'} />
+                    <Form context={context} id={'view_reservation'} />
                 </Card>
             </NarrowColumn>
         </Main>
