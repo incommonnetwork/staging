@@ -11,10 +11,11 @@ export default {
             {
                 label: 'id'
             }, {
-                label: 'inviteId'
+                label: 'date'
             }, {
-                label: 'restaurant'
+                label: 'capacity'
             }
+
         ],
         create: {
             ...reservation_form,
